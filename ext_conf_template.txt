@@ -1,0 +1,8 @@
+# cat=Elasticsearch; type=string; label=LLL:EXT:liszt_common/Resources/Private/Language/Labels.xml:config.elasticHostName
+elasticHostName = https://sdvelasticmusikverlage:9200
+# cat=Elasticsearch; type=string; label=LLL:EXT:liszt_common/Resources/Private/Language/Labels.xml:config.elasticCredentialsFilePath
+elasticCredentialsFilePath = http_ca.crt
+# cat=Elasticsearch; type=string; label=LLL:EXT:liszt_common/Resources/Private/Language/Labels.xml:config.elasticPwdFileName
+elasticPwdFileName = elastic_pwd.txt
+# cat=Elasticsearch; type=string; label=LLL:EXT:liszt_common/Resources/Private/Language/Labels.xml:config.elasticCaFileName
+elasticCaFileFilePath = http_ca.crt

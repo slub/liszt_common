@@ -1,0 +1,1 @@
+const LISZT_COMMON_MAX_SIZE = 10000;
