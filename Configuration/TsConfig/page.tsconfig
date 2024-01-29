@@ -1,0 +1,19 @@
+mod.wizards.newContentElement.wizardItems {
+    // add the content elementS to the tab "plugins"
+    plugins {
+        elements {
+            // ...
+            searchBar {
+                iconIdentifier = actions-search
+                title = Liszt Search Bar
+                description = Add elasticsSearch search bar
+                tt_content_defValues {
+                    CType = list
+                    list_type = lisztcommon_searchbar
+                }
+            }
+        }
+
+        show := addToList(lisztcommon_searchbar)
+    }
+}
