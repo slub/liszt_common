@@ -1,26 +1,18 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
-<section class="searchbar-section   frame frame-size-default frame-default frame-type-html frame-layout-default frame-background-none frame-no-backgroundimage frame-space-before-none frame-space-after-none">
-    <f:comment><!-- ToDo: better solution without frame divs (include in layout template in liszf:comment--></f:comment>
-    <div class="frame-group-container">
-        <div class="frame-group-inner">
-            <div class="frame-container frame-container-default">
-                <div class="frame-inner">
-                    <div class="input-group mb-3">
-                        <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">Test Thomas
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">alles</a></li>
-                            <li><a class="dropdown-item" href="#">Quellen- und Werkverzeichnis</a></li>
-                            <li><a class="dropdown-item" href="#">Literatur</a></li>
-                            <li><a class="dropdown-item" href="#">Aufführungen</a></li>
-                        </ul>
-                        <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="">
-                        <button class="btn btn-outline-primary" type="button" id="button-addon2">Suchen</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+
+    <div class="input-group mb-3">
+        <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">Test Thomas
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">alles</a></li>
+            <li><a class="dropdown-item" href="#">Quellen- und Werkverzeichnis</a></li>
+            <li><a class="dropdown-item" href="#">Literatur</a></li>
+            <li><a class="dropdown-item" href="#">Aufführungen</a></li>
+        </ul>
+        <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="">
+        <button class="btn btn-outline-primary" type="button" id="button-addon2">{f:translate(key: 'searchButtonLabel')}
+        </button>
     </div>
-</section>
+
 </html>

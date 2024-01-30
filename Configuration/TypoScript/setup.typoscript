@@ -27,7 +27,7 @@ page.includeJSFooter.Constants = EXT:liszt_common/Resources/Public/JavaScript/Sr
 # maybe we need a USER object to run a initialisation?
 
 # copy element in PAGE object to display in fluid template
-page = PAGE
+# page = PAGE
 page {
     10 =FLUIDTEMPLATE
     10 {
@@ -50,6 +50,7 @@ page {
                 }
             }
         }
+
     }
 }
 

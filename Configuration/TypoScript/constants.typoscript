@@ -1,6 +1,13 @@
 
-#cat=SearchBar; type=boolean; label=Disable Search Bar
-content.searchBar.disableSearchBar = 0
+page {
+    theme {
+        searchBar {
+            #cat=liszt common; type=boolean; label=Disable Search Bar
+            content.searchBar.disableSearchBar = 0
+        }
+    }
+}
+
 
 /*
 plugin.tx_liszt_common {
