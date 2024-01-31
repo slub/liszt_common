@@ -52,7 +52,7 @@ page {
                     # number of results per page
                     limit = 10
                     # id of the Result Page from Constants (Todo: create a constant for this)
-                    resultPageId = {$content.searchResultPageId}
+                    SearchBarSelectItems < plugin.tx_liszt_common.settings.searchBarSelectItems
                 }
             }
             selectedFrontendLayout < lib.selectedFrontendLayout

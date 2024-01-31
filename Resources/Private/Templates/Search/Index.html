@@ -1,4 +1,5 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:debug>{_all}</f:debug>
 
     <div class="input-group mb-3">
         <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
@@ -6,9 +7,9 @@
         </button>
         <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="#">alles</a></li>
-            <li><a class="dropdown-item" href="#">Quellen- und Werkverzeichnis</a></li>
-            <li><a class="dropdown-item" href="#">Literatur</a></li>
-            <li><a class="dropdown-item" href="#">Aufführungen</a></li>
+            <f:for each="{settings.SearchBarSelectItems}" as="item">
+                <li><a class="dropdown-item" href="{item.href}">{item.label}</a></li>
+            </f:for>
         </ul>
         <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="">
         <button class="btn btn-outline-primary" type="button" id="button-addon2">{f:translate(key: 'searchButtonLabel')}
