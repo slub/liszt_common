@@ -1,12 +1,12 @@
 
-page {
+/*page {
     theme {
         searchBar {
             #cat=liszt common; type=boolean; label=Disable Search Bar
             content.searchBar.disableSearchBar = 0
         }
     }
-}
+}*/
 
 
 /*

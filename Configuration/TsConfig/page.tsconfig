@@ -1,5 +1,17 @@
-mod.wizards.newContentElement.wizardItems {
-    // add the content elementS to the tab "plugins"
+# Add layout for editors to hide SearchBar in backend page setup if needed
+
+TCEFORM {
+    pages {
+        layout {
+            addItems {
+                4 = Layout ohne Searchbar
+            }
+        }
+    }
+}
+
+/*mod.wizards.newContentElement.wizardItems {
+    // add the content elementS to the tab "plugins" TODO: can be removed
     plugins {
         elements {
             // ...
@@ -16,4 +28,4 @@ mod.wizards.newContentElement.wizardItems {
 
         show := addToList(lisztcommon_searchbar)
     }
-}
+}*/

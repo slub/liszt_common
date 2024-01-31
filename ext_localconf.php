@@ -17,7 +17,6 @@ ExtensionUtility::configurePlugin(
     ]
 );
 
-// show wizard in backend
-//ExtensionManagementUtility::addPageTSConfig(
-//    '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:liszt_common/Configuration/TsConfig/page.tsconfig">'
-//);
+ExtensionManagementUtility::addPageTSConfig(
+    '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:liszt_common/Configuration/TsConfig/page.tsconfig">'
+);

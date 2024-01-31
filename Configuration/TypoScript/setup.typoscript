@@ -26,6 +26,12 @@ page.includeJSFooter.Constants = EXT:liszt_common/Resources/Public/JavaScript/Sr
 
 # maybe we need a USER object to run a initialisation?
 
+# get the selected frontend layout from page table for show/hide SearchBar, because bootstrap package not use this param
+lib.selectedFrontendLayout = TEXT
+lib.selectedFrontendLayout.data = levelfield:-1, layout, slide
+
+
+
 # copy element in PAGE object to display in fluid template
 # page = PAGE
 page {
@@ -49,8 +55,8 @@ page {
                     resultPageId = {$content.searchResultPageId}
                 }
             }
+            selectedFrontendLayout < lib.selectedFrontendLayout
         }
-
     }
 }
 
