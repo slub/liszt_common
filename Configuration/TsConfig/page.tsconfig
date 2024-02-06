@@ -1,0 +1,31 @@
+# Add layout for editors to hide SearchBar in backend page setup if needed
+
+TCEFORM {
+    pages {
+        layout {
+            addItems {
+                4 = Layout ohne Searchbar
+            }
+        }
+    }
+}
+
+/*mod.wizards.newContentElement.wizardItems {
+    // add the content elementS to the tab "plugins" TODO: can be removed
+    plugins {
+        elements {
+            // ...
+            searchBar {
+                iconIdentifier = actions-search
+                title = Liszt Search Bar
+                description = Add elasticsSearch search bar
+                tt_content_defValues {
+                    CType = list
+                    list_type = lisztcommon_searchbar
+                }
+            }
+        }
+
+        show := addToList(lisztcommon_searchbar)
+    }
+}*/
