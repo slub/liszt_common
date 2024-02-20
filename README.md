@@ -29,3 +29,13 @@ You can obtain a Controller with easy access to elasticsearch by inheriting from
 
     }
         
+## Translation between XML and JSON
+
+You can read in an XML document and translate it to a PHP array or JSON.
+
+    use Slub\LisztCommon\Common\XmlDocument;
+    ...
+
+    $xmlDocument = XmlDocument::from($xmlString);
+    $array = $xmlDocument->toArray();
+    $json = $xmlDocument->toJson();
