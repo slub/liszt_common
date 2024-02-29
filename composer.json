@@ -33,7 +33,7 @@
     "scripts": {
         "ci": [ "@ci:php", "@ci:tests" ],
         "ci:php": [ "@ci:php:stan" ],
-        "ci:tests": [ "@ci:tests:unit" ],
+        "ci:tests": [ "@ci:tests:unit", "@ci:tests:functional" ],
         "ci:php:stan": [ "phpstan analyse Classes" ],
         "ci:tests:functional": [ "phpunit -c config/FunctionalTests.xml" ],
         "ci:tests:unit": [ "phpunit -c config/UnitTests.xml" ]
