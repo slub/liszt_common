@@ -31,5 +31,10 @@
         "ci:php:stan": [ "phpstan analyse Classes" ],
         "ci:tests:functional": [ "phpunit -c config/FunctionalTests.xml" ],
         "ci:tests:unit": [ "phpunit -c config/UnitTests.xml" ]
+    },
+    "config": {
+        "allow-plugin": {
+            "typo3/class-alias-loader": true
+        }
     }
 }
