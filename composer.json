@@ -33,7 +33,7 @@
         "ci:tests:unit": [ "phpunit -c config/UnitTests.xml" ]
     },
     "config": {
-        "allow-plugin": {
+        "allow-plugins": {
             "typo3/class-alias-loader": true
         }
     }
