@@ -5,38 +5,14 @@ on:
 jobs:
   code-quality:
     name: "Code quality checks"
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - name: "Checkout"
         uses: actions/checkout@v4
-      - name: "Install PHP"
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: "${{ matrix.php-version }}"
-          coverage: none
-          tools: composer:v2.6
-      - name: "Show Composer version"
-        run: composer --version
-      - name: "Show the Composer configuration"
-        run: composer config --global --list
-      - name: "Cache dependencies installed with composer"
-        uses: actions/cache@v4
-        with:
-          key: "php${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.json') }}"
-          path: ~/.cache/composer
-          restore-keys: "php${{ matrix.php-version }}-composer-\n"
       - name: "Install Composer dependencies"
-        run: "composer update --no-progress"
+        run: "composer ci:install"
       - name: "Run command"
-        run: "composer ci:${{ matrix.command }}"
-    strategy:
-      fail-fast: false
-      matrix:
-        command:
-          - php:stan
-        php-version:
-          - '8.2'
-          - '8.3'
+        run: "composer ci:php:stan"
 
   unit-tests:
     name: Unit Tests
