@@ -12,9 +12,9 @@ jobs:
       - name: "Pull typo3 image"
         run: "docker pull ghcr.io/typo3/core-testing-php82:1.11"
       - name: "Install Composer dependencies"
-        run: "composer ci:install -b docker"
+        run: "composer ci:install"
       - name: "Run command"
-        run: "composer ci:php:stan -b docker"
+        run: "composer ci:php:stan"
 
   unit-tests:
     name: Unit Tests

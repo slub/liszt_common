@@ -33,11 +33,11 @@
     "scripts": {
         "ci": [ "@ci:install", "@ci:php", "@ci:tests" ],
         "ci:php": [ "@ci:php:stan" ],
-        "ci:php:stan": [ "Build/Scripts/runTests.sh -s phpstan" ],
+        "ci:php:stan": [ "Build/Scripts/runTests.sh -s phpstan -b docker" ],
         "ci:tests": [ "@ci:tests:unit", "@ci:tests:functional" ],
-        "ci:tests:unit": [ "Build/Scripts/runTests.sh -s unit" ],
-        "ci:tests:functional": [ "Build/Scripts/runTests.sh -s functional" ],
-        "ci:install": [ "Build/Scripts/runTests.sh -s composerInstall" ]
+        "ci:tests:unit": [ "Build/Scripts/runTests.sh -s unit -b docker" ],
+        "ci:tests:functional": [ "Build/Scripts/runTests.sh -s functional -b docker" ],
+        "ci:install": [ "Build/Scripts/runTests.sh -s composerInstall -b docker" ]
     },
     "config": {
         "allow-plugins": {
