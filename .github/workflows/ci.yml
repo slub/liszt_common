@@ -9,8 +9,8 @@ jobs:
     steps:
       - name: "Checkout"
         uses: actions/checkout@v4
-      - name: "Show docker version"
-        run: "docker -v"
+      - name: "Pull typo3 image"
+        run: "docker pull ghcr.io/typo3/core-testing-php82:1.11"
       - name: "Install Composer dependencies"
         run: "composer ci:install -b docker"
       - name: "Run command"
