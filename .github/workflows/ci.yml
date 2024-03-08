@@ -9,10 +9,10 @@ jobs:
     steps:
       - name: "Checkout"
         uses: actions/checkout@v4
-      - name: "Install Composer dependencies"
-        run: "composer ci:install -b docker"
       - name: "Show docker version"
         run: "docker -v"
+      - name: "Install Composer dependencies"
+        run: "composer ci:install -b docker"
       - name: "Run command"
         run: "composer ci:php:stan -b docker"
 
