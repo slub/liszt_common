@@ -10,9 +10,9 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v4
       - name: "Install Composer dependencies"
-        run: "composer ci:install"
+        run: "composer ci:install -b docker"
       - name: "Run command"
-        run: "composer ci:php:stan"
+        run: "composer ci:php:stan -b docker"
 
   unit-tests:
     name: Unit Tests
