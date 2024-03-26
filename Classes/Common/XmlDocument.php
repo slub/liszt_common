@@ -28,4 +28,12 @@ class XmlDocument
         // add function here
         return '';
     }
+
+    public function convert(XmlDocument $xmlDocument): XmlDocument
+    {
+        $result = XmlDocument::from('');
+        // add function here
+
+        return $result;
+    }
 }
