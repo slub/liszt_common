@@ -34,6 +34,6 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v4
       - name: "Install Composer dependencies"
-        run: "composer update --no-progress"
+        run: "composer ci:install"
       - name: "Run the tests"
         run: "composer ci:tests:functional"
