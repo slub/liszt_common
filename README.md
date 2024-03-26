@@ -1,7 +1,7 @@
 Common Tools for the Liszt Portal
 =================================
 
-[![TYPO3 11](https://img.shields.io/badge/TYPO3-11-orange.svg)](https://get.typo3.org/version/11)
+[![TYPO3 13](https://img.shields.io/badge/TYPO3-13-orange.svg)](https://get.typo3.org/version/13)
 [![CC-BY](https://img.shields.io/github/license/dikastes/liszt_common)](https://github.com/dikastes/liszt_common/blob/main/LICENSE)
 
 This package bundles common functionality for the Liszt Portal.
