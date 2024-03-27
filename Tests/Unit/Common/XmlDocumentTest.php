@@ -18,7 +18,7 @@ final class XmlDocumentTest extends UnitTestCase
         parent::setUp();
 
 
-        $this->xmlString = '';
+        $this->xmlString = file_get_contents('Classes/meitest2.xml');
         $this->subject = new XmlDocument($this->xmlString);
         
     }
