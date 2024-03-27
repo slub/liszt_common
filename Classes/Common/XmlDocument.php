@@ -38,7 +38,6 @@ class XmlDocument
         $this->include_literal_string = $config['literalString'];
         $this->include_xml_id = $config['xmlId'];
         $this->splitSymbols = $config['splitSymbols'];
-        var_dump($this->include_xml_id);
     }
 
     public static function from (string $xmlString): XmlDocument
