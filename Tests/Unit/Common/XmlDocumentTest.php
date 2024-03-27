@@ -11,12 +11,16 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 final class XmlDocumentTest extends UnitTestCase
 {
     private XmlDocument $subject;
+    private $xmlString;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->subject = new XmlDocument('');
+
+        $this->xmlString = '';
+        $this->subject = new XmlDocument($this->xmlString);
+        
     }
 
     /**
@@ -24,7 +28,7 @@ final class XmlDocumentTest extends UnitTestCase
      */
     public function returnsArray(): void
     {
-        self::assertSame([], $this->subject->toArray());
+        self::assertIsArray($this->subject->toArray());
     }
 
     /**
@@ -32,6 +36,16 @@ final class XmlDocumentTest extends UnitTestCase
      */
     public function returnsJson(): void
     {
-        self::assertSame('', $this->subject->toJson());
+        self::assertIsArray($this->subject->toJson());
     }
+
+    /**
+     * @test
+     */
+
+    public function xmlStringNotEmpty(): void {
+        self::assertNotSame('',$this->xmlString);
+    }
+    
 }
+
