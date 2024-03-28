@@ -18,9 +18,9 @@ final class XmlDocumentTest extends UnitTestCase
         parent::setUp();
 
 
-        $this->xmlString = file_get_contents('Classes/meitest2.xml');
+        $this->xmlString = file_get_contents('Tests/Testfiles/meitest2.xml');
         $this->subject = new XmlDocument($this->xmlString);
-        
+
     }
 
     /**
@@ -43,9 +43,10 @@ final class XmlDocumentTest extends UnitTestCase
      * @test
      */
 
-    public function xmlStringNotEmpty(): void {
-        self::assertNotSame('',$this->xmlString);
+    public function xmlStringNotEmpty(): void
+    {
+        self::assertNotSame('', $this->xmlString);
     }
-    
+
 }
 
