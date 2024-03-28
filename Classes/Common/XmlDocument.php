@@ -49,18 +49,15 @@ class XmlDocument
 
     public function toArray(): array
     {
-
-        //
-
+        // Check if array is already converted
         if (isset($this->convertedArray)) {
-            return $this->convertedArray;
-        } else {
-            $this->convertedArray = [];
-            $xml = simplexml_load_string($this->xmlString);
-            $this->convertedArray[strval($xml->attributes('xml', true)->id)] = $this->convert($xml);
             return $this->convertedArray;
         }
 
+        $this->convertedArray = [];
+        $xml = simplexml_load_string($this->xmlString);
+        $this->convertedArray[strval($xml->attributes('xml', true)->id)] = $this->convert($xml);
+        return $this->convertedArray;
     }
 
 
@@ -74,7 +71,7 @@ class XmlDocument
         return $result;
     }
 
-    private function convert(SimpleXMLElement $node)
+    private function convert(SimpleXMLElement $node): array
     {
 
         $result = [];
@@ -107,12 +104,11 @@ class XmlDocument
         // Check if node is a mixed-content element
 
         if ($this->includeLiteralString) {
-            if ($node->getName() == "p") {
-                if ($node->count() > 0 && !empty($node)) {
-                    // Add literal string, to store the node order
-                    $literal = str_replace(array("\n", "\r"), '', trim($node->asXML()));
-                    $result['@literal'] = $literal;
-                }
+            if ($node->getName() == "p" && $node->count() > 0 && !empty($node)) {
+
+                // Add literal string, to store the node order
+                $literal = str_replace(array("\n", "\r"), '', trim($node->asXML()));
+                $result['@literal'] = $literal;
             }
         }
 
@@ -140,6 +136,5 @@ class XmlDocument
         }
 
         return $result;
-
     }
 }
