@@ -3,6 +3,7 @@
 namespace Slub\LisztCommon\Common;
 
 use SimpleXMLElement;
+use Illuminate\Support\Collection;
 
 class XmlDocument
 {
@@ -75,15 +76,17 @@ class XmlDocument
     {
 
         $result = [];
-        // Parse attributes
-        $attributes = $node->attributes();
-        foreach ($attributes as $attrName => $attrValue) {
-            $trimmedValue = trim(strval($attrValue));
-            if (!empty($trimmedValue)) {
-                $result['@attributes'][$attrName] = $trimmedValue;
-            }
-        }
+        $attrs = Collection::wrap($node->attributes())->filter(function ($attrValue) {
+            return !empty(trim((string)$attrValue));
+        })->mapWithKeys(function ($attrValue, $attrName) {
+            return [$attrName => trim((string)$attrValue)];
+        })->toArray();
 
+        // Merge parsed attributes with result array
+        if(!empty($attrs)) {
+            $result = array_merge_recursive($result, ['@attributes' => $attrs]);
+        }
+        
         // Parse value
         $nodeValue = trim(strval($node));
         if (!empty($nodeValue)) {
@@ -117,6 +120,8 @@ class XmlDocument
             $childName = $childNode->getName();
             $xmlString = $childNode->asXML();
             $found = false;
+
+            // Deal with split symbols
             foreach ($this->splitSymbols as $symbol) {
                 if (str_contains($childName, $symbol)) {
                     $found = true;
@@ -137,4 +142,5 @@ class XmlDocument
 
         return $result;
     }
+    
 }
