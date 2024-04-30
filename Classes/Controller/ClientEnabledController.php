@@ -1,8 +1,8 @@
 <?php
 namespace Slub\LisztCommon\Controller;
 
-use Elasticsearch\ClientBuilder;
-use Elasticsearch\Client;
+use Elastic\Elasticsearch\ClientBuilder;
+use Elastic\Elasticsearch\Client;
 use Slub\LisztCommon\Common\ElasticClientBuilder;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 

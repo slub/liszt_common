@@ -12,7 +12,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  *
  * @author Matthias Richter <matthias.richter@slub-dresden.de>
  */
-class PublishedItemComposerNameTest extends FunctionalTestCase
+class XmlDocumentTest extends FunctionalTestCase
 {
     const PATH = __DIR__ . '/Fixtures/';
 
