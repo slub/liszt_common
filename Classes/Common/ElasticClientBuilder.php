@@ -12,8 +12,8 @@ namespace Slub\LisztCommon\Common;
  */
 
 use Illuminate\Support\Collection;
-use Elasticsearch\Client;
-use Elasticsearch\ClientBuilder;
+use Elastic\Elasticsearch\Client;
+use Elastic\Elasticsearch\ClientBuilder;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -74,12 +74,12 @@ class ElasticClientBuilder extends ClientBuilder {
 		if ($this->extConf->get('elasticPwdFileName') == '') {
             $this->password = '';
             return;
-		} 
+		}
 
         $passwordFilePath = $this->extConf->
             only('elasticCredentialsFilePath', 'elasticPwdFileName')->
             implode('/');
-        $passwordFile = fopen($passwordFilePath, 'r') or 
+        $passwordFile = fopen($passwordFilePath, 'r') or
             die($passwordFilePath . ' not found. Check your extension\'s configuration');
 
         $this->password = $passwordFile->getContents();
