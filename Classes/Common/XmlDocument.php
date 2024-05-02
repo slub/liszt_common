@@ -77,16 +77,16 @@ class XmlDocument
 
         $result = [];
         $attrs = Collection::wrap($node->attributes())->filter(function ($attrValue) {
-            return !empty(trim((string)$attrValue));
+            return !empty (trim((string) $attrValue));
         })->mapWithKeys(function ($attrValue, $attrName) {
-            return [$attrName => trim((string)$attrValue)];
+            return [$attrName => trim((string) $attrValue)];
         })->toArray();
-        
+
         // Merge parsed attributes with result array
-        if(!empty($attrs)) {
+        if (!empty($attrs)) {
             $result = array_merge_recursive($result, ['@attributes' => $attrs]);
         }
-        
+
         // Parse value
         $nodeValue = trim(strval($node));
         if (!empty($nodeValue)) {
@@ -116,8 +116,7 @@ class XmlDocument
         }
 
         // Parse child nodes
-        Collection::wrap($node->children())->filter(function($childNode) {
-        return !empty($childNode);})->each(function($childNode) use (&$result,&$node) {
+        foreach ($node->children() as $childNode) {
             $childName = $childNode->getName();
             $xmlString = $childNode->asXML();
             $found = false;
@@ -139,10 +138,10 @@ class XmlDocument
                 $result[$childName] = [];
             }
             $result[$childName][] = $childData;
-            
-        });
-            
+
+        }
+
         return $result;
     }
-    
+
 }

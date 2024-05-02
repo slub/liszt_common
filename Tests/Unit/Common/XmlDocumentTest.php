@@ -19,7 +19,7 @@ final class XmlDocumentTest extends UnitTestCase
 
 
         $this->xmlString = file_get_contents('Tests/Testfiles/meitest2.xml');
-        $this->subject = new XmlDocument($this->xmlString);
+        $this->subject = XmlDocument::from($this->xmlString);
 
     }
 
@@ -46,6 +46,14 @@ final class XmlDocumentTest extends UnitTestCase
     public function xmlStringNotEmpty(): void
     {
         self::assertNotSame('', $this->xmlString);
+    }
+
+    /**
+     * @test
+     */
+
+    public function xmlStringEqualFile() {
+        self::assertXmlStringEqualsXmlFile('Tests/Testfiles/meitest2.xml',$this->xmlString);
     }
 
 }
