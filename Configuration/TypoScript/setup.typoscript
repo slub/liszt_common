@@ -1,6 +1,8 @@
-page.includeJSFooterlibs.Elasticsearch = EXT:liszt_common/Resources/Public/JavaScript/Src/elasticsearch.min.js
-page.includeJSFooter.UrlManager = EXT:liszt_common/Resources/Public/JavaScript/Src/UrlManager.js
-page.includeJSFooter.Constants = EXT:liszt_common/Resources/Public/JavaScript/Src/Constants.js
+
+// remove elastic js client etc, because we dont need it in future
+//page.includeJSFooterlibs.Elasticsearch = EXT:liszt_common/Resources/Public/JavaScript/Src/elasticsearch.min.js
+//page.includeJSFooter.UrlManager = EXT:liszt_common/Resources/Public/JavaScript/Src/UrlManager.js
+//page.includeJSFooter.Constants = EXT:liszt_common/Resources/Public/JavaScript/Src/Constants.js
 
 #plugin.tx_liszt_common {
 #    view {
