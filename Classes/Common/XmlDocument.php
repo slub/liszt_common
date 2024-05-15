@@ -17,7 +17,6 @@ class XmlDocument
 
     // Private helper vars
     protected array $convertedArray;
-    protected SimpleXmlElement $currentNode;
 
 
     public function __construct(string $xmlString)
