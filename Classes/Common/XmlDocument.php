@@ -93,7 +93,7 @@ class XmlDocument
     {
 
         $result = [];
-        $this->currentNode = $node;
+        
 
         // Parse attributes
         $attrs = Collection::wrap($node->attributes())->filter(function ($attrValue) {
