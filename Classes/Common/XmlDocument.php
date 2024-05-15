@@ -16,7 +16,8 @@ class XmlDocument
     protected array $splitSymbols;
 
     // Private helper vars
-    private array $convertedArray;
+    protected array $convertedArray;
+    protected SimpleXmlElement $currentNode;
 
 
     public function __construct(string $xmlString)
@@ -25,8 +26,7 @@ class XmlDocument
 
         // Deal with xml-reserved symbols
         $this->xmlString = str_replace("&", "&amp;", $this->xmlString);
-        //$this->xmlString = str_replace("<", "&lt;", $this->xmlString);
-        //$this->xmlString = str_replace(">", "&gt;", $this->xmlString);
+
 
         // Default config 
         $this->includeLiteralString = false;
@@ -42,6 +42,24 @@ class XmlDocument
         $this->includeXmlId = $config['xmlId'];
         $this->splitSymbols = $config['splitSymbols'];
     }
+
+    // Functions to set single config aspects
+
+    public function setXmlId(bool $xmlId): void
+    {
+        $this->includeXmlId = $xmlId;
+    }
+
+    public function setLiteralString(bool $literal): void
+    {
+        $this->includeLiteralString = $literal;
+    }
+
+    public function setSplitSymbols(array $splitSymbols): void
+    {
+        $this->splitSymbols = $splitSymbols;
+    }
+
 
     public static function from(string $xmlString): XmlDocument
     {
@@ -76,6 +94,9 @@ class XmlDocument
     {
 
         $result = [];
+        $this->currentNode = $node;
+
+        // Parse attributes
         $attrs = Collection::wrap($node->attributes())->filter(function ($attrValue) {
             return !empty (trim((string) $attrValue));
         })->mapWithKeys(function ($attrValue, $attrName) {
@@ -104,7 +125,7 @@ class XmlDocument
         }
 
 
-        // Check if node is a mixed-content element
+        // Check if node is a mixed-content element (if literalString is set to true)
 
         if ($this->includeLiteralString) {
             if ($node->getName() == "p" && $node->count() > 0 && !empty($node)) {
@@ -138,10 +159,12 @@ class XmlDocument
                 $result[$childName] = [];
             }
             $result[$childName][] = $childData;
-
         }
+
 
         return $result;
     }
+
+
 
 }
