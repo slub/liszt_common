@@ -89,11 +89,11 @@ class XmlDocument
         return $result;
     }
 
-    private function convert(SimpleXMLElement $node): array
+    protected function convert(SimpleXMLElement $node): array
     {
 
         $result = [];
-        
+
 
         // Parse attributes
         $attrs = Collection::wrap($node->attributes())->filter(function ($attrValue) {
