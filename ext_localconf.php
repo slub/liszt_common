@@ -17,7 +17,7 @@ ExtensionUtility::configurePlugin(
     ]
 );
 
-// page.tsconfig is already included in pages.php (?)
+// page.tsconfig is auto included with page.tsconfig
 /*ExtensionManagementUtility::addPageTSConfig(
     '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:liszt_common/Configuration/TsConfig/page.tsconfig">'
 );*/

@@ -4,7 +4,7 @@ TCEFORM {
     pages {
         layout {
             addItems {
-                4 = Layout ohne Searchbar
+                4 = Layout mit Searchbar
             }
         }
     }

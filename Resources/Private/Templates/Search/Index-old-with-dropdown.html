@@ -1,0 +1,19 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+    <div class="input-group mb-3">
+        <button class="btn btn-outline-dark dropdown-toggle" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false">Katalogsuche
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">alles</a></li>
+            <f:for each="{settings.SearchBarSelectItems}" as="item">
+                <li><a class="dropdown-item" href="{item.href}">{item.label}</a></li>
+            </f:for>
+        </ul>
+        <input type="text" class="form-control no-shadow" aria-label="Text input with dropdown button"
+               placeholder="">
+        <button class="btn btn-outline-dark" type="button" id="button-searchBar">{f:translate(key: 'searchButtonLabel')}
+        </button>
+    </div>
+
+</html>
