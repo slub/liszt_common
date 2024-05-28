@@ -3,6 +3,6 @@ services:
     autowire: true
     autoconfigure: true
     public: false
-  Slub\LisztCommon\:
-    resource: '../Classes/*'
-    exclude: '../Classes/Domain/Model/*'
+#  Slub\LisztCommon\:
+#    resource: '../Classes/*'
+#    exclude: '../Classes/Domain/Model/*'

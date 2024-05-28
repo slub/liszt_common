@@ -1,30 +1,5 @@
 
-// remove elastic js client etc, because we dont need it in future
-//page.includeJSFooterlibs.Elasticsearch = EXT:liszt_common/Resources/Public/JavaScript/Src/elasticsearch.min.js
-//page.includeJSFooter.UrlManager = EXT:liszt_common/Resources/Public/JavaScript/Src/UrlManager.js
-//page.includeJSFooter.Constants = EXT:liszt_common/Resources/Public/JavaScript/Src/Constants.js
 
-#plugin.tx_liszt_common {
-#    view {
-#        templateRootPaths.0 = EXT:liszt_common/Resources/Private/Templates/
-#        templateRootPaths.1 = {$plugin.tx_liszt_common.view.templateRootPath}
-#        partialRootPaths.0 = EXT:liszt_common/Resources/Private/Partials/
-#        partialRootPaths.1 = {$plugin.tx_liszt_common.view.partialRootPath}
-#        layoutRootPaths.0 = EXT:liszt_common/Resources/Private/Layouts/
-#        layoutRootPaths.1 = {$plugin.tx_liszt_common.view.layoutRootPath}
-#    }
-#    persistence {
-#        storagePid = {$plugin.tx_liszt_common.persistence.storagePid}
-#        recursive = 1
-#    }
-#    features {
-#        skipDefaultArguments = 1
-#        requireCHashArgumentForActionArguments = 0
-#    }
-#    mvc {
-#        callDefaultActionIfActionCantBeResolved = 1
-#    }
-#}
 
 # maybe we need a USER object to run a initialisation?
 
@@ -36,7 +11,8 @@ lib.selectedFrontendLayout.data = levelfield:-1, layout, slide
 
 # copy element in PAGE object to display in fluid template
 # page = PAGE
-page {
+# comment out because we handle the searchbar now in liszt_bibliography
+/*page {
     10 =FLUIDTEMPLATE
     10 {
         variables {
@@ -60,7 +36,7 @@ page {
             selectedFrontendLayout < lib.selectedFrontendLayout
         }
     }
-}
+}*/
 
 
 

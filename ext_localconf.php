@@ -8,16 +8,17 @@ use Slub\LisztCommon\Controller\SearchController;
 
 defined('TYPO3') or die();
 
-# ToDo: create search controller and search actions
-ExtensionUtility::configurePlugin(
+# this is not needed at the moment because we handle the search Bar in liszt_bibliography
+# create search controller and search actions
+/*ExtensionUtility::configurePlugin(
     'LisztCommon',
     'SearchBar',
     [
         SearchController::class => 'index',
     ]
-);
+);*/
 
-// page.tsconfig is auto included with page.tsconfig
+// not needed in Typo v13 because page.tsconfig is auto included with page.tsconfig
 /*ExtensionManagementUtility::addPageTSConfig(
     '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:liszt_common/Configuration/TsConfig/page.tsconfig">'
 );*/

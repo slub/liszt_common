@@ -1,6 +1,6 @@
 # Add layout for editors to hide SearchBar in backend page setup if needed
-
-TCEFORM {
+# Attention: this is not used in the moment because we handle the search bar in liszt_bibliography
+/*TCEFORM {
     pages {
         layout {
             addItems {
@@ -8,7 +8,7 @@ TCEFORM {
             }
         }
     }
-}
+}*/
 
 /*mod.wizards.newContentElement.wizardItems {
     // add the content elementS to the tab "plugins" TODO: can be removed
