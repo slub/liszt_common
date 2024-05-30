@@ -96,7 +96,7 @@ class XmlDocument
 
 
         // Parse attributes
-        $attrs = Collection::wrap($node->attributes())->filter(function ($attrValue) {
+        $attrs = collect($node->attributes())->filter(function ($attrValue) {
             return !empty (trim((string) $attrValue));
         })->mapWithKeys(function ($attrValue, $attrName) {
             return [$attrName => trim((string) $attrValue)];
@@ -135,23 +135,24 @@ class XmlDocument
             }
         }
 
-        // Parse child nodes
-        foreach ($node->children() as $childNode) {
-            $childName = $childNode->getName();
-            $xmlString = $childNode->asXML();
-            $found = false;
-
-            // Deal with split symbols
+        $unsplitedChildNodes = collect($node->children());
+        $toParse = $unsplitedChildNodes->filter(function ($subject) use ($node){
+            //var_dump($subject->getName()); // Debug output for the name
             foreach ($this->splitSymbols as $symbol) {
-                if (str_contains($childName, $symbol)) {
-                    $found = true;
-                    $result["@link"] = strval($childNode->attributes('xml', true)->id);
-                    $this->convertedArray[strval($node->attributes('xml', true)->id)] = $this->convert($childNode);
+                //var_dump($symbol); // Debug output for each symbol
+                if ($subject->getName() == $symbol) {
+                    //var_dump("Match found");
+                    return false;
                 }
             }
-            if ($found) {
-                return $result;
-            }
+            return true;
+        })->toArray();
+
+        var_dump($toParse);
+/**
+        // Parse child nodes
+        foreach ($toParse as $childNode) {
+            $childName = $childNode->getName();
             $childData = $this->convert($childNode);
             // Always parse child nodes as array
             if (!isset($result[$childName])) {
@@ -161,9 +162,7 @@ class XmlDocument
         }
 
 
-        return $result;
+   **/     return $result;
     }
-
-
 
 }
