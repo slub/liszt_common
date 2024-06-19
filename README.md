@@ -28,4 +28,8 @@ You can obtain a Controller with easy access to elasticsearch by inheriting from
       }
 
     }
-        
+
+# Maintainer
+
+If you have any questions or encounter any problems, please do not hesitate to contact me.
+- [Matthias Richter](https://github.com/dikastes)
