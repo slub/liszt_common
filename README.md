@@ -43,8 +43,6 @@ $xmlDocument = XmlDocument::from($xmlString);
 $array = $xmlDocument->toArray();
 $json = $xmlDocument->toJson();
 ```
-=======
-    }
 
 # Maintainer
 
