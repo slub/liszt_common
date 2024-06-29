@@ -3,7 +3,6 @@
 namespace Slub\LisztCommon\Common;
 
 use SimpleXMLElement;
-use Illuminate\Support\Collection;
 
 class XmlDocument
 {
@@ -97,7 +96,7 @@ class XmlDocument
 
         // Parse attributes
         $attrs = collect($node->attributes())->filter(function ($attrValue) {
-            return !empty (trim((string) $attrValue));
+            return !empty(trim((string) $attrValue));
         })->mapWithKeys(function ($attrValue, $attrName) {
             return [$attrName => trim((string) $attrValue)];
         })->toArray();
@@ -108,7 +107,7 @@ class XmlDocument
         }
 
         // Parse value
-        $nodeValue = trim(strval($node));
+        $nodeValue = trim((string) $node);
         if (!empty($nodeValue)) {
             $result['@value'] = $nodeValue;
         }
@@ -136,33 +135,42 @@ class XmlDocument
         }
 
         $unsplitedChildNodes = collect($node->children());
-        $toParse = $unsplitedChildNodes->filter(function ($subject) use ($node){
-            //var_dump($subject->getName()); // Debug output for the name
+        $toParse = $unsplitedChildNodes->filter(function ($subject) use ($node, &$result) {
             foreach ($this->splitSymbols as $symbol) {
-                //var_dump($symbol); // Debug output for each symbol
+
                 if ($subject->getName() == $symbol) {
-                    //var_dump("Match found");
+
+                    $result['@link'] = $this->getXmlId($node);
+                    $result[$this->getXmlId($subject)] = $this->convert($subject);
                     return false;
                 }
             }
             return true;
-        })->toArray();
+        });
 
-        var_dump($toParse);
-/**
-        // Parse child nodes
-        foreach ($toParse as $childNode) {
-            $childName = $childNode->getName();
-            $childData = $this->convert($childNode);
+        $toParse = $toParse->each(function ($subject) use (&$result) {
+            $result = $this->parseChild($subject, $result);
+        });
+
+        return $result;
+    }
+
+    private function parseChild(SimpleXMLElement $child, array $result) {
+        $childName = $child->getName();
+            $childData = $this->convert($child);
             // Always parse child nodes as array
             if (!isset($result[$childName])) {
                 $result[$childName] = [];
             }
             $result[$childName][] = $childData;
-        }
 
+            return $result;
+    }
 
-   **/     return $result;
+    private function getXmlId(SimpleXMLElement $xml)
+    {
+        return strval($xml->attributes('xml', true)->id);
     }
 
 }
+
