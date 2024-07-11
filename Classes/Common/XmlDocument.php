@@ -6,7 +6,6 @@ use SimpleXMLElement;
 
 class XmlDocument
 {
-
     protected string $xmlString;
 
     // Set up configuration vars
@@ -17,16 +16,14 @@ class XmlDocument
     // Private helper vars
     protected array $convertedArray;
 
-
     public function __construct(string $xmlString)
     {
         $this->xmlString = $xmlString;
 
         // Deal with xml-reserved symbols
-        $this->xmlString = str_replace("&", "&amp;", $this->xmlString);
+        $this->xmlString = str_replace('&', '&amp;', $this->xmlString);
 
-
-        // Default config 
+        // Default config
         $this->includeLiteralString = false;
         $this->includeXmlId = true;
         $this->splitSymbols = array();
@@ -62,7 +59,6 @@ class XmlDocument
         return $this;
     }
 
-
     public static function from(string $xmlString): XmlDocument
     {
         return new XmlDocument($xmlString);
@@ -81,7 +77,6 @@ class XmlDocument
         return $this->convertedArray;
     }
 
-
     public function toJson(): array
     {
         $result = [];
@@ -94,9 +89,7 @@ class XmlDocument
 
     protected function convert(SimpleXMLElement $node): array
     {
-
         $result = [];
-
 
         // Parse attributes
         $attrs = collect($node->attributes())->filter(function ($attrValue) {
@@ -118,7 +111,6 @@ class XmlDocument
 
         // Include xml:id attribute
         if ($this->includeXmlId) {
-
             $xmlId = $node->attributes('xml', true)->id;
             $trimmedXmlId = trim(strval($xmlId));
             if (!empty($trimmedXmlId)) {
@@ -126,12 +118,10 @@ class XmlDocument
             }
         }
 
-
         // Check if node is a mixed-content element (if literalString is set to true)
 
         if ($this->includeLiteralString) {
-            if ($node->getName() == "p" && $node->count() > 0 && !empty($node)) {
-
+            if ($node->getName() == 'p' && $node->count() > 0 && !empty($node)) {
                 // Add literal string, to store the node order
                 $literal = str_replace(array("\n", "\r"), '', trim($node->asXML()));
                 $result['@literal'] = $literal;
@@ -140,9 +130,7 @@ class XmlDocument
 
         $toParse = collect($node->children())->filter(function ($subject) use ($node, &$result) {
             foreach ($this->splitSymbols as $symbol) {
-
                 if ($subject->getName() == $symbol) {
-
                     $result['@link'] = $this->getXmlId($node);
                     $result[$this->getXmlId($subject)] = $this->convert($subject);
                     return false;
@@ -158,22 +146,21 @@ class XmlDocument
         return $result;
     }
 
-    private function parseChild(SimpleXMLElement $child, array $result) {
+    private function parseChild(SimpleXMLElement $child, array $result)
+    {
         $childName = $child->getName();
-            $childData = $this->convert($child);
-            // Always parse child nodes as array
-            if (!isset($result[$childName])) {
-                $result[$childName] = [];
-            }
-            $result[$childName][] = $childData;
+        $childData = $this->convert($child);
+        // Always parse child nodes as array
+        if (!isset($result[$childName])) {
+            $result[$childName] = [];
+        }
+        $result[$childName][] = $childData;
 
-            return $result;
+        return $result;
     }
 
     private function getXmlId(SimpleXMLElement $xml)
     {
         return strval($xml->attributes('xml', true)->id);
     }
-
 }
-
