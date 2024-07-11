@@ -138,8 +138,7 @@ class XmlDocument
             }
         }
 
-        $unsplitedChildNodes = collect($node->children());
-        $toParse = $unsplitedChildNodes->filter(function ($subject) use ($node, &$result) {
+        $toParse = collect($node->children())->filter(function ($subject) use ($node, &$result) {
             foreach ($this->splitSymbols as $symbol) {
 
                 if ($subject->getName() == $symbol) {
