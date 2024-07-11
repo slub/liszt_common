@@ -34,7 +34,7 @@ class PublishedItemComposerNameTest extends FunctionalTestCase
         $xmlFilename = 'minimal.xml';
         $handle = fopen(self::PATH . $xmlFilename, 'r');
         $xmlString = fread($handle, filesize(self::PATH . $xmlFilename));
-        $result = implode(" ",XmlDocument::from($xmlString)->toJson());
+        $result = XmlDocument::from($xmlString)->toJson();
 
         $jsonFilename = 'minimal.json';
         $handle = fopen(self::PATH . $jsonFilename, 'r');

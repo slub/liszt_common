@@ -35,7 +35,7 @@ final class XmlDocumentTest extends UnitTestCase
      */
     public function returnsJson(): void
     {
-        self::assertIsArray($this->subject->toJson());
+        self::assertJson($this->subject->toJson());
     }
 
     /**
@@ -53,7 +53,8 @@ final class XmlDocumentTest extends UnitTestCase
 
     public function writeTestFile() {
         $file = fopen("Tests/Testfiles/testout.json","w");
-        fwrite($file,implode($this->subject->toJson()));
+        fwrite($file,$this->subject->setSplitSymbols(["meiHead"])->setXmlId(false)->toJson());
+        
         self::assertFileExists("Tests/Testfiles/testout.json");
     }
 
@@ -61,8 +62,8 @@ final class XmlDocumentTest extends UnitTestCase
     * @test
     **/
 
-    public function testFluidInterfac() {
-        self::assertIsArray($this->subject->setXmlId(true)->toJson());
+    public function testFluidInterface() {
+        self::assertJson($this->subject->setXmlId(true)->toJson());
     }    
 }
 

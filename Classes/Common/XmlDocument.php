@@ -77,14 +77,14 @@ class XmlDocument
         return $this->convertedArray;
     }
 
-    public function toJson(): array
+    public function toJson()
     {
         $result = [];
         $xmlArray = $this->toArray();
         foreach ($xmlArray as $id => $value) {
             $result[$id] = json_encode($value, JSON_PRETTY_PRINT);
         }
-        return $result;
+        return implode($result);
     }
 
     protected function convert(SimpleXMLElement $node): array
@@ -139,7 +139,7 @@ class XmlDocument
             return true;
         });
 
-        $toParse = $toParse->each(function ($subject) use (&$result) {
+        $toParse->each(function ($subject) use (&$result) {
             $result = $this->parseChild($subject, $result);
         });
 
