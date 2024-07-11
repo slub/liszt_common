@@ -77,7 +77,7 @@ class XmlDocument
 
         $this->convertedArray = [];
         $xml = simplexml_load_string($this->xmlString);
-        $this->convertedArray[strval($xml->attributes('xml', true)->id)] = $this->convert($xml);
+        $this->convertedArray[$this->getXmlId($xml)] = $this->convert($xml);
         return $this->convertedArray;
     }
 

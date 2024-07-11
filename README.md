@@ -43,3 +43,8 @@ $xmlDocument = XmlDocument::from($xmlString);
 $array = $xmlDocument->toArray();
 $json = $xmlDocument->toJson();
 ```
+
+# Maintainer
+
+If you have any questions or encounter any problems, please do not hesitate to contact me.
+- [Matthias Richter](https://github.com/dikastes)
