@@ -34,28 +34,32 @@ class XmlDocument
 
     // Set up config, if needed
 
-    public function setConfig(array $config): void
+    public function setConfig(array $config)
     {
         $this->includeLiteralString = $config['literalString'];
         $this->includeXmlId = $config['xmlId'];
         $this->splitSymbols = $config['splitSymbols'];
+        return $this;
     }
 
     // Functions to set single config aspects
 
-    public function setXmlId(bool $xmlId): void
+    public function setXmlId(bool $xmlId)
     {
         $this->includeXmlId = $xmlId;
+        return $this;
     }
 
-    public function setLiteralString(bool $literal): void
+    public function setLiteralString(bool $literal)
     {
         $this->includeLiteralString = $literal;
+        return $this;
     }
 
-    public function setSplitSymbols(array $splitSymbols): void
+    public function setSplitSymbols(array $splitSymbols)
     {
         $this->splitSymbols = $splitSymbols;
+        return $this;
     }
 
 
@@ -96,7 +100,7 @@ class XmlDocument
 
         // Parse attributes
         $attrs = collect($node->attributes())->filter(function ($attrValue) {
-            return !empty(trim((string) $attrValue));
+            return !empty(trim(strval($attrValue)));
         })->mapWithKeys(function ($attrValue, $attrName) {
             return [$attrName => trim((string) $attrValue)];
         })->toArray();

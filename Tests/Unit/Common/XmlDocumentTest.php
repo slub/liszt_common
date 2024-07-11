@@ -17,7 +17,6 @@ final class XmlDocumentTest extends UnitTestCase
     {
         parent::setUp();
 
-
         $this->xmlString = file_get_contents('Tests/Testfiles/meitest2.xml');
         $this->subject = XmlDocument::from($this->xmlString);
 
@@ -49,12 +48,21 @@ final class XmlDocumentTest extends UnitTestCase
     }
 
     /**
-     * @test
-     */
+    * @test
+    **/
 
-    public function xmlStringEqualFile() {
-        self::assertXmlStringEqualsXmlFile('Tests/Testfiles/meitest2.xml',$this->xmlString);
+    public function writeTestFile() {
+        $file = fopen("Tests/Testfiles/testout.json","w");
+        fwrite($file,implode($this->subject->toJson()));
+        self::assertFileExists("Tests/Testfiles/testout.json");
     }
 
+    /**
+    * @test
+    **/
+
+    public function testFluidInterfac() {
+        self::assertIsArray($this->subject->setXmlId(true)->toJson());
+    }    
 }
 
