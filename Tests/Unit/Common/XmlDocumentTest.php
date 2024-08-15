@@ -48,17 +48,6 @@ final class XmlDocumentTest extends UnitTestCase
     /**
      * @test
      */
-    public function writeTestFile()
-    {
-        $file = fopen('Tests/Testfiles/testout.json', 'w');
-        fwrite($file, $this->subject->setSplitSymbols(['meiHead'])->setXmlId(false)->toJson());
-
-        self::assertFileExists('Tests/Testfiles/testout.json');
-    }
-
-    /**
-     * @test
-     */
     public function testFluidInterface()
     {
         self::assertJson($this->subject->setXmlId(true)->toJson());
@@ -69,9 +58,41 @@ final class XmlDocumentTest extends UnitTestCase
      */
     public function testXmlIdIsOmited()
     {
-        $this->subject->setXmlId(false);
-        self::assertFalse(str_contains($this->subject->toJson(), '@xmlId'));
+        self::assertFalse(str_contains($this->subject->setXmlId(false)->toJson(), '@xmlId'));
     }
+
+    /**
+     * @test
+     */
+
+    public function xmlIdIsIncluded()
+    {   
+        self::assertStringContainsString("@xml:id", $this->subject->setXmlId(true)->toJson());
+    }
+
+    /**
+     * @test
+     **/
+
+    public function testMixedContentIsIncluded()
+    {
+        $mixedContentString = '<p> I am <b> mixed </b> content </p>';
+        $subject = XmlDocument::from($mixedContentString);
+        $subject->setLiteralString(true);
+        $expected = '"@literal": "<p> I am <b> mixed <\/b> content <\/p>"';
+        self::assertStringContainsString($expected, $subject->toJson());
+    }
+
+    /**
+     * @test
+     */
+
+    public function testMixedContentIsNotIncluded()
+    {
+        $this->subject->setLiteralString(false);
+        self::assertFalse(str_contains($this->subject->toJson(), "@literal"));
+    }
+
 
     /**
      * @test
@@ -99,4 +120,6 @@ final class XmlDocumentTest extends UnitTestCase
         $expected = '{"@value": "I am plain text"}';
         self::assertSame(json_decode($subject->toJson(), true), json_decode($expected, true));
     }
+
+
 }

@@ -84,7 +84,7 @@ class XmlDocument
         foreach ($xmlArray as $id => $value) {
             $result[$id] = json_encode($value, JSON_PRETTY_PRINT);
         }
-        return implode($result);
+        return trim(implode($result));
     }
 
     protected function convert(SimpleXMLElement $node): array
@@ -124,6 +124,7 @@ class XmlDocument
             if ($node->getName() == 'p' && $node->count() > 0 && !empty($node)) {
                 // Add literal string, to store the node order
                 $literal = str_replace(array("\n", "\r"), '', trim($node->asXML()));
+                $literal = str_replace("<?xml version=\"1.0\"?>",'',$literal);
                 $result['@literal'] = $literal;
             }
         }
