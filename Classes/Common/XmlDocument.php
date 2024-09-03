@@ -124,7 +124,7 @@ class XmlDocument
             if ($node->getName() == 'p' && $node->count() > 0 && !empty($node)) {
                 // Add literal string, to store the node order
                 $literal = str_replace(array("\n", "\r"), '', trim($node->asXML()));
-                $literal = str_replace("<?xml version=\"1.0\"?>",'',$literal);
+                $literal = str_replace("<?xml version=\"1.0\"?>", '', $literal);
                 $result['@literal'] = $literal;
             }
         }
@@ -132,8 +132,8 @@ class XmlDocument
         $toParse = collect($node->children())->filter(function ($subject) use ($node, &$result) {
             foreach ($this->splitSymbols as $symbol) {
                 if ($subject->getName() == $symbol) {
-                    $result['@link'] = $this->getXmlId($node);
-                    $result[$this->getXmlId($subject)] = $this->convert($subject);
+                    $result['@link'] = $this->getXmlId($subject);
+                    $this->convertedArray[$this->getXmlId($subject)] = $this->convert($subject);
                     return false;
                 }
             }

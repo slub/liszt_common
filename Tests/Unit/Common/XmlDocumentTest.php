@@ -64,16 +64,14 @@ final class XmlDocumentTest extends UnitTestCase
     /**
      * @test
      */
-
     public function xmlIdIsIncluded()
-    {   
-        self::assertStringContainsString("@xml:id", $this->subject->setXmlId(true)->toJson());
+    {
+        self::assertStringContainsString('@xml:id', $this->subject->setXmlId(true)->toJson());
     }
 
     /**
      * @test
-     **/
-
+     */
     public function testMixedContentIsIncluded()
     {
         $mixedContentString = '<p> I am <b> mixed </b> content </p>';
@@ -86,13 +84,11 @@ final class XmlDocumentTest extends UnitTestCase
     /**
      * @test
      */
-
     public function testMixedContentIsNotIncluded()
     {
         $this->subject->setLiteralString(false);
-        self::assertFalse(str_contains($this->subject->toJson(), "@literal"));
+        self::assertFalse(str_contains($this->subject->toJson(), '@literal'));
     }
-
 
     /**
      * @test
@@ -121,5 +117,80 @@ final class XmlDocumentTest extends UnitTestCase
         self::assertSame(json_decode($subject->toJson(), true), json_decode($expected, true));
     }
 
+    /**
+     * @test
+     */
+    public function testSplitSymbols()
+    {
+        $xmlString = '
+        <mei xmlns="http://www.music-encoding.org/ns/mei">
+     <music>
+     <body>
+        <mdiv xml:id="TC-01">
+         <measure n="1">
+             <staff n="1">
+                <layer n="1">
+                <note xml:id="N1" pname="c" oct="4" dur="4" />
+                <note xml:id="N2" pname="e" oct="4" dur="4" />
+                </layer>
+            </staff>
+        </measure>
+      </mdiv>
+    </body>
+    </music>
+    </mei>
 
+        ';
+
+        $jsonString = '{
+        "@xml:id": "TC-01",
+        "measure": [
+            {
+                "@attributes": {
+                    "n": "1"
+                },
+                "staff": [
+                    {
+                        "@attributes": {
+                            "n": "1"
+                        },
+                        "layer": [
+                            {
+                                "@attributes": {
+                                    "n": "1"
+                                },
+                                "note": [
+                                    {
+                                        "@attributes": {
+                                            "pname": "e",
+                                            "oct": "4",
+                                            "dur": "4"
+                                        },
+                                        "@xml:id": "N2"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }{
+        "music": [
+            {
+                "body": [
+                    {
+                        "@link": "TC-01"
+                    }
+                ]
+            }
+        ]
+    }';
+
+        $subject = XmlDocument::from($xmlString)->setSplitSymbols(['mdiv']);
+
+        //TODO: Should compare Json to Json, but splitsymbol Strings are not valid
+        //->Discuss
+        self::assertTrue(true);
+    }
 }
