@@ -1,11 +1,1 @@
-{
-    "subroot": [
-        {
-            "subsubroot": [
-                {
-                    "@value": "entry"
-                }
-            ]
-        }
-    ]
-}
+{"minimal_root":{"@xml:id":"minimal_root","subroot":[{"subsubroot":[{"@value":"entry"}]}]}}

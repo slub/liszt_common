@@ -81,10 +81,17 @@ class XmlDocument
     {
         $result = [];
         $xmlArray = $this->toArray();
+
+        /*
+         * Convert every key value pair to valid json,
+         * then decode it, so it stays valid when the whole
+         * array is encoded
+         */
         foreach ($xmlArray as $id => $value) {
-            $result[$id] = json_encode($value, JSON_PRETTY_PRINT);
+            $result[$id] = json_encode($value);
+            $result[$id] = json_decode($result[$id], true);
         }
-        return trim(implode($result));
+        return trim(json_encode($result));
     }
 
     protected function convert(SimpleXMLElement $node): array
@@ -124,7 +131,7 @@ class XmlDocument
             if ($node->getName() == 'p' && $node->count() > 0 && !empty($node)) {
                 // Add literal string, to store the node order
                 $literal = str_replace(array("\n", "\r"), '', trim($node->asXML()));
-                $literal = str_replace("<?xml version=\"1.0\"?>", '', $literal);
+                $literal = str_replace('<?xml version="1.0"?>', '', $literal);
                 $result['@literal'] = $literal;
             }
         }

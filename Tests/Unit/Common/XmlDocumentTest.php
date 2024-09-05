@@ -74,10 +74,10 @@ final class XmlDocumentTest extends UnitTestCase
      */
     public function testMixedContentIsIncluded()
     {
-        $mixedContentString = '<p> I am <b> mixed </b> content </p>';
+        $mixedContentString = '<mei xml:id="mei_head"> <p> I am <b> mixed </b> content </p> </mei>';
         $subject = XmlDocument::from($mixedContentString);
         $subject->setLiteralString(true);
-        $expected = '"@literal": "<p> I am <b> mixed <\/b> content <\/p>"';
+        $expected = '"@literal":"<p> I am <b> mixed <\/b> content <\/p>"';
         self::assertStringContainsString($expected, $subject->toJson());
     }
 
@@ -95,16 +95,11 @@ final class XmlDocumentTest extends UnitTestCase
      */
     public function testConvertedAttribute()
     {
-        $subject = XmlDocument::from('<item id="1" name="ExampleItem" />');
+        $subject = XmlDocument::from('<item id="1" xml:id="item_test" name="ExampleItem" />');
 
-        $expected = '{
-        "@attributes": {
-            "id": "1",
-            "name": "ExampleItem"
-        }
-    }';
+        $expected = '{"item_test":{"@attributes":{"id":"1","name":"ExampleItem"},"@xml:id":"item_test"}}';
 
-        self::assertSame(json_decode($expected, true), json_decode($subject->toJson(), true));
+        self::assertSame($expected, $subject->toJson());
     }
 
     /**
@@ -112,9 +107,13 @@ final class XmlDocumentTest extends UnitTestCase
      */
     public function testPlainText()
     {
-        $subject = XmlDocument::from('<p>I am plain text</p>');
-        $expected = '{"@value": "I am plain text"}';
-        self::assertSame(json_decode($subject->toJson(), true), json_decode($expected, true));
+        $subject = XmlDocument::from('<p xml:id="testid">I am plain text</p>');
+        $expected = '{"testid": {
+                    "@value": "I am plain text",
+                    "@xml:id": "testid" }
+                }';
+
+        self::assertJsonStringEqualsJsonString($expected, $subject->toJson());
     }
 
     /**
@@ -123,7 +122,7 @@ final class XmlDocumentTest extends UnitTestCase
     public function testSplitSymbols()
     {
         $xmlString = '
-        <mei xmlns="http://www.music-encoding.org/ns/mei">
+        <mei xml:id="mei_head" xmlns="http://www.music-encoding.org/ns/mei">
      <music>
      <body>
         <mdiv xml:id="TC-01">
@@ -142,61 +141,10 @@ final class XmlDocumentTest extends UnitTestCase
 
         ';
 
-        $jsonString = '{
-        "@xml:id": "TC-01",
-        "measure": [
-            {
-                "@attributes": {
-                    "n": "1"
-                },
-                "staff": [
-                    {
-                        "@attributes": {
-                            "n": "1"
-                        },
-                        "layer": [
-                            {
-                                "@attributes": {
-                                    "n": "1"
-                                },
-                                "note": [
-                                    {
-                                        "@attributes": {
-                                            "pname": "e",
-                                            "oct": "4",
-                                            "dur": "4"
-                                        },
-                                        "@xml:id": "N2"
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
-    }{
-        "music": [
-            {
-                "body": [
-                    {
-                        "@link": "TC-01"
-                    }
-                ]
-            }
-        ]
-    }';
+        $expected = '{"TC-01":{"@xml:id":"TC-01","measure":[{"@attributes":{"n":"1"},"staff":[{"@attributes":{"n":"1"},"layer":[{"@attributes":{"n":"1"},"note":[{"@attributes":{"pname":"e","oct":"4","dur":"4"},"@xml:id":"N2"}]}]}]}]},"mei_head":{"@xml:id":"mei_head","music":[{"body":[{"@link":"TC-01"}]}]}}';
 
         $subject = XmlDocument::from($xmlString)->setSplitSymbols(['mdiv']);
 
-        //TODO: Should compare Json to Json, but splitsymbol Strings are not valid
-        //->Discuss
-        self::assertEquals(trim($this->processString($jsonString)),trim($this->processString($subject->toJson())));
-    }
-    
-    private function processString(String $str) {
-
-        return str_replace(array("\n"," "),'',$str);
-
+        self::assertJsonStringEqualsJsonString($expected, $subject->toJson());
     }
 }
