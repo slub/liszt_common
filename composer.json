@@ -6,9 +6,9 @@
         "GPL-2.0-or-later"
     ],
     "require": {
-        "typo3/cms-core": "^11",
+        "typo3/cms-core": "^12",
         "elasticsearch/elasticsearch": "^7",
-        "illuminate/collections": "^8"
+        "illuminate/collections": "^9"
     },
     "require-dev": {
         "phpstan/phpstan": "^1",
