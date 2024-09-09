@@ -6,3 +6,4 @@ public/
 typo3temp/
 vendor/
 composer.lock
+Tests/Testfiles/*.json
