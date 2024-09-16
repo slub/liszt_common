@@ -7,7 +7,7 @@
     ],
     "require": {
         "typo3/cms-core": "^12",
-        "elasticsearch/elasticsearch": "^7",
+        "elasticsearch/elasticsearch": "^8",
         "illuminate/collections": "^11"
     },
     "require-dev": {
@@ -42,7 +42,8 @@
     "config": {
         "allow-plugins": {
             "typo3/class-alias-loader": true,
-            "typo3/cms-composer-installers": true
+            "typo3/cms-composer-installers": true,
+            "php-http/discovery": true
         },
         "vendor-dir": "vendor",
         "bin-dir": "bin"
