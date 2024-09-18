@@ -1,0 +1,1553 @@
+<mei xmlns="http://www.music-encoding.org/ns/mei" meiversion="4.0.0" xml:id="mei_5c421a09">
+<meiHead xml:id="meiHead_b1c4d4ec">
+<fileDesc xml:id="fileDesc_389c6a9d">
+<titleStmt xml:id="titleStmt_651f478f">
+<title xml:id="title_ba2490c6"/>
+</titleStmt>
+<pubStmt xml:id="pubStmt_e372bebd">
+<respStmt xml:id="respStmt_1f31a778">
+<resp xml:id="resp_43508e00">Publisher</resp>
+<corpName role="" xml:id="corpName_cabbbd13">
+<abbr xml:id="abbr_c582e045"/>
+<expan xml:id="expan_98e5bbca"/>
+<address xml:id="address_a509ae1c">
+<addrLine xml:id="addrLine_e45a19dc"/>
+<addrLine xml:id="addrLine_66dcc386">
+<ptr xml:id="ptr_d6e15"/>
+</addrLine>
+</address>
+</corpName>
+<persName role="editor" xml:id="persName_448c5973"/>
+</respStmt>
+<date xml:id="date_1a6ef98a"/>
+<availability xml:id="availability_ad5f89a7">
+<useRestrict xml:id="useRestrict_2b3d0fbb"/>
+</availability>
+</pubStmt>
+<seriesStmt xml:id="seriesStmt_af29c337">
+<title xml:id="title_c96f74aa"/>
+<identifier type="file_collection" xml:id="identifier_779a4bd0"/>
+</seriesStmt>
+</fileDesc>
+<encodingDesc xml:id="encodingDesc_27f37d4a">
+<appInfo xml:id="appInfo_61a00e9d">
+<application version="2019" xml:id="application_63695818">
+<name xml:id="name_15d8718a">MerMEId</name>
+</application>
+</appInfo>
+<projectDesc xml:id="projectDesc_9e045ab0"/>
+<classDecls xml:id="classDecls_1fc0777c">
+<taxonomy xml:id="DcmSourceClassification">
+<category xml:id="DcmContentClass"/>
+<category xml:id="DcmPresentationClass"/>
+<category xml:id="DcmAuthorityClass"/>
+<category xml:id="DcmScoringClass"/>
+<category xml:id="DcmStateClass"/>
+<category xml:id="DcmCompletenessClass"/>
+</taxonomy>
+</classDecls>
+</encodingDesc>
+<workList xml:id="workList_d0ea7b43">
+<work xml:id="work_95d4e38">
+<identifier label="LisztQWV" xml:id="identifier_a818ce07">xyz</identifier>
+<title xml:lang="de" xml:id="title_0f87aa14">Die Zelle in Nonnenwerth</title>
+<contributor xml:id="contributor_33ccd15a">
+<persName role="composer" cert="high" auth="GND" auth.uri="http://d-nb.info/gnd" codedval="118573527" xml:id="persName_153f9540">Franz Liszt</persName>
+<persName role="lyricist" xml:id="persName_7aa0faf1" cert="high" auth="GND" auth.uri="http://d-nb.info/gnd" codedval="119002043">Lichnowsky, Felix Maria Vincenz Andreas von</persName>
+<persName role="dedicatee" xml:id="persName_a2659a34" cert="high" auth="GND" auth.uri="http://d-nb.info/gnd" codedval="116539747">Genast, Emilie</persName>
+<corpName role="" xml:id="corpName_bed3e62a"/>
+</contributor>
+<creation xml:id="creation_823aef7e">
+<date xml:id="date_0db717f6"/>
+<geogName role="" xml:id="geogName_66633fc5"/>
+</creation>
+<history xml:id="history_60aefa84"/>
+<langUsage xml:id="langUsage_11221ac3">
+<language xml:id="en">English</language>
+</langUsage>
+<notesStmt xml:id="notesStmt_b17624be">
+<annot type="links" xml:id="annot_4f6a820e">
+<ptr mimetype="" xml:id="ptr_d6e132"/>
+</annot>
+<annot type="general_description" xml:id="annot_3bd3ce42">
+<p>Werkinformationen im Überblick</p>
+</annot>
+</notesStmt>
+<classification xml:id="classification_9152648d">
+<termList xml:id="termList_fc2c33d8">
+<term xml:id="term_ee3a09cb">Lied</term>
+<term xml:id="term_23879d9f">Chamber music</term>
+<term xml:id="term_d6cb8eb9">Music for one instrument</term>
+</termList>
+</classification>
+<expressionList xml:id="expressionList_496b6931">
+<expression xml:id="expression_ebdd9601">
+<identifier label="R" xml:id="identifier_90fa7677">618a</identifier>
+<identifier label="S" xml:id="identifier_4f935ad4">274/1</identifier>
+<identifier label="E/M" xml:id="identifier_f7ec1464">N6</identifier>
+<title xml:lang="de" xml:id="title_95a5215f">Lied, Version 1, deutsch (1841-42, Druck 1843)</title>
+<incip xml:id="incip_8771bf8b">
+<incipText xml:id="incipText_cd2c5c3a">
+<p xml:lang="de" xml:id="p_2563d2bc">Ach! nun taucht die Klosterzelle</p>
+</incipText>
+</incip>
+<tempo xml:id="tempo_9851a89a">Andantino</tempo>
+<creation xml:id="creation_a5287e8c">
+<date startdate="1855" enddate="1865" xml:id="date_7a97d676">ca. 1860</date>
+<geogName role="" xml:id="geogName_c61743b5"/>
+</creation>
+<history xml:id="history_8de5125a"/>
+<perfMedium xmlns:xl="http://www.w3.org/1999/xlink" xmlns:xs="http://www.w3.org/2001/XMLSchema" xml:id="perfMedium_64dd6e22">
+<perfResList xml:id="perfResList_d27e7018">
+<perfRes codedval="vn" count="1" solo="true" auth="MARC" auth.uri="https://www.loc.gov/standards/valuelist/marcmusperf.html" xml:lang="en" xml:id="perfRes_f928e2a6">Singst</perfRes>
+<perfRes codedval="ka" count="1" solo="true" auth="MARC" auth.uri="https://www.loc.gov/standards/valuelist/marcmusperf.html" xml:lang="it" xml:id="perfRes_9c77c9a8">Kl</perfRes>
+</perfResList>
+</perfMedium>
+<classification xml:id="classification_052311db">
+<termList xml:id="termList_465d63eb">
+<term xml:id="term_dfe6314c"/>
+</termList>
+</classification>
+<componentList xml:id="componentList_7796393e"/>
+</expression>
+<expression xml:id="expression_ec7b7adf">
+<identifier label="R" xml:id="identifier_18ee9ec8">618c</identifier>
+<identifier label="S" xml:id="identifier_01fbf22d">274/2</identifier>
+<identifier label="E/M" xml:id="identifier_09ba7dfd">N6</identifier>
+<title xml:lang="de" xml:id="title_5509e68d">Lied, Version 2, deutsch (1858)</title>
+<incip xml:id="incip_9b02e557">
+<incipText xml:id="incipText_60e3104f">
+<p xml:lang="de" xml:id="p_24a51493">Ach! nun taucht die Klosterzelle</p>
+</incipText>
+</incip>
+<tempo xml:id="tempo_89c6a8c4">Andantino</tempo>
+<creation xml:id="creation_79ea82dd">
+<date startdate="1855" enddate="1865" xml:id="date_2e1ccb5f">ca. 1860</date>
+<geogName role="" xml:id="geogName_3b8849eb"/>
+</creation>
+<history xml:id="history_2504915d"/>
+<perfMedium xmlns:xl="http://www.w3.org/1999/xlink" xmlns:xs="http://www.w3.org/2001/XMLSchema" xml:id="perfMedium_4c7b0e9c">
+<perfResList xml:id="perfResList_fb90eb8f">
+<perfRes codedval="vn" count="1" solo="true" auth="MARC" auth.uri="https://www.loc.gov/standards/valuelist/marcmusperf.html" xml:lang="en" xml:id="perfRes_4a81fc68">Singst</perfRes>
+<perfRes codedval="ka" count="1" solo="true" auth="MARC" auth.uri="https://www.loc.gov/standards/valuelist/marcmusperf.html" xml:lang="it" xml:id="perfRes_3bae5994">Kl</perfRes>
+</perfResList>
+</perfMedium>
+<classification xml:id="classification_f97a196e">
+<termList xml:id="termList_c3bb7da1">
+<term xml:id="term_bd94dfb7"/>
+</termList>
+</classification>
+<componentList xml:id="componentList_bde74bb9"/>
+<relationList xml:id="relationList_0688596f"/>
+</expression>
+<expression xml:id="expression_e284b3f4">
+<identifier label="R" xml:id="identifier_df2e8aa0">618b,c</identifier>
+<identifier label="S" xml:id="identifier_669b5310">274/2</identifier>
+<identifier label="E/M" xml:id="identifier_93049a72">N6</identifier>
+<title xml:lang="de" xml:id="title_3414d135">Lied, Version 3, deutsch (1860)</title>
+<incip xml:id="incip_071c8638">
+<incipText xml:id="incipText_bf06faf0">
+<p xml:lang="de" xml:id="p_f866a286">Ach! nun taucht die Klosterzelle</p>
+</incipText>
+</incip>
+<tempo xml:id="tempo_6b8b3207">Andantino</tempo>
+<creation xml:id="creation_12a277fe">
+<date startdate="1855" enddate="1865" xml:id="date_b921962a">ca. 1860</date>
+<geogName role="" xml:id="geogName_1e51d9f4"/>
+</creation>
+<history xml:id="history_76ecd88d"/>
+<perfMedium xmlns:xl="http://www.w3.org/1999/xlink" xmlns:xs="http://www.w3.org/2001/XMLSchema" xml:id="perfMedium_e7d2bd54">
+<perfResList xml:id="perfResList_8d81d1b7">
+<perfRes codedval="vn" count="1" solo="true" auth="MARC" auth.uri="https://www.loc.gov/standards/valuelist/marcmusperf.html" xml:lang="en" xml:id="perfRes_1ca5281b">Singst</perfRes>
+<perfRes codedval="ka" count="1" solo="true" auth="MARC" auth.uri="https://www.loc.gov/standards/valuelist/marcmusperf.html" xml:lang="it" xml:id="perfRes_0ba967ce">Kl</perfRes>
+</perfResList>
+</perfMedium>
+<classification xml:id="classification_8cb708af">
+<termList xml:id="termList_9d3af674">
+<term xml:id="term_c65d97ca"/>
+</termList>
+</classification>
+<componentList xml:id="componentList_54d45e5b"/>
+<relationList xml:id="relationList_ce049f7b"/>
+</expression>
+<expression xml:id="expression_992a8947">
+<identifier label="R" xml:id="identifier_d49f4efb">618b</identifier>
+<identifier label="S" xml:id="identifier_3000873f">301/b1</identifier>
+<identifier label="E/M" xml:id="identifier_4be6004b">N6</identifier>
+<title xml:lang="de" xml:id="title_165d7d97">Lied, Version 1, französisch (1844)</title>
+<incip xml:id="incip_030d9768">
+<incipText xml:id="incipText_e6d39ebc">
+<p xml:lang="fr" xml:id="p_26da0201">En ces lieux tout me parle d'elle</p>
+</incipText>
+</incip>
+<tempo xml:id="tempo_87a37753">Andantino</tempo>
+<creation xml:id="creation_0f0d26a9">
+<date startdate="1855" enddate="1865" xml:id="date_c26add5a">ca. 1860</date>
+<geogName role="" xml:id="geogName_3d4197d3"/>
+</creation>
+<history xml:id="history_783c3940"/>
+<perfMedium xmlns:xl="http://www.w3.org/1999/xlink" xmlns:xs="http://www.w3.org/2001/XMLSchema" xml:id="perfMedium_5cb55e2b">
+<perfResList xml:id="perfResList_105cfa3d">
+<perfRes codedval="vn" count="1" solo="true" auth="MARC" auth.uri="https://www.loc.gov/standards/valuelist/marcmusperf.html" xml:lang="en" xml:id="perfRes_f7b8e920">Singst</perfRes>
+<perfRes codedval="ka" count="1" solo="true" auth="MARC" auth.uri="https://www.loc.gov/standards/valuelist/marcmusperf.html" xml:lang="it" xml:id="perfRes_12a9df9f">Kl</perfRes>
+</perfResList>
+</perfMedium>
+<classification xml:id="classification_67dc29cd">
+<termList xml:id="termList_ce50263f">
+<term xml:id="term_d4c21bac"/>
+</termList>
+</classification>
+<componentList xml:id="componentList_834e4061"/>
+<relationList xml:id="relationList_13e30eb4"/>
+</expression>
+<expression xml:id="expression_95d4e55">
+<identifier label="R" xml:id="identifier_0b662fd8">618c</identifier>
+<identifier label="S" xml:id="identifier_3e214a15">301/b2</identifier>
+<identifier label="E/M" xml:id="identifier_8b0b783e">N6</identifier>
+<title xml:lang="de" xml:id="title_16503c8d">Lied, Version 2, französisch (1845?)</title>
+<incip xml:id="incip_bb391962">
+<incipText xml:id="incipText_db6f7874">
+<p xml:lang="fr" xml:id="p_c0c712ed">En ces lieux tout me parle d'elle</p>
+</incipText>
+</incip>
+<tempo xml:id="tempo_fade6762">Andantino</tempo>
+<creation xml:id="creation_1b8f4bce">
+<date xml:id="date_93378af8" startdate="1855" enddate="1865">ca. 1860</date>
+<geogName role="" xml:id="geogName_8837beb2"/>
+</creation>
+<history xml:id="history_e0d10402"/>
+<perfMedium xmlns:xl="http://www.w3.org/1999/xlink" xmlns:xs="http://www.w3.org/2001/XMLSchema" xml:id="perfMedium_1509442d">
+<perfResList xml:id="perfResList_95d4e66">
+<perfRes codedval="vn" count="1" solo="true" auth="MARC" auth.uri="https://www.loc.gov/standards/valuelist/marcmusperf.html" xml:id="perfRes_d2989c51" xml:lang="en">Singst</perfRes>
+<perfRes codedval="ka" count="1" solo="true" auth="MARC" auth.uri="https://www.loc.gov/standards/valuelist/marcmusperf.html" xml:id="perfRes_9a1c9ecf" xml:lang="it">Kl</perfRes>
+</perfResList>
+</perfMedium>
+<classification xml:id="classification_25a5264e">
+<termList xml:id="termList_de9b15b4">
+<term xml:id="term_69c75f4b"/>
+</termList>
+</classification>
+<componentList xml:id="componentList_2ec3be1b"/>
+<relationList xml:id="relationList_885504af"/>
+</expression>
+<expression xml:id="expression_d50ab866">
+<identifier label="R" xml:id="identifier_6e853c1c">-</identifier>
+<identifier label="S" xml:id="identifier_bf436b34">534</identifier>
+<identifier label="E/M" xml:id="identifier_c193f9ce">A81a</identifier>
+<title xml:lang="de" xml:id="title_6864aea6">Kl, Version 1, Elegie (1842)</title>
+<incip xml:id="incip_18eb4694"/>
+<tempo xml:id="tempo_a7791193">Andantino</tempo>
+<creation xml:id="creation_4b917d45">
+<date startdate="1880" enddate="1886" xml:id="date_58f53151">ca. 1883</date>
+<geogName role="" xml:id="geogName_b1f21238"/>
+</creation>
+<history xml:id="history_ac8d34f0">
+<eventList type="history" xml:id="eventList_908e8527">
+<event xml:id="event_2cb46515">
+<desc xml:id="desc_7f96d7ca"/>
+<date xml:id="date_bbd7604e"/>
+</event>
+</eventList>
+</history>
+<perfMedium xmlns:xl="http://www.w3.org/1999/xlink" xmlns:xs="http://www.w3.org/2001/XMLSchema" xml:id="perfMedium_7011719c">
+<perfResList xml:id="perfResList_9ffe5d41">
+<perfRes codedval="ka" count="1" solo="false" auth="MARC" auth.uri="https://www.loc.gov/standards/valuelist/marcmusperf.html" xml:lang="it" xml:id="perfRes_6b16b865">Kl</perfRes>
+</perfResList>
+</perfMedium>
+<classification xml:id="classification_eff3ac4d">
+<termList xml:id="termList_154894f8">
+<term xml:id="term_ce214ef2"/>
+</termList>
+</classification>
+<componentList xml:id="componentList_e64f7d87"/>
+<relationList xml:id="relationList_07bccfa2"/>
+</expression>
+<expression xml:id="expression_f0a9bb34">
+<identifier label="R" xml:id="identifier_11c826ab">213</identifier>
+<identifier label="S" xml:id="identifier_803d8f2d">[274/1]</identifier>
+<identifier label="E/M" xml:id="identifier_174b6f17">A81b</identifier>
+<title xml:lang="de" xml:id="title_1e184b70">Kl, Version 2, Elegie für Pianoforte (1843/44)</title>
+<incip xml:id="incip_f752c613"/>
+<tempo xml:id="tempo_ffc53446">Andantino</tempo>
+<creation xml:id="creation_be6eb5f3">
+<date startdate="1880" enddate="1886" xml:id="date_69c0bff8">ca. 1883</date>
+<geogName role="" xml:id="geogName_da0f28e7"/>
+</creation>
+<history xml:id="history_62d6831e">
+<eventList type="history" xml:id="eventList_01372f73">
+<event xml:id="event_3545b957">
+<desc xml:id="desc_cda6fdb5"/>
+<date xml:id="date_96884808"/>
+</event>
+</eventList>
+</history>
+<perfMedium xmlns:xl="http://www.w3.org/1999/xlink" xmlns:xs="http://www.w3.org/2001/XMLSchema" xml:id="perfMedium_e5990436">
+<perfResList xml:id="perfResList_f5d222f1">
+<perfRes codedval="ka" count="1" solo="false" auth="MARC" auth.uri="https://www.loc.gov/standards/valuelist/marcmusperf.html" xml:lang="it" xml:id="perfRes_000e9c32">Kl</perfRes>
+</perfResList>
+</perfMedium>
+<classification xml:id="classification_cc26ffa4">
+<termList xml:id="termList_0f06f7e8">
+<term xml:id="term_9c500c7b"/>
+</termList>
+</classification>
+<componentList xml:id="componentList_ed88e95a"/>
+<relationList xml:id="relationList_78109807"/>
+</expression>
+<expression xml:id="expression_34c87bbd">
+<identifier label="R" xml:id="identifier_aa2d7a4c">64/2</identifier>
+<identifier label="S" xml:id="identifier_d920148f">167</identifier>
+<identifier label="E/M" xml:id="identifier_ccfe8d8b">A81c</identifier>
+<title xml:lang="de" xml:id="title_92ea331f">Kl, Version 3, Feuilles d'Album Nr. 2 (1849)</title>
+<incip xml:id="incip_1f2902cb"/>
+<tempo xml:id="tempo_096395ca">Andantino</tempo>
+<creation xml:id="creation_510d637b">
+<date startdate="1880" enddate="1886" xml:id="date_081cd9bf">ca. 1883</date>
+<geogName role="" xml:id="geogName_548b1a69"/>
+</creation>
+<history xml:id="history_f1b04f6e">
+<eventList type="history" xml:id="eventList_dea5e0fb">
+<event xml:id="event_56c110e5">
+<desc xml:id="desc_5b42537c"/>
+<date xml:id="date_0dc9c6fe"/>
+</event>
+</eventList>
+</history>
+<perfMedium xmlns:xl="http://www.w3.org/1999/xlink" xmlns:xs="http://www.w3.org/2001/XMLSchema" xml:id="perfMedium_e54cc355">
+<perfResList xml:id="perfResList_a246c41b">
+<perfRes codedval="ka" count="1" solo="false" auth="MARC" auth.uri="https://www.loc.gov/standards/valuelist/marcmusperf.html" xml:lang="it" xml:id="perfRes_5d391e12">Kl</perfRes>
+</perfResList>
+</perfMedium>
+<classification xml:id="classification_9503b204">
+<termList xml:id="termList_71683df3">
+<term xml:id="term_e463b63c"/>
+</termList>
+</classification>
+<componentList xml:id="componentList_fe38c95c"/>
+<relationList xml:id="relationList_11901a7b"/>
+</expression>
+<expression xml:id="expression_4aea97b8">
+<identifier label="R" xml:id="identifier_f5921764">213</identifier>
+<identifier label="S" xml:id="identifier_4872a666">534</identifier>
+<identifier label="E/M" xml:id="identifier_c699e42b">A81d</identifier>
+<title xml:lang="de" xml:id="title_e25ed1fc">Kl, Version 4, Elegie (1880?)</title>
+<incip xml:id="incip_75edfcce"/>
+<tempo xml:id="tempo_b1effb99">Andantino</tempo>
+<creation xml:id="creation_a46a0c19">
+<date startdate="1880" enddate="1886" xml:id="date_278f26cd">ca. 1883</date>
+<geogName role="" xml:id="geogName_cf16d14d"/>
+</creation>
+<history xml:id="history_a8946700">
+<eventList type="history" xml:id="eventList_aea91306">
+<event xml:id="event_92180262">
+<desc xml:id="desc_7be05763"/>
+<date xml:id="date_f8216ba1"/>
+</event>
+</eventList>
+</history>
+<perfMedium xmlns:xl="http://www.w3.org/1999/xlink" xmlns:xs="http://www.w3.org/2001/XMLSchema" xml:id="perfMedium_ecbd711c">
+<perfResList xml:id="perfResList_be0b59ec">
+<perfRes codedval="ka" count="1" solo="false" auth="MARC" auth.uri="https://www.loc.gov/standards/valuelist/marcmusperf.html" xml:lang="it" xml:id="perfRes_f1943c03">Kl</perfRes>
+</perfResList>
+</perfMedium>
+<classification xml:id="classification_7807b1cf">
+<termList xml:id="termList_f1a3fd40">
+<term xml:id="term_976cd6ca"/>
+</termList>
+</classification>
+<componentList xml:id="componentList_6bba75e5"/>
+<relationList xml:id="relationList_d303c5dd"/>
+</expression>
+<expression xml:id="expression_bed0ae06">
+<identifier label="S" xml:id="identifier_696d3f6f">166g</identifier>
+<title xml:lang="de" xml:id="title_6e37d3c4">Kl, Albumblatt, Sérénade (ca. 1840-1849)</title>
+<incip xml:id="incip_65bad0c5"/>
+<creation xml:id="creation_4ba8703b">
+<date startdate="1880" enddate="1886" xml:id="date_11a7a4ed">ca. 1883</date>
+<geogName role="" xml:id="geogName_590f0412"/>
+</creation>
+<history xml:id="history_81a28666">
+<eventList type="history" xml:id="eventList_b310f825">
+<event xml:id="event_7a36845d">
+<desc xml:id="desc_0babc688"/>
+<date xml:id="date_0044a73c"/>
+</event>
+</eventList>
+</history>
+<perfMedium xmlns:xl="http://www.w3.org/1999/xlink" xmlns:xs="http://www.w3.org/2001/XMLSchema" xml:id="perfMedium_6319668d">
+<perfResList xml:id="perfResList_e1137b01">
+<perfRes codedval="ka" count="1" solo="false" auth="MARC" auth.uri="https://www.loc.gov/standards/valuelist/marcmusperf.html" xml:lang="it" xml:id="perfRes_630b201d">Kl</perfRes>
+</perfResList>
+</perfMedium>
+<classification xml:id="classification_4a4b6f3a">
+<termList xml:id="termList_7f34067c">
+<term xml:id="term_0c644e2c"/>
+</termList>
+</classification>
+<componentList xml:id="componentList_67a18a5b"/>
+<relationList xml:id="relationList_eb4ba02f"/>
+</expression>
+<expression xml:id="expression_c1dd8547">
+<identifier label="R" xml:id="identifier_ef268be0">463</identifier>
+<identifier label="S" xml:id="identifier_950ee41c">382</identifier>
+<identifier label="E/M" xml:id="identifier_4c0430da">D21</identifier>
+<title xml:lang="de" xml:id="title_bf7729e8">Vl/Vlc und Kl</title>
+<incip xml:id="incip_ccf6dd5b"/>
+<tempo xml:id="tempo_1c964c6f">Andantino</tempo>
+<creation xml:id="creation_1e06ab6b">
+<date startdate="1880" enddate="1886" xml:id="date_a4b01073">ca. 1883</date>
+<geogName role="" xml:id="geogName_d20affd5"/>
+</creation>
+<history xml:id="history_b113e0af">
+<eventList type="history" xml:id="eventList_856e33ec">
+<event xml:id="event_0ba63d24">
+<desc xml:id="desc_a81365a6"/>
+<date xml:id="date_a6478155"/>
+</event>
+</eventList>
+</history>
+<perfMedium xmlns:xl="http://www.w3.org/1999/xlink" xmlns:xs="http://www.w3.org/2001/XMLSchema" xml:id="perfMedium_865053be">
+<perfResList xml:id="perfResList_7d38ea62">
+<perfRes codedval="sa" count="1" solo="false" auth="MARC" auth.uri="https://www.loc.gov/standards/valuelist/marcmusperf.html" xml:lang="it" xml:id="perfRes_de88f0c9">Vl (Vc)</perfRes>
+<perfRes codedval="ka" count="1" solo="false" auth="MARC" auth.uri="https://www.loc.gov/standards/valuelist/marcmusperf.html" xml:lang="it" xml:id="perfRes_51f7b262">Kl</perfRes>
+</perfResList>
+</perfMedium>
+<classification xml:id="classification_b2a66629">
+<termList xml:id="termList_6a949b21">
+<term xml:id="term_6f385871"/>
+</termList>
+</classification>
+<componentList xml:id="componentList_30bddb3a"/>
+<relationList xml:id="relationList_e8cfb891"/>
+</expression>
+<expression xml:id="expression_534c3bca">
+<identifier label="R" xml:id="identifier_34fa4049">213</identifier>
+<identifier label="S" xml:id="identifier_68ee3807">534</identifier>
+<title xml:lang="de" xml:id="title_75f0a643">Fassung Kl, Nr. 4</title>
+<incip xml:id="incip_f21cce30"/>
+<tempo xml:id="tempo_58e9d5e8">Andantino</tempo>
+<creation xml:id="creation_7e253b77">
+<date xml:id="date_7707ad79" startdate="1880" enddate="1886">ca. 1883</date>
+<geogName role="" xml:id="geogName_208e9f5b"/>
+</creation>
+<history xml:id="history_9bb6d3bf">
+<eventList type="history" xml:id="eventList_4863c53f">
+<event xml:id="event_2474c2da">
+<desc xml:id="desc_f0b005a0"/>
+<date xml:id="date_9ffde130"/>
+</event>
+</eventList>
+</history>
+<perfMedium xmlns:xl="http://www.w3.org/1999/xlink" xmlns:xs="http://www.w3.org/2001/XMLSchema" xml:id="perfMedium_f59e0800">
+<perfResList xml:id="perfResList_5ce03a04">
+<perfRes codedval="ka" count="1" solo="false" auth="MARC" auth.uri="https://www.loc.gov/standards/valuelist/marcmusperf.html" xml:id="perfRes_ea2791ec" xml:lang="it">Kl</perfRes>
+</perfResList>
+</perfMedium>
+<classification xml:id="classification_d301595a">
+<termList xml:id="termList_c947b2e5">
+<term xml:id="term_cc533770"/>
+</termList>
+</classification>
+<componentList xml:id="componentList_d0e2ba14"/>
+<relationList xml:id="relationList_b0e212e3"/>
+</expression>
+</expressionList>
+</work>
+</workList>
+<manifestationList xml:id="manifestationList_576b5e2e">
+<manifestation xml:id="manifestation_95d4e73">
+<identifier xml:id="identifier_0fcde23c" label="RISM">1001248531</identifier>
+<titleStmt xml:id="titleStmt_3f5f2dd2">
+<title xml:id="title_561f9056">Arbeitsmanuskript Singstimme und Klavier</title>
+<respStmt xml:id="respStmt_1bfa8e23">
+<persName role="" xml:id="persName_23ed1dae"/>
+<corpName role="" xml:id="corpName_11b3a13e"/>
+</respStmt>
+</titleStmt>
+<physDesc type="paper_type" xml:id="physDesc_4a291965">
+<dimensions xml:id="dimensions_cad7e1ac">
+<locusGrp xml:id="locusGrp_5c1e026f">
+<locus xml:id="locus_e88a9795"/>
+</locusGrp>
+<term xml:id="term_e91a82ff"/>
+<extent quantity="" xml:id="extent_a3e8ee0b"> lines</extent>
+<dimensions type="format" xml:id="dimensions_1ae43ba8">
+<height quantity="" unit="cm" xml:id="height_b4f8c2a0"/>
+<width quantity="" unit="cm" xml:id="width_e1c0a1b7"/>
+</dimensions>
+<dimensions type="rastral_mirror" xml:id="dimensions_0dafbd5a">
+<height quantity="" unit="cm" xml:id="height_fcd690bb"/>
+<width quantity="" unit="cm" xml:id="width_de312414"/>
+</dimensions>
+</dimensions>
+<supportDesc xml:id="supportDesc_735b28cb">
+<support type="paper_quality" xml:id="support_d55c8961">
+<p xml:id="p_64212f2d"/>
+</support>
+<condition xml:id="condition_800235ab">
+<p xml:id="p_2c2b5866"/>
+</condition>
+</supportDesc>
+<bindingDesc xml:id="bindingDesc_a59175b4">
+<binding xml:id="binding_dc90593a">
+<condition xml:id="condition_5b559ab0">
+<p type="general_description" xml:id="p_2484f5bf"/>
+</condition>
+</binding>
+</bindingDesc>
+<watermark type="predefined" xml:id="watermark_04e5b815">
+<title xml:id="title_b0469b41"/>
+<ref corresp="" xml:id="ref_5be28f47"/>
+<heraldry corresp="" xml:id="heraldry_b582b67a"/>
+</watermark>
+<watermark type="text" xml:id="watermark_1cd46e56">
+<p>Schrift: Liszt (schwarze und sepiafarbene Tinte, Bleistift)</p>
+<p>Papier: Hochformat, 267 x 70-75 mm, 20 Notenzeilen, gedruckt</p>
+<p>Umfang: 2 Blatt zu 1 Bogen, 4 Seiten Notentext</p>
+<p> </p>
+</watermark>
+</physDesc>
+<physDesc xml:id="physDesc_d71f6905">
+<extent quantity="" xml:id="extent_00e9f826"/>
+<dimensions xml:id="dimensions_13eb6c21">
+<height quantity="" xml:id="height_23dfe55c"/>
+<width quantity="" xml:id="width_9094cc93"/>
+<depth quantity="" xml:id="depth_7cb4b6a2"/>
+<dim quantity="" xml:id="dim_58222151"/>
+</dimensions>
+<watermark type="predefined" xml:id="watermark_c498d035">
+<title xml:id="title_46bc9e50"/>
+<ref corresp="" xml:id="ref_e3564c79"/>
+<heraldry corresp="" xml:id="heraldry_6a0a6bef"/>
+</watermark>
+<watermark type="text" xml:id="watermark_542eba72"/>
+<physMedium xml:id="physMedium_5c48c5b4"/>
+<plateNum xml:id="plateNum_1b6825f8"/>
+<addDesc xml:id="addDesc_af8e209a">
+<p type="autograph" xml:id="p_8c06ef64"/>
+<p type="foreign" xml:id="p_794b3e74"/>
+</addDesc>
+<supportDesc xml:id="supportDesc_4ebdf339">
+<p type="autograph" xml:id="p_ac32df77"/>
+<p type="foreign" xml:id="p_6e0767fb"/>
+</supportDesc>
+<bindingDesc xml:id="bindingDesc_a0f787c7">
+<binding xml:id="binding_ee2eb8a2">
+<p type="definition" xml:id="p_243c496d"/>
+<condition xml:id="condition_ac1a8180">
+<p type="general_description" xml:id="p_14456e61"/>
+</condition>
+</binding>
+</bindingDesc>
+<condition xml:id="condition_a062ed9c">
+<p type="general_description" xml:id="p_add7f3bd"/>
+</condition>
+</physDesc>
+<notesStmt xml:id="notesStmt_39d79f12">
+<annot type="source_description" xml:id="annot_e3206303">
+<p>Der ursprüngliche Notentext entspricht der 2. Fassung (vgl. GSA 60/D 63), in dem Liszt zahlreiche Streichungen, Rasuren und Korrekturen vornimmt. Auf [S. 1] streicht er mit Sepia-Tinte und Bleistift das Klaviervorspiel, schreibt über den 1. Takt den Buchstaben A und notiert im 5. Takt Korrekturen mit Bleistift. Auf [S. 3] streicht er mit Sepia-Tinte die ersten beiden Takte und schreibt den Buchstaben B darüber, weiterhin streicht er die letzten beiden Takte der Seite. Auf [S. 4] streicht er bis auf 5 Takte im 3. System alle weiteren Takte, vor die letzten gestrichenen 9 Takte schreibt er den Buchstaben C. Ein weiteres Korrekturblatt liegt der Quelle nicht bei. Im gesamten Notentext finden sich ironische Bemerkungen und kommentierende Erklärungen, die an Emilie Genast adressiert sind. Das Autograph ist am Ende signiert und darunter schreibt Liszt: "an Fräulein Emilie Genast | (die Retterin meiner "ersten" und "letzten" Lieder)" etc.</p>
+</annot>
+<annot type="links" xml:id="annot_487a8c4a">
+<ptr mimetype="" xml:id="ptr_d6e320_0_0"/>
+</annot>
+</notesStmt>
+<classification xml:id="classification_3b968f34">
+<termList xml:id="termList_66d63f0a">
+<term xml:id="term_f74914ef">Manuscript</term>
+<term xml:id="term_accb3073">Notated music</term>
+<term xml:id="term_82749641">Autograph</term>
+<term xml:id="term_b00246fe">Score</term>
+<term xml:id="term_3fdb9c0b">Draft</term>
+<term xml:id="term_3a50782f">Complete</term>
+</termList>
+</classification>
+<itemList xml:id="itemList_cf8c7dd4">
+<item xml:id="item_6167e040" label="GSA 60/D 94">
+<identifier xml:id="identifier_ccabbfaa"/>
+<physDesc xml:id="physDesc_e3a6b5fb">
+<m:titlePage xmlns:m="http://www.music-encoding.org/ns/mei" label="Kopftitel" xml:id="titlePage_2a7bb7db">
+<p>Nonnenwerth (ein nichts werthes | Erinnerungs Blatt!)</p>
+</m:titlePage>
+</physDesc>
+<physLoc xml:id="physLoc_6e8d94a9">
+<repository xml:id="repository_b9d0a9d7">
+<corpName xml:id="corpName_33bf4452" role="">Goethe- und Schiller-Archiv</corpName>
+<geogName xml:id="geogName_c5298d47" role="">Weimar</geogName>
+<identifier auth="RISM" auth.uri="http://www.rism.info" xml:id="identifier_739e4a32">D-WRgs</identifier>
+</repository>
+<identifier xml:id="identifier_c762ae61">GSA 60/D 94</identifier>
+</physLoc>
+<notesStmt xml:id="notesStmt_a069fa11">
+<annot type="source_description" xml:id="annot_c9731770"/>
+<annot type="links" xml:id="annot_d493f6c3">
+<ptr target="https://ores.klassik-stiftung.de/ords/f?p=401:2:::::P2_ID:191640" mimetype="" label="Digitalisat" xml:id="ptr_d6e396_0"/>
+<ptr target="https://ores.klassik-stiftung.de/ords/rest_api/iiif/digi_gsa/191640/manifest" mimetype="" label="Digitalisat IIIF" xml:id="ptr_d6e320_1_0"/>
+</annot>
+</notesStmt>
+<componentList xml:id="componentList_2000e4b4"/>
+</item>
+</itemList>
+<componentList xml:id="componentList_92fc6848"/>
+<relationList xml:id="relationList_cdf8cf6b">
+<relation rel="isEmbodimentOf" xml:id="relation_80253837" target="#expression_95d4e55"/>
+</relationList>
+</manifestation>
+<manifestation xml:id="manifestation_4c9abab8">
+<identifier xml:id="identifier_4ed9a23e"/>
+<titleStmt xml:id="titleStmt_03c9a3ce">
+<title xml:id="title_77948f54">Arbeitsmanuskript Singstimme und Klavier</title>
+<respStmt xml:id="respStmt_b5ab92aa">
+<persName role="" xml:id="persName_228a61b4"/>
+<corpName role="" xml:id="corpName_ba459f8b"/>
+</respStmt>
+</titleStmt>
+<physDesc type="paper_type" xml:id="physDesc_455c201b">
+<dimensions xml:id="dimensions_0ed796ee">
+<locusGrp xml:id="locusGrp_ebf2a95b">
+<locus xml:id="locus_9737631b"/>
+</locusGrp>
+<term xml:id="term_bddb8fd9"/>
+<extent quantity="" xml:id="extent_360d24cb"> lines</extent>
+<dimensions type="format" xml:id="dimensions_f4e62ad2">
+<height quantity="" unit="cm" xml:id="height_c98c1bd7"/>
+<width quantity="" unit="cm" xml:id="width_492f3b4c"/>
+</dimensions>
+<dimensions type="rastral_mirror" xml:id="dimensions_39a22c93">
+<height quantity="" unit="cm" xml:id="height_08bcc7dd"/>
+<width quantity="" unit="cm" xml:id="width_9d9f1d40"/>
+</dimensions>
+</dimensions>
+<supportDesc xml:id="supportDesc_f4199233">
+<support type="paper_quality" xml:id="support_ecc9fffa">
+<p xml:id="p_ea303a71"/>
+</support>
+<condition xml:id="condition_4b60bbe1">
+<p xml:id="p_994b16a4"/>
+</condition>
+</supportDesc>
+<bindingDesc xml:id="bindingDesc_c01ac630">
+<binding xml:id="binding_6ebf67fb">
+<condition xml:id="condition_dda3e9fd">
+<p type="general_description" xml:id="p_2ae6924e"/>
+</condition>
+</binding>
+</bindingDesc>
+<watermark type="predefined" xml:id="watermark_78fe6b7c">
+<title xml:id="title_d032d6fa"/>
+<ref corresp="" xml:id="ref_4bcaa7b2"/>
+<heraldry corresp="" xml:id="heraldry_c85808ec"/>
+</watermark>
+<watermark type="text" xml:id="watermark_b00b073d">
+<p>Schrift: Liszt (schwarze und sepiafarbene Tinte, Bleistift)</p>
+<p>Papier: Hochformat, 267 x 70-75 mm, 20 Notenzeilen, gedruckt</p>
+<p>Umfang: 2 Blatt zu 1 Bogen, 4 Seiten Notentext</p>
+<p> </p>
+</watermark>
+</physDesc>
+<physDesc xml:id="physDesc_05839141">
+<extent quantity="" xml:id="extent_2129a8f5"/>
+<dimensions xml:id="dimensions_65ac5aaf">
+<height quantity="" xml:id="height_cc8aa55c"/>
+<width quantity="" xml:id="width_36644e33"/>
+<depth quantity="" xml:id="depth_e9752bdc"/>
+<dim quantity="" xml:id="dim_639dae51"/>
+</dimensions>
+<watermark type="predefined" xml:id="watermark_fa1348f5">
+<title xml:id="title_28acf1d6"/>
+<ref corresp="" xml:id="ref_73c4e286"/>
+<heraldry corresp="" xml:id="heraldry_c823228b"/>
+</watermark>
+<watermark type="text" xml:id="watermark_c1094a63"/>
+<physMedium xml:id="physMedium_67870f66"/>
+<plateNum xml:id="plateNum_931a4a76"/>
+<addDesc xml:id="addDesc_d614b2e0">
+<p type="autograph" xml:id="p_f4f73fa5"/>
+<p type="foreign" xml:id="p_d13d8a25"/>
+</addDesc>
+<supportDesc xml:id="supportDesc_431cdcf6">
+<p type="autograph" xml:id="p_f5c6d6b8"/>
+<p type="foreign" xml:id="p_b7b085e9"/>
+</supportDesc>
+<bindingDesc xml:id="bindingDesc_e8993660">
+<binding xml:id="binding_1a12e094">
+<p type="definition" xml:id="p_0a4fdef5"/>
+<condition xml:id="condition_eecd5a30">
+<p type="general_description" xml:id="p_1e128811"/>
+</condition>
+</binding>
+</bindingDesc>
+<condition xml:id="condition_235f9332">
+<p type="general_description" xml:id="p_078bdad9"/>
+</condition>
+</physDesc>
+<notesStmt xml:id="notesStmt_5b9d482d">
+<annot type="source_description" xml:id="annot_cfee619a"/>
+<annot type="links" xml:id="annot_37e5fe99">
+<ptr mimetype="" xml:id="ptr_8d3eaca2"/>
+</annot>
+</notesStmt>
+<classification xml:id="classification_c7c26e37">
+<termList xml:id="termList_ceda6b25">
+<term xml:id="term_0713d123">Manuscript</term>
+<term xml:id="term_c7a0d011">Notated music</term>
+<term xml:id="term_db3d23ef">Score</term>
+<term xml:id="term_14db0677">Complete</term>
+<term>Partly autograph</term>
+<term>Fair copy</term>
+</termList>
+</classification>
+<itemList xml:id="itemList_57c67e7b">
+<item label="GSA 60/D 63, Abschrift 1" xml:id="item_59734855">
+<identifier xml:id="identifier_00c3ea58"/>
+<physDesc xml:id="physDesc_df611d1a"/>
+<physLoc xml:id="physLoc_86510ef6">
+<repository xml:id="repository_0e73c3ce">
+<corpName role="" xml:id="corpName_a990bf54">Goethe- und Schiller-Archiv</corpName>
+<geogName role="" xml:id="geogName_916f74b4">Weimar</geogName>
+<identifier auth="RISM" auth.uri="http://www.rism.info" xml:id="identifier_a88317ad">D-WRgs</identifier>
+</repository>
+<identifier xml:id="identifier_d9b31f2e">GSA 60/D 63</identifier>
+</physLoc>
+<history xml:id="history_fc8e409e">
+<acquisition xml:id="acquisition_cc1c76b4">
+<date xml:id="date_96628262"/>
+</acquisition>
+</history>
+<notesStmt xml:id="notesStmt_d87c6654">
+<annot type="source_description" xml:id="annot_308bc8b8"/>
+<annot type="links" xml:id="annot_cb0297d0">
+<ptr target="https://ores.klassik-stiftung.de/ords/f?p=401:2:::::P2_ID:191540" mimetype="" label="Digitalisat" xml:id="ptr_36fa1bb1"/>
+<ptr target="https://ores.klassik-stiftung.de/ords/rest_api/iiif/digi_gsa/191540/manifest" mimetype="" label="Digitalisat IIIF" xml:id="ptr_3ebd14c2"/>
+</annot>
+</notesStmt>
+<componentList xml:id="componentList_dc509a8f"/>
+</item>
+</itemList>
+<componentList xml:id="componentList_0e152fd9"/>
+<relationList xml:id="relationList_14c7f567">
+<relation rel="isEmbodimentOf" target="#expression_95d4e55" xml:id="relation_3b5c4ca1"/>
+</relationList>
+</manifestation>
+<manifestation xml:id="manifestation_bf7baba8">
+<identifier xml:id="identifier_afc9a654"/>
+<titleStmt xml:id="titleStmt_fea567e1">
+<title xml:id="title_6f1983f0">Arbeitsmanuskript Singstimme und Klavier</title>
+<respStmt xml:id="respStmt_7edf2279">
+<persName role="" xml:id="persName_14ae393f"/>
+<corpName role="" xml:id="corpName_705e5f3e"/>
+</respStmt>
+</titleStmt>
+<physDesc type="paper_type" xml:id="physDesc_e21f0a79">
+<dimensions xml:id="dimensions_143dfd9c">
+<locusGrp xml:id="locusGrp_4726d2dd">
+<locus xml:id="locus_a36a9af3"/>
+</locusGrp>
+<term xml:id="term_62018d67"/>
+<extent quantity="" xml:id="extent_68ed5afe"> lines</extent>
+<dimensions type="format" xml:id="dimensions_bf891e21">
+<height quantity="" unit="cm" xml:id="height_8fa744b0"/>
+<width quantity="" unit="cm" xml:id="width_f02fae2b"/>
+</dimensions>
+<dimensions type="rastral_mirror" xml:id="dimensions_673dd9b9">
+<height quantity="" unit="cm" xml:id="height_e0ef6944"/>
+<width quantity="" unit="cm" xml:id="width_297fd5e5"/>
+</dimensions>
+</dimensions>
+<supportDesc xml:id="supportDesc_b735afd4">
+<support type="paper_quality" xml:id="support_024e3d82">
+<p xml:id="p_3f789423"/>
+</support>
+<condition xml:id="condition_f155d159">
+<p xml:id="p_10daaf00"/>
+</condition>
+</supportDesc>
+<bindingDesc xml:id="bindingDesc_0c52bccb">
+<binding xml:id="binding_2cb6ff63">
+<condition xml:id="condition_21a34c58">
+<p type="general_description" xml:id="p_f27515e4"/>
+</condition>
+</binding>
+</bindingDesc>
+<watermark type="predefined" xml:id="watermark_34bc42ee">
+<title xml:id="title_a6492e3b"/>
+<ref corresp="" xml:id="ref_1dc8237d"/>
+<heraldry corresp="" xml:id="heraldry_f735eef7"/>
+</watermark>
+<watermark type="text" xml:id="watermark_27690a44">
+<p>Schrift: Liszt (schwarze und sepiafarbene Tinte, Bleistift)</p>
+<p>Papier: Hochformat, 267 x 70-75 mm, 20 Notenzeilen, gedruckt</p>
+<p>Umfang: 2 Blatt zu 1 Bogen, 4 Seiten Notentext</p>
+<p> </p>
+</watermark>
+</physDesc>
+<physDesc xml:id="physDesc_f5014d6a">
+<extent quantity="" xml:id="extent_34522be6"/>
+<dimensions xml:id="dimensions_e48878e9">
+<height quantity="" xml:id="height_34b59b8b"/>
+<width quantity="" xml:id="width_d34551e4"/>
+<depth quantity="" xml:id="depth_70cb7feb"/>
+<dim quantity="" xml:id="dim_3c50af21"/>
+</dimensions>
+<watermark type="predefined" xml:id="watermark_c3a2c9ea">
+<title xml:id="title_5207f9d5"/>
+<ref corresp="" xml:id="ref_c557ba2a"/>
+<heraldry corresp="" xml:id="heraldry_d6b5e07e"/>
+</watermark>
+<watermark type="text" xml:id="watermark_6da1d0c5"/>
+<physMedium xml:id="physMedium_809d7df4"/>
+<plateNum xml:id="plateNum_bde35c35"/>
+<addDesc xml:id="addDesc_bc1c9809">
+<p type="autograph" xml:id="p_aa3ed8bb"/>
+<p type="foreign" xml:id="p_4f6aea33"/>
+</addDesc>
+<supportDesc xml:id="supportDesc_7607a3f5">
+<p type="autograph" xml:id="p_4eb9bdf4"/>
+<p type="foreign" xml:id="p_c79fd7c9"/>
+</supportDesc>
+<bindingDesc xml:id="bindingDesc_b9eaddef">
+<binding xml:id="binding_855ec538">
+<p type="definition" xml:id="p_450f147e"/>
+<condition xml:id="condition_9f0c03b2">
+<p type="general_description" xml:id="p_af4c8425"/>
+</condition>
+</binding>
+</bindingDesc>
+<condition xml:id="condition_50463c5a">
+<p type="general_description" xml:id="p_cbd0794c"/>
+</condition>
+</physDesc>
+<notesStmt xml:id="notesStmt_a82498ea">
+<annot type="source_description" xml:id="annot_bbfcda4d"/>
+<annot type="links" xml:id="annot_4384032d">
+<ptr mimetype="" xml:id="ptr_736850cd"/>
+</annot>
+</notesStmt>
+<classification xml:id="classification_666eb103">
+<termList xml:id="termList_c6238ffb">
+<term xml:id="term_189da065">Manuscript</term>
+<term xml:id="term_74c77ac2">Notated music</term>
+<term xml:id="term_2732debb">Score</term>
+<term xml:id="term_a7251117">Complete</term>
+<term xml:id="term_f74df8b6">Partly autograph</term>
+<term xml:id="term_061f9c67">Fair copy</term>
+</termList>
+</classification>
+<itemList xml:id="itemList_1fcc892a">
+<item label="GSA 60/D 63, Abschrift 2" xml:id="item_88b4e7c5">
+<identifier xml:id="identifier_b0b7be15"/>
+<physDesc xml:id="physDesc_37e34adb"/>
+<physLoc xml:id="physLoc_6d62c299">
+<repository xml:id="repository_fe09c6ff">
+<corpName role="" xml:id="corpName_6a15d1ee">Goethe- und Schiller-Archiv</corpName>
+<geogName role="" xml:id="geogName_20bdb566">Weimar</geogName>
+<identifier auth="RISM" auth.uri="http://www.rism.info" xml:id="identifier_fd6c8201">D-WRgs</identifier>
+</repository>
+<identifier xml:id="identifier_ef092d92">GSA 60/D 63</identifier>
+</physLoc>
+<history xml:id="history_9aaec371">
+<acquisition xml:id="acquisition_8bfd3524">
+<date xml:id="date_88d2892b"/>
+</acquisition>
+</history>
+<notesStmt xml:id="notesStmt_8709d9f0">
+<annot type="source_description" xml:id="annot_7c18584a"/>
+<annot type="links" xml:id="annot_fe4c1769">
+<ptr target="https://ores.klassik-stiftung.de/ords/f?p=401:2:::::P2_ID:191540" mimetype="" label="Digitalisat" xml:id="ptr_56e5f8b4"/>
+<ptr target="https://ores.klassik-stiftung.de/ords/rest_api/iiif/digi_gsa/191540/manifest" mimetype="" label="Digitalisat IIIF" xml:id="ptr_eed6fc8b"/>
+</annot>
+</notesStmt>
+<componentList xml:id="componentList_7c9f6923"/>
+</item>
+</itemList>
+<componentList xml:id="componentList_99c2c8df"/>
+<relationList xml:id="relationList_81db8496">
+<relation rel="isEmbodimentOf" target="#expression_95d4e55" xml:id="relation_6e675c20"/>
+</relationList>
+</manifestation>
+<manifestation xml:id="manifestation_858dacfd" label="Arbeitsmanuskript und Abschrift">
+<identifier xml:id="identifier_f91bda9c"/>
+<titleStmt xml:id="titleStmt_3aa74554">
+<title xml:id="title_6c037b8e">Version Vl/Vc und Kl</title>
+</titleStmt>
+<notesStmt xml:id="notesStmt_0e470601">
+<annot type="source_description" xml:id="annot_cf67d553">
+<p>Das Manuskript besteht aus einem Autograph von Liszt und einer Abschrift von [Weber 125165311], die Liszt miteinander verbunden hat, und die zusammen die Komposition ergeben. Die S. 1-3 stammen von Liszts Hand, ebenso die S. 7-12. Die S. 4-6 und 13-14 sind Abschriften von [Weber 125165311]. Das Manuskript enthält die gesamte Komposition. Die Vl notiert Liszt mit roter Tinte, Vlc und Kl mit schwarzer Tinte. Gelegentlich finden sich einzelne Zeichen auch in den übrigen Stimmen, die Liszt mit roter Tinte verbessert hat. Auf S. 7 hat Liszt das untere System überklebt und neu komponiert, während er die Überklebung auf S. 12 aus [Webers 1251653111] Abschrift herausgeschnitten hat.</p>
+</annot>
+<annot type="links" xml:id="annot_cfa7b762">
+<ptr mimetype="" xml:id="ptr_d6e320_0_1"/>
+</annot>
+</notesStmt>
+<classification xml:id="classification_2c2dcdca">
+<termList xml:id="termList_21e4ce50">
+<term xml:id="term_a0d0300f">Notated music</term>
+<term xml:id="term_d52d777e">Manuscript</term>
+<term xml:id="term_47022cea">Partly autograph</term>
+<term xml:id="term_35184ffa">Score</term>
+<term xml:id="term_261533b6">Draft</term>
+<term xml:id="term_e5c5a1a6">Complete</term>
+</termList>
+</classification>
+<itemList xml:id="itemList_1076fbd2">
+<item label="GSA 60/X 1,1" xml:id="item_c08fe6b7">
+<identifier label="RISM" xml:id="identifier_d13ca873">1001248448</identifier>
+<physDesc xml:id="physDesc_d4b86ff0">
+<m:titlePage xmlns:m="http://www.music-encoding.org/ns/mei" label="Kopftitel" xml:id="titlePage_d3bfe315">
+<p>Die Zelle in Nonnenwerth.</p>
+</m:titlePage>
+<handList xml:id="handList_88b11130">
+<hand xmlns:xl="http://www.w3.org/1999/xlink" xmlns:xs="http://www.w3.org/2001/XMLSchema" medium="" type="main" xml:id="hand_1f02a5c4">
+<persName role="" xml:id="persName_aa55b404" auth="GND" auth.uri="http://d-nb.info/gnd" codedval="1251653111">Wilhelm Weber</persName>
+</hand>
+</handList>
+</physDesc>
+<physDesc type="paper_type" xml:id="physDesc_113addd0">
+<dimensions xml:id="dimensions_ecd60afa">
+<locusGrp xml:id="locusGrp_d96303ae">
+<locus xml:id="locus_c841a3a4"/>
+</locusGrp>
+<term xml:id="term_b8c1655d"/>
+<extent quantity="" xml:id="extent_4ede456f"> lines</extent>
+<dimensions type="format" xml:id="dimensions_332d8cf7">
+<height quantity="" unit="cm" xml:id="height_1054a1aa"/>
+<width quantity="" unit="cm" xml:id="width_70604948"/>
+</dimensions>
+<dimensions type="rastral_mirror" xml:id="dimensions_67ccfeb4">
+<height quantity="" unit="cm" xml:id="height_b88050d2"/>
+<width quantity="" unit="cm" xml:id="width_d29f8ef1"/>
+</dimensions>
+</dimensions>
+<supportDesc xml:id="supportDesc_74819cdb">
+<support type="paper_quality" xml:id="support_c0b4507d">
+<p xml:id="p_6984d99d"/>
+</support>
+<condition xml:id="condition_47b9bf5e">
+<p xml:id="p_abcf6135"/>
+</condition>
+</supportDesc>
+<bindingDesc xml:id="bindingDesc_5a098c8b">
+<binding xml:id="binding_bc7f0d89">
+<condition xml:id="condition_c68f0783">
+<p type="general_description" xml:id="p_d6b57bba"/>
+</condition>
+</binding>
+</bindingDesc>
+<watermark type="predefined" xml:id="watermark_37a4fff2">
+<title xml:id="title_8a1586fe"/>
+<ref corresp="" xml:id="ref_60b32b19"/>
+<heraldry corresp="" xml:id="heraldry_a0abcb5d"/>
+</watermark>
+<watermark type="text" xml:id="watermark_760521eb">
+<p>Schrift: Liszt (schwarze und rote Tinte), Wilhelm Weber (schwarze Tinte)</p>
+<p>Umfang: 7 Blatt zu 3 Bogen und eingeklebtes Einzelblatt, 14 Seiten Notentext, paginiert, Fadenbindung</p>
+<p>Papier: Hochformat, 353 x 267 mm, 12 Notenzeilen, gedruckt (B. und H. Nr. 1 C.); Überklebung S. 7a, Querformat, 161 x 265 mm, 6 Notenzeilen, gedruckt; Überklebung S. 12a, Querformat, 126-131 x 264 mm, 5 Notenzeilen, gedruckt</p>
+<p> </p>
+</watermark>
+</physDesc>
+<physLoc xml:id="physLoc_ea6da757">
+<repository xml:id="repository_af775fb5">
+<corpName role="" xml:id="corpName_e397e190">Goethe- und Schiller-Archiv</corpName>
+<geogName role="" xml:id="geogName_a2fdf2c0">Weimar</geogName>
+<identifier auth="RISM" auth.uri="http://www.rism.info" xml:id="identifier_0accbf0f">D-WRgs</identifier>
+</repository>
+<identifier xml:id="identifier_97376b71">GSA 60/X 1,1</identifier>
+</physLoc>
+<notesStmt xml:id="notesStmt_ea16edac">
+<annot type="source_description" xml:id="annot_87110430"/>
+<annot type="links" xml:id="annot_feaeb22a">
+<ptr target="https://ores.klassik-stiftung.de/ords/f?p=401:2:::::P2_ID:209688" mimetype="" label="Digitalisat" xml:id="ptr_d6e396_1"/>
+<ptr target="https://ores.klassik-stiftung.de/ords/rest_api/iiif/digi_gsa/209688/manifest" mimetype="" label="Digitalisat IIIF" xml:id="ptr_d6e320_1_1"/>
+</annot>
+</notesStmt>
+<componentList xml:id="componentList_9217d66e"/>
+</item>
+</itemList>
+<componentList xml:id="componentList_c17f9296"/>
+<relationList xml:id="relationList_b08066d1">
+<relation rel="isEmbodimentOf" xml:id="relation_88fb9040" target="#expression_c1dd8547"/>
+</relationList>
+</manifestation>
+<manifestation xml:id="manifestation_86c6775b" label="Reinschrift">
+<identifier xml:id="identifier_c852e83f"/>
+<titleStmt xml:id="titleStmt_ffb2c2e9">
+<title xml:id="title_ba25e6e8">Version Vl/Vc und Kl </title>
+</titleStmt>
+<classification xml:id="classification_d90f31c8">
+<termList xml:id="termList_fe1cdd19">
+<term xml:id="term_c53d939f">Notated music</term>
+<term xml:id="term_59bc4ff5">Manuscript</term>
+<term xml:id="term_28791a67">Partly autograph</term>
+<term xml:id="term_3d4c65fa">Parts</term>
+<term xml:id="term_48fc09ac">Fair copy</term>
+<term xml:id="term_cad0c23a">Complete</term>
+</termList>
+</classification>
+<itemList xml:id="itemList_bbf16f36">
+<item label="GSA 60/X 1" xml:id="item_4b9ad825">
+<identifier label="RISM" xml:id="identifier_ff3cff23">1001248558</identifier>
+<physDesc xml:id="physDesc_c75d91fa">
+<m:titlePage xmlns:m="http://www.music-encoding.org/ns/mei" label="Titelblatt" xml:id="titlePage_83ce7abf">
+<p>Nonnenwerth</p>
+</m:titlePage>
+<handList xml:id="handList_a5974b0b">
+<hand xmlns:xl="http://www.w3.org/1999/xlink" xmlns:xs="http://www.w3.org/2001/XMLSchema" medium="" type="main" xml:id="hand_817f2c9f">
+<persName role="scribe" cert="high" auth="GND" auth.uri="http://d-nb.info/gnd" codedval="1251653111" xml:id="persName_b995b8c4">Wilhelm Weber</persName>
+</hand>
+</handList>
+<physMedium xml:id="physMedium_242980f1">
+<p>Quellentyp: Abschrift</p>
+<p>Schrift: Wilhelm Weber (schwarze Tinte), zS (roter und blauer Stift)</p>
+<p>Umfang: 9 Blatt zu 3 Bogen und 3 Einzelblatt, 1 Titelseite, 17 Seiten Notentext, paginiert und foliiert, Fadenbindung</p>
+<p>Papier: Hochformat, 350 x 270-273 mm, 10 Notenzeilen, gedruckt (B. und H. Nr. 18. C)</p>
+</physMedium>
+</physDesc>
+<physLoc xml:id="physLoc_9833399a">
+<repository xml:id="repository_a84bca6b">
+<corpName role="" xml:id="corpName_cdbf6856">Goethe- und Schiller-Archiv</corpName>
+<geogName role="" xml:id="geogName_d660da78">Weimar</geogName>
+<identifier auth="RISM" auth.uri="http://www.rism.info" xml:id="identifier_204a902e">D-WRgs</identifier>
+</repository>
+<identifier xml:id="identifier_732fb5d4">GSA 60/X 1</identifier>
+</physLoc>
+<history xml:id="history_ac753f08">
+<acquisition xml:id="acquisition_569a3ea7">
+<date xml:id="date_59d62948"/>
+</acquisition>
+<provenance xml:id="provenance_207a44c4">
+<eventList xml:id="eventList_47830f4d">
+<event xml:id="event_08fcb751">
+<desc xml:id="desc_91a1f9b6"/>
+<date xml:id="date_0042ddda"/>
+<geogName role="" xml:id="geogName_c5608a2c"/>
+<corpName role="former owner" xml:id="corpName_96cfeb97" cert="high" auth="GND" auth.uri="http://d-nb.info/gnd" codedval="10178948-8">Liszt-Museum</corpName>
+<persName role="" xml:id="persName_3b075729"/>
+</event>
+</eventList>
+</provenance>
+</history>
+<notesStmt xml:id="notesStmt_d0cdd4a7">
+<annot type="source_description" xml:id="annot_4658ef44">
+<p>Eine sehr saubere Abschrift, die keine Eintragungen Liszts enthält. Der Klavierpart ist der letzten Fassung der Elegie ("Nonnenwerth") für Kl entlehnt, stimmt jedoch nicht durchgängig mit der Kl-Fassung überein.</p>
+</annot>
+<annot type="links" xml:id="annot_fff3457e">
+<ptr mimetype="" target="https://ores.klassik-stiftung.de/ords/f?p=401:2:::::P2_ID:209686" label="Digitalisat (S. 2-17)" xml:id="ptr_8adbd14c"/>
+<ptr target="https://ores.klassik-stiftung.de/ords/rest_api/iiif/digi_gsa/209686/manifest" mimetype="" label="Digitalisat IIIF" xml:id="ptr_a213c7be"/>
+</annot>
+</notesStmt>
+<componentList xml:id="componentList_61f86200">
+<item label="Andantino" xml:id="item_8bf01a15">
+<physDesc xml:id="physDesc_84140400"/>
+</item>
+</componentList>
+</item>
+</itemList>
+<componentList xml:id="componentList_d97f7eb2"/>
+<relationList xml:id="relationList_a1734cd8">
+<relation rel="isEmbodimentOf" target="#expression_c1dd8547" xml:id="relation_4a464a26"/>
+</relationList>
+</manifestation>
+<manifestation xml:id="manifestation_cbf15abb" label="Abschrift der Violin- und der Cellostimme">
+<identifier xml:id="identifier_a03aaa9c"/>
+<titleStmt xml:id="titleStmt_67fa50df">
+<title xml:id="title_184c31d5">Version Vl/Vc und Kl</title>
+</titleStmt>
+<classification xml:id="classification_580dcb28">
+<termList xml:id="termList_5ff6083f">
+<term xml:id="term_bceba292">Notated music</term>
+<term xml:id="term_75498727">Manuscript</term>
+<term xml:id="term_45ba218c">Partly autograph</term>
+<term xml:id="term_54d9f6dd">Parts</term>
+<term xml:id="term_54933cae">Fair copy</term>
+<term xml:id="term_855dd98b">Complete</term>
+</termList>
+</classification>
+<itemList xml:id="itemList_0ed032c4">
+<item label="GSA 60/X 1" xml:id="item_b7c395c8">
+<identifier label="RISM" xml:id="identifier_277f41d9">1001248553</identifier>
+<physDesc xml:id="physDesc_0bdb440a">
+<m:titlePage xmlns:m="http://www.music-encoding.org/ns/mei" label="Kopftitel" xml:id="titlePage_abc5f8e2">
+<p>"Nonnenwerth" | Elegie.</p>
+</m:titlePage>
+<dimensions xml:id="dimensions_efb2334e">
+<locusGrp xml:id="locusGrp_7aad97a7">
+<locus xml:id="locus_b0a65ce4"/>
+</locusGrp>
+<height quantity="180" unit="mm" xml:id="height_c991ec9e">180 (height in mm)</height>
+<width quantity="270" unit="mm" xml:id="width_09efcd65">270 (height in mm)</width>
+<term xml:id="term_3b792f7d"/>
+<extent quantity="" xml:id="extent_6b6c656f"> lines</extent>
+<dimensions type="format" xml:id="dimensions_7c17c295">
+<height quantity="" unit="cm" xml:id="height_221671fe"/>
+<width quantity="" unit="cm" xml:id="width_294ba504"/>
+</dimensions>
+<dimensions type="rastral_mirror" xml:id="dimensions_60ac1cfc">
+<height quantity="" unit="cm" xml:id="height_23e7f048"/>
+<width quantity="" unit="cm" xml:id="width_24287499"/>
+</dimensions>
+</dimensions>
+<dimensions xml:id="dimensions_6a1d8692">
+<height quantity="" xml:id="height_efb10b77"/>
+<width quantity="" xml:id="width_a1240186"/>
+<depth quantity="" xml:id="depth_8410f4f0"/>
+<dim quantity="" xml:id="dim_9e0308c8"/>
+</dimensions>
+<handList xml:id="handList_9261f281">
+<hand xmlns:xl="http://www.w3.org/1999/xlink" xmlns:xs="http://www.w3.org/2001/XMLSchema" medium="" type="main" xml:id="hand_362cc446">
+<persName role="scribe" cert="high" auth="GND" auth.uri="http://d-nb.info/gnd" codedval="1251653111" xml:id="persName_dd2b1b05">Wilhelm Weber</persName>
+</hand>
+</handList>
+<physMedium xml:id="physMedium_b96e3b96">
+<p>Schrift: Wilhelm Weber (schwarze Tinte), Liszt [?] (Bleistift)</p>
+<p>Umfang, vl: 2 Blatt zu 1 Bogen, 4 Seiten Notentext, paginiert und foliiert</p>
+<p>Umfang, vlc: 2 Blatt zu 1 Bogen, 4 Seiten Notentext, paginiert und foliiert</p>
+<p>Papier: Querformat, 180 x 270 mm, 8 Notenzeilen, gedruckt (B. und H. Nr. 19. C.)</p>
+<p>Eine sehr saubere Stimme mit minimalen Korrekturen (Bleistift), vielleicht von Liszt.</p>
+<p> </p>
+<p> </p>
+</physMedium>
+</physDesc>
+<physLoc xml:id="physLoc_4a1089ff">
+<repository xml:id="repository_9a92d540">
+<corpName role="" xml:id="corpName_208462f3">Goethe- und Schiller-Archiv</corpName>
+<geogName role="" xml:id="geogName_a86d81e0">Weimar</geogName>
+<identifier auth="RISM" auth.uri="http://www.rism.info" xml:id="identifier_7d1ec5e2">D-WRgs</identifier>
+</repository>
+<identifier xml:id="identifier_400f8f50">GSA 60/X 1</identifier>
+</physLoc>
+<history xml:id="history_abbe1b42">
+<acquisition xml:id="acquisition_f2012ee4">
+<date xml:id="date_35afee2a"/>
+</acquisition>
+<provenance xml:id="provenance_e90e96d9">
+<eventList xml:id="eventList_acc1718c">
+<event xml:id="event_64e6a0c4">
+<desc xml:id="desc_b329ca6e"/>
+<date xml:id="date_4cfd748e"/>
+<geogName role="" xml:id="geogName_a785de6c">Weimar</geogName>
+<corpName role="former owner" xml:id="corpName_f7af0b4c" cert="high" auth="GND" auth.uri="http://d-nb.info/gnd" codedval="10178948-8">Liszt-Museum</corpName>
+<persName role="" xml:id="persName_6477f8eb"/>
+</event>
+</eventList>
+</provenance>
+</history>
+<notesStmt xml:id="notesStmt_81947482">
+<annot type="source_description" xml:id="annot_9a79fefe"/>
+<annot type="links" xml:id="annot_038ca927">
+<ptr mimetype="" target="https://ores.klassik-stiftung.de/ords/f?p=401:2:::::P2_ID:209686" label="Digitalisat (S. 19-26)" xml:id="ptr_b8653934"/>
+<ptr target="https://ores.klassik-stiftung.de/ords/rest_api/iiif/digi_gsa/209686/manifest" mimetype="" label="Digitalisat IIIF" xml:id="ptr_600c45d6"/>
+</annot>
+</notesStmt>
+<componentList xml:id="componentList_b99fb580">
+<item label="Andantino" xml:id="item_f3afee9d">
+<physDesc xml:id="physDesc_54d4f979"/>
+</item>
+</componentList>
+</item>
+</itemList>
+<componentList xml:id="componentList_99eb8557"/>
+<relationList xml:id="relationList_40fd4b1c">
+<relation rel="isEmbodimentOf" target="#expression_c1dd8547" xml:id="relation_fe9c6359"/>
+</relationList>
+</manifestation>
+<manifestation xml:id="manifestation_7f41ef84" label="Abschrift der Cellostimme">
+<identifier xml:id="identifier_cf1c3248"/>
+<titleStmt xml:id="titleStmt_2ba694a1">
+<title xml:id="title_96726e7f">Version Vl/Vc und Kl</title>
+</titleStmt>
+<classification xml:id="classification_f78f7664">
+<termList xml:id="termList_b77a427c">
+<term xml:id="term_e2f4dd00">Notated music</term>
+<term xml:id="term_567c4ca7">Manuscript</term>
+<term xml:id="term_fd633a99">Partly autograph</term>
+<term xml:id="term_3f364498">Parts</term>
+<term xml:id="term_6bedc062">Fair copy</term>
+<term xml:id="term_2255ac83">Complete</term>
+</termList>
+</classification>
+<itemList xml:id="itemList_7c0e132d">
+<item xml:id="item_c893c2c8" label="GSA 60/X 1">
+<identifier xml:id="identifier_f04061c8" label="RISM">1001248558</identifier>
+<physDesc xml:id="physDesc_4d11fb6a">
+<m:titlePage xmlns:m="http://www.music-encoding.org/ns/mei" label="Kopftitel" xml:id="titlePage_c4e3fe62">
+<p>"Die Zelle in Nonnenwerth" v. F. Liszt.</p>
+</m:titlePage>
+<dimensions xml:id="dimensions_93d2c86d">
+<locusGrp xml:id="locusGrp_9015cc5d">
+<locus xml:id="locus_e91f6365"/>
+</locusGrp>
+<dim quantity="" xml:id="dim_7f3973a0"/>
+<term xml:id="term_d8ec7d3b"/>
+<extent quantity="" xml:id="extent_787ae8a7"> lines</extent>
+<dimensions type="format" xml:id="dimensions_c4fc65e4">
+<height quantity="" unit="cm" xml:id="height_a466c8bc"/>
+<width quantity="" unit="cm" xml:id="width_8f003a94"/>
+</dimensions>
+<dimensions type="rastral_mirror" xml:id="dimensions_e25240bb">
+<height quantity="" unit="cm" xml:id="height_ae7cd05e"/>
+<width quantity="" unit="cm" xml:id="width_a2741f0a"/>
+</dimensions>
+</dimensions>
+<dimensions xml:id="dimensions_2c7a0e38">
+<height quantity="" xml:id="height_70ab9ff7"/>
+<width quantity="" xml:id="width_e008bc26"/>
+<depth quantity="" xml:id="depth_9c31a2e6"/>
+<dim quantity="" xml:id="dim_12fff0bf"/>
+</dimensions>
+<handList xml:id="handList_f65d4133">
+<hand xmlns:xl="http://www.w3.org/1999/xlink" xmlns:xs="http://www.w3.org/2001/XMLSchema" medium="" type="main" xml:id="hand_1b6e64f3">
+<persName role="scribe" xml:id="persName_27685c84" cert="high" auth="GND" auth.uri="http://d-nb.info/gnd" codedval="1251653111">Wilhelm Weber</persName>
+</hand>
+</handList>
+<physMedium xml:id="physMedium_59611be5">
+<p>Saubere Abschrift von der Hand [Wilhelm Webers 1251653111]. Es sind keine Eintragungen Liszts vorhanden. Das Manuskript schließt mit dem Auftrag "Bitte die erste Abschrift Herrn Dr. F. Liszt | wieder zu verabreichen".</p>
+<p>Datierung: W. Weber. | d. 21./8/83.</p>
+<p>Schrift: Wilhelm Weber (schwarze Tinte)</p>
+<p>Umfang: 1 Blatt, 2 Seiten Notentext, paginiert und foliiert</p>
+<p>Papier: Hochformat, 333 x 249 mm, 12 Notenzeilen, handrastriert</p>
+</physMedium>
+</physDesc>
+<physLoc xml:id="physLoc_89b3e297">
+<repository xml:id="repository_4c109b9c">
+<corpName xml:id="corpName_bf96cb05" role="">Goethe- und Schiller-Archiv</corpName>
+<geogName xml:id="geogName_e10c710b" role="">Weimar</geogName>
+<identifier auth="RISM" auth.uri="http://www.rism.info" xml:id="identifier_d68c47ae">D-WRgs</identifier>
+</repository>
+<identifier xml:id="identifier_a5e4e91d">GSA 60/X 1</identifier>
+</physLoc>
+<notesStmt xml:id="notesStmt_19b66c08">
+<annot type="source_description" xml:id="annot_484b49db"/>
+<annot type="links" xml:id="annot_c5e8d454">
+<ptr mimetype="" xml:id="ptr_d6e396" target="https://ores.klassik-stiftung.de/ords/f?p=401:2:::::P2_ID:209686" label="Digitalisat (S. 27-28)"/>
+<ptr target="https://ores.klassik-stiftung.de/ords/rest_api/iiif/digi_gsa/209686/manifest" mimetype="" label="Digitalisat IIIF" xml:id="ptr_d6e320"/>
+</annot>
+</notesStmt>
+<componentList xml:id="componentList_f38af407">
+<item label="Andantino" xml:id="item_d64df49a">
+<physDesc xml:id="physDesc_1c4d185d"/>
+</item>
+</componentList>
+</item>
+</itemList>
+<componentList xml:id="componentList_13ea2af1"/>
+<relationList xml:id="relationList_b17c6415">
+<relation rel="isEmbodimentOf" xml:id="relation_b980a870" target="#expression_c1dd8547"/>
+</relationList>
+</manifestation>
+<manifestation xml:id="manifestation_c5174972" label="Erstdruck">
+<identifier xml:id="identifier_a6338d0d"/>
+<titleStmt xml:id="titleStmt_ca721e70">
+<title xml:id="title_256f5c0f">Kl-Fassung Nr. 2, 3. Auflage (Hofmeister)</title>
+</titleStmt>
+<pubStmt xml:id="pubStmt_74c23c78">
+<publisher xml:id="publisher_1f70ef67">Friedrich Hofmeister</publisher>
+<pubPlace xml:id="pubPlace_07155efe">Leipzig</pubPlace>
+<date xml:id="date_b3220b44"/>
+</pubStmt>
+<physDesc xml:id="physDesc_4ffa10f8">
+<m:titlePage xmlns:m="http://www.music-encoding.org/ns/mei" label="Titelblatt" xml:id="titlePage_c1775312">
+<p>Die Zelle in Nonnenwerth. | ELEGIE | für | Pianoforte | von | FRANZ LISZT. | 3. Auflage. Pr. 17 1/2 Neugr. | Mk. 1,75. | Eigenthum des Verlegers. | LEIPZIG, FRIEDRICH HOFMEISTER. | 6882. | Anst. f. Musikaliendruck v. Carl Schulze, Leipzig</p>
+</m:titlePage>
+<extent quantity="" xml:id="extent_b909543c"/>
+<dimensions xml:id="dimensions_fe7ff13f">
+<height quantity="" xml:id="height_b4dd4d6d"/>
+<width quantity="" xml:id="width_9847b179"/>
+<depth quantity="" xml:id="depth_497b5aa3"/>
+<dim quantity="" xml:id="dim_44f13e93"/>
+</dimensions>
+<watermark type="predefined" xml:id="watermark_57ac2ad7">
+<title xml:id="title_8115c3e7"/>
+<ref corresp="" xml:id="ref_3bc2323a"/>
+<heraldry corresp="" xml:id="heraldry_4234ac56"/>
+</watermark>
+<watermark type="text" xml:id="watermark_c1325a9c"/>
+<physMedium xml:id="physMedium_b3089476"/>
+<plateNum xml:id="plateNum_1fa6b880"/>
+<addDesc xml:id="addDesc_51150606">
+<p type="autograph" xml:id="p_cea22d4e"/>
+<p type="foreign" xml:id="p_b36d812b"/>
+</addDesc>
+<supportDesc xml:id="supportDesc_2f396b64">
+<p type="autograph" xml:id="p_5599c966">
+<p>Druck: Titelblatt, Leerseite, Notentext S. [3]-11, Leerseite</p>
+</p>
+<p type="foreign" xml:id="p_0e2b7d84"/>
+</supportDesc>
+<bindingDesc xml:id="bindingDesc_b4c3ea2f">
+<binding xml:id="binding_525253d6">
+<p type="definition" xml:id="p_aa0fdeae"/>
+<condition xml:id="condition_58160034">
+<p type="general_description" xml:id="p_82677c8b"/>
+</condition>
+</binding>
+</bindingDesc>
+<condition xml:id="condition_eff18845">
+<p type="general_description" xml:id="p_c1efe538"/>
+</condition>
+</physDesc>
+<classification xml:id="classification_6d8052bd">
+<termList xml:id="termList_8dbe5081">
+<term xml:id="term_e41b189c">Notated music</term>
+<term xml:id="term_dc2d4150">Manuscript</term>
+<term xml:id="term_b6a01fff">Parts</term>
+<term xml:id="term_a4712b06">Fair copy</term>
+<term xml:id="term_7e6bd6ea">Complete</term>
+<term xml:id="term_9ba77697">Autograph</term>
+</termList>
+</classification>
+<itemList xml:id="itemList_c5330f9e">
+<item label="Druck HAAB" xml:id="item_ccbcca3f">
+<identifier xml:id="identifier_ffb6760c"/>
+<physDesc xml:id="physDesc_d1b2dffa">
+<dimensions xml:id="dimensions_e70ffadb">
+<locusGrp xml:id="locusGrp_15ef6b75">
+<locus xml:id="locus_18f1e3eb"/>
+</locusGrp>
+<dim quantity="" xml:id="dim_50da21e7"/>
+<term xml:id="term_6e135409"/>
+<extent quantity="" xml:id="extent_af2b897a"> lines</extent>
+<dimensions type="format" xml:id="dimensions_0c5b626a">
+<height quantity="" unit="cm" xml:id="height_5ab427cf"/>
+<width quantity="" unit="cm" xml:id="width_626f8702"/>
+</dimensions>
+<dimensions type="rastral_mirror" xml:id="dimensions_13042e3f">
+<height quantity="" unit="cm" xml:id="height_a4862b35"/>
+<width quantity="" unit="cm" xml:id="width_020ac1b2"/>
+</dimensions>
+</dimensions>
+<condition xml:id="condition_64a66029"/>
+<dimensions xml:id="dimensions_11c81882">
+<height quantity="" xml:id="height_a7a0d167"/>
+<width quantity="" xml:id="width_660fe763"/>
+<depth quantity="" xml:id="depth_1832ae56"/>
+<dim quantity="" xml:id="dim_bdce70f9"/>
+</dimensions>
+<handList xml:id="handList_9a26770a">
+<hand xmlns:xl="http://www.w3.org/1999/xlink" xmlns:xs="http://www.w3.org/2001/XMLSchema" medium="" type="main" xml:id="hand_6e361de5"/>
+</handList>
+<physMedium xml:id="physMedium_53071ea5"/>
+</physDesc>
+<physDesc type="paper_type" xml:id="physDesc_70c9d62c">
+<dimensions xml:id="dimensions_ff74f50b">
+<locusGrp xml:id="locusGrp_0d4eba0e">
+<locus xml:id="locus_d0aeed80"/>
+</locusGrp>
+<term xml:id="term_16254a14"/>
+<extent quantity="" xml:id="extent_6750e394"> lines</extent>
+<dimensions type="format" xml:id="dimensions_76f0e66d">
+<height quantity="" unit="cm" xml:id="height_002449c7"/>
+<width quantity="" unit="cm" xml:id="width_7e4c4883"/>
+</dimensions>
+<dimensions type="rastral_mirror" xml:id="dimensions_0a6b64db">
+<height quantity="" unit="cm" xml:id="height_5e101fce"/>
+<width quantity="" unit="cm" xml:id="width_f9f5f41c"/>
+</dimensions>
+</dimensions>
+<supportDesc xml:id="supportDesc_8937a8d8">
+<support type="paper_quality" xml:id="support_08d9f104">
+<p xml:id="p_b0afd61c"/>
+</support>
+<condition xml:id="condition_9a8ab154">
+<p xml:id="p_f2ce4dd7"/>
+</condition>
+</supportDesc>
+<bindingDesc xml:id="bindingDesc_d4bb6e20">
+<binding xml:id="binding_41cff9a4">
+<condition xml:id="condition_c8f9cb65">
+<p type="general_description" xml:id="p_f5620bef"/>
+</condition>
+</binding>
+</bindingDesc>
+<watermark type="predefined" xml:id="watermark_f9bfb667">
+<title xml:id="title_dbc66e58"/>
+<ref corresp="" xml:id="ref_0fe080c8"/>
+<heraldry corresp="" xml:id="heraldry_992d6ab6"/>
+</watermark>
+<watermark type="text" xml:id="watermark_3b0cc858"/>
+</physDesc>
+<physLoc xml:id="physLoc_0cd78967">
+<repository xml:id="repository_b44670db">
+<corpName role="" xml:id="corpName_3d3b5960">Anna Amalia Bibliothek</corpName>
+<geogName role="" xml:id="geogName_c6f37877">Weimar</geogName>
+<identifier auth="RISM" auth.uri="http://www.rism.info" xml:id="identifier_0cb87a92">D-WRz</identifier>
+</repository>
+<identifier xml:id="identifier_438fb6cd"> L 1761</identifier>
+</physLoc>
+<notesStmt xml:id="notesStmt_d5f5bd60">
+<annot type="source_description" xml:id="annot_9abaf1f1">
+<p>Enthält wenige Eintragungen auf dem Titelblatt. </p>
+</annot>
+<annot type="links" xml:id="annot_1075fddf">
+<ptr mimetype="" target="https://haab-digital.klassik-stiftung.de/viewer/!metadata/4099010198/4/-/" label="Digitalisat" xml:id="ptr_d29eac01"/>
+<ptr target="https://haab-digital.klassik-stiftung.de/viewer/api/v1/records/4099010198/manifest/" mimetype="" label="Digitalisat IIIF" xml:id="ptr_994dd013"/>
+</annot>
+</notesStmt>
+<componentList xml:id="componentList_ca721984">
+<item label="Andantino" xml:id="item_22dad3f1">
+<physDesc xml:id="physDesc_e23d418d"/>
+</item>
+</componentList>
+</item>
+</itemList>
+<componentList xml:id="componentList_4a284e0f"/>
+<relationList xml:id="relationList_354dc321">
+<relation rel="isEmbodimentOf" target="#expression_f0a9bb34" xml:id="relation_6baae894"/>
+</relationList>
+</manifestation>
+<manifestation xml:id="manifestation_8dfc3954" label="Arbeitsmanuskript">
+<identifier xml:id="identifier_f82caa39"/>
+<titleStmt xml:id="titleStmt_db9cef88">
+<title xml:id="title_3fae984a">Kl, Version Nr. 4</title>
+</titleStmt>
+<classification xml:id="classification_21b8016d">
+<termList xml:id="termList_2356255b">
+<term xml:id="term_b4a754f8">Notated music</term>
+<term xml:id="term_1a1e56c6">Manuscript</term>
+<term xml:id="term_a9e91d13">Parts</term>
+<term xml:id="term_7a67f363">Fair copy</term>
+<term xml:id="term_4db8435d">Complete</term>
+<term xml:id="term_8ebbf77c">Autograph</term>
+</termList>
+</classification>
+<itemList xml:id="itemList_689b4a27">
+<item label="GSA 60/U 80" xml:id="item_ca624d27">
+<identifier label="RISM" xml:id="identifier_848a25a4">1001248443</identifier>
+<physDesc xml:id="physDesc_fde026e0">
+<m:titlePage xmlns:m="http://www.music-encoding.org/ns/mei" label="Titelseite" xml:id="titlePage_11d1c2cd">
+<p>"Die Zelle in | Nonnenwerth" | (nach einem Gedichte des Fürsten | Felix Lichnowsky) | für Pianoforte | von | Franz Liszt. | (Letzte neu veränderte Ausgabe)</p>
+</m:titlePage>
+<m:titlePage xmlns:m="http://www.music-encoding.org/ns/mei" label="Titelseite 2" xml:id="titlePage_15080b83">
+<p>D. Zelle in Nonnenwerth | Elegie | für Pianoforte | v. Fr. Liszt</p>
+</m:titlePage>
+<m:titlePage xmlns:m="http://www.music-encoding.org/ns/mei" label="Kopftitel" xml:id="titlePage_6ef1cb3c">
+<p>Die Zelle in Nonnenwerth – | Elegie, für Pianoforte | von F. Liszt (nach einem Gedicht | des Fürsten Felix | Lichnowsky)</p>
+</m:titlePage>
+<dimensions xml:id="dimensions_64e85bca">
+<locusGrp xml:id="locusGrp_a238feff">
+<locus xml:id="locus_4cb9c7b6"/>
+</locusGrp>
+<dim quantity="" xml:id="dim_9a975d69"/>
+<term xml:id="term_0a4be253"/>
+<extent quantity="" xml:id="extent_6ece8b56"> lines</extent>
+<dimensions type="format" xml:id="dimensions_c571b92e">
+<height quantity="" unit="cm" xml:id="height_084b532e"/>
+<width quantity="" unit="cm" xml:id="width_016ac270"/>
+</dimensions>
+<dimensions type="rastral_mirror" xml:id="dimensions_88c5e90b">
+<height quantity="" unit="cm" xml:id="height_c45eb660"/>
+<width quantity="" unit="cm" xml:id="width_ce853633"/>
+</dimensions>
+</dimensions>
+<dimensions xml:id="dimensions_d44f45bb">
+<height quantity="" xml:id="height_32b59743"/>
+<width quantity="" xml:id="width_16e3869d"/>
+<depth quantity="" xml:id="depth_652b63e8"/>
+<dim quantity="" xml:id="dim_8f1a5dfa"/>
+</dimensions>
+<handList xml:id="handList_d688f107">
+<hand xmlns:xl="http://www.w3.org/1999/xlink" xmlns:xs="http://www.w3.org/2001/XMLSchema" medium="" type="main" xml:id="hand_2617a6e1"/>
+</handList>
+<physMedium xml:id="physMedium_80f21ec0">
+<p>Schrift: Liszt (schwarze und bordeaux-rote Tinte, blauer und roter Stift)</p>
+<p>Umfang: 6 Blatt zu 1 <suchbar>Bogen</suchbar> und 4 <suchbar>Einzelblatt</suchbar>, 2 Titelseiten, 8 Seiten Notentext, 2 Leerseiten, paginiert</p>
+<p>Papier: Hochformat, 354 x 270 mm, 12 Notenzeilen, gedruckt (B. und H. Nr. 1. C.); Überklebung S. 2a, Querformat, 59-68 x 254 mm, 2 Notenzeilen, gedruckt, oben abgeschnitten</p>
+<p> </p>
+</physMedium>
+</physDesc>
+<physLoc xml:id="physLoc_3d6fb81a">
+<repository xml:id="repository_03016e44">
+<corpName role="" xml:id="corpName_8fde8dcf">Goethe- und Schiller-Archiv</corpName>
+<geogName role="" xml:id="geogName_ed184e1e">Weimar</geogName>
+<identifier auth="RISM" auth.uri="http://www.rism.info" xml:id="identifier_afd20595">D-WRgs</identifier>
+</repository>
+<identifier xml:id="identifier_2c9109ba">GSA 60/U 80</identifier>
+</physLoc>
+<notesStmt xml:id="notesStmt_ffe84c2e">
+<annot type="source_description" xml:id="annot_8a8bdb76">
+<p>Die Version stimmt zum größten Teil mit der Druckfassung der Neuen Liszt-Ausgabe (Bd. I/17, Klavierversionen eigener Werke III, S. 117-121) überein. Erneut ein schönes Beispiel, an dem die unterschiedlichen Arbeitsschritte deutlich werden (Revisionen).</p>
+</annot>
+<annot type="links" xml:id="annot_8d11c51e">
+<ptr mimetype="" target="https://ores.klassik-stiftung.de/ords/f?p=401:2:::::P2_ID:209561" label="Digitalisat" xml:id="ptr_c95ef6d7"/>
+<ptr target="https://ores.klassik-stiftung.de/ords/rest_api/iiif/digi_gsa/209561/manifest" mimetype="" label="Digitalisat IIIF" xml:id="ptr_e72b6d2a"/>
+</annot>
+</notesStmt>
+<componentList xml:id="componentList_55b56d6a">
+<item label="Andantino" xml:id="item_fc6170dc">
+<physDesc xml:id="physDesc_80043e66"/>
+</item>
+</componentList>
+</item>
+</itemList>
+<componentList xml:id="componentList_cf0193a6"/>
+<relationList xml:id="relationList_c8d4ed8e">
+<relation rel="isEmbodimentOf" target="#expression_534c3bca" xml:id="relation_44798b39"/>
+</relationList>
+</manifestation>
+</manifestationList>
+<revisionDesc>
+<change xml:id="change_9bcf0e31">
+<respStmt xml:id="respStmt_94ab1fce">
+<name xml:id="name_1162857e"/>
+</respStmt>
+<changeDesc xml:id="changeDesc_1363e024">
+<p xml:id="p_e0000ebb"/>
+</changeDesc>
+</change>
+<change isodate="2023-07-06T11:50:20.065Z" xml:id="change_27423d81-4424">
+<respStmt xml:id="respStmt_38773871">
+<resp xml:id="resp_cd7e9ed2">mermeid</resp>
+</respStmt>
+<changeDesc xml:id="changeDesc_4ff82184-81c2">
+<p xml:id="p_f110b32d">file created with MerMEId</p>
+</changeDesc>
+</change>
+<change isodate="2023-07-06T14:45:49.481Z" xml:id="change_3fdbbeba">
+<respStmt xml:id="respStmt_ec251bfe">
+<name xml:id="name_40941340"/>
+</respStmt>
+<changeDesc xml:id="changeDesc_a5e92e90">
+<p xml:id="p_0581acd2"/>
+</changeDesc>
+</change>
+<change isodate="2023-07-07T14:37:30.034Z" xml:id="change_dd962d42">
+<respStmt xml:id="respStmt_bb6f2675">
+<name xml:id="name_d3e1623d"/>
+</respStmt>
+<changeDesc xml:id="changeDesc_dcf25159">
+<p xml:id="p_9b7acda9"/>
+</changeDesc>
+</change>
+<change isodate="2023-07-24T13:25:01.81Z" xml:id="change_ef78bdf5">
+<respStmt xml:id="respStmt_1031c8b9">
+<name xml:id="name_278631aa"/>
+</respStmt>
+<changeDesc xml:id="changeDesc_b3117135">
+<p xml:id="p_0f4c3f20"/>
+</changeDesc>
+</change>
+<change isodate="2023-08-29T08:24:38.189Z" xml:id="change_82a29f2b">
+<respStmt xml:id="respStmt_d103f285">
+<name xml:id="name_6c252e17"/>
+</respStmt>
+<changeDesc xml:id="changeDesc_b7eabe73">
+<p xml:id="p_4d1e9f94"/>
+</changeDesc>
+</change>
+<change isodate="2023-10-24T16:22:35.176Z" xml:id="change_b67e2bbc">
+<respStmt xml:id="respStmt_66425eef">
+<name xml:id="name_6e48567d"/>
+</respStmt>
+<changeDesc xml:id="changeDesc_7a59bee8">
+<p xml:id="p_93a071df"/>
+</changeDesc>
+</change>
+<change isodate="2023-12-07T16:02:09.76Z">
+<respStmt>
+<name/>
+</respStmt>
+<changeDesc>
+<p/>
+</changeDesc>
+</change>
+</revisionDesc>
+</meiHead>
+<music/>
+</mei>

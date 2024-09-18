@@ -13,21 +13,36 @@ This comprises the elasticsearch connection and translation of file formats.
 
 You can obtain a Controller with easy access to elasticsearch by inheriting from ClientEnabledController.
 
-    use Slub\LisztCommon\Controller\ClientEnabledController;
+```php
+use Slub\LisztCommon\Controller\ClientEnabledController;
 
-    class ActionController extends ClientEnabledController
-    {
+class ActionController extends ClientEnabledController
+{
     
-      public function ExampleAction()
-      {
-        $this->initializeClient();
-        $params = ...
-        $entity = $this->elasticClient->search($params);
-        ...
+  public function ExampleAction()
+  {
+      $this->initializeClient();
+      $params = ...
+      $entity = $this->elasticClient->search($params);
+      ...
         
-      }
+  }
 
-    }
+}
+```
+        
+## Translation between XML and JSON
+
+You can read in an XML document and translate it to a PHP array or JSON.
+
+```php
+use Slub\LisztCommon\Common\XmlDocument;
+...
+
+$xmlDocument = XmlDocument::from($xmlString);
+$array = $xmlDocument->toArray();
+$json = $xmlDocument->toJson();
+```
 
 # Maintainer
 
