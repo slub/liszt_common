@@ -6,17 +6,46 @@
         "GPL-2.0-or-later"
     ],
     "require": {
-        "typo3/cms-core": "^11.5",
-        "elasticsearch/elasticsearch": "^7"
+        "typo3/cms-core": "^12",
+        "elasticsearch/elasticsearch": "^8",
+        "illuminate/collections": "^11"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^1",
+        "phpunit/phpunit": "^9.4",
+        "typo3/testing-framework": "^7"
     },
     "autoload": {
         "psr-4": {
             "Slub\\LisztCommon\\": "Classes/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Slub\\LisztCommon\\Tests\\": "Tests"
+        }
+    },
     "extra": {
         "typo3/cms": {
             "extension-key": "liszt_common"
         }
+    },
+    "scripts": {
+        "ci": [ "@ci:install", "@ci:php", "@ci:tests" ],
+        "ci:php": [ "@ci:php:stan" ],
+        "ci:php:stan": [ "Build/Scripts/runTests.sh -s phpstan -b docker" ],
+        "ci:tests": [ "@ci:tests:unit", "@ci:tests:functional" ],
+        "ci:tests:unit": [ "Build/Scripts/runTests.sh -s unit -b docker" ],
+        "ci:tests:functional": [ "Build/Scripts/runTests.sh -s functional -b docker" ],
+        "ci:install": [ "Build/Scripts/runTests.sh -s composerInstall -b docker" ]
+    },
+    "config": {
+        "allow-plugins": {
+            "typo3/class-alias-loader": true,
+            "typo3/cms-composer-installers": true,
+            "php-http/discovery": true
+        },
+        "vendor-dir": "vendor",
+        "bin-dir": "bin"
     }
 }

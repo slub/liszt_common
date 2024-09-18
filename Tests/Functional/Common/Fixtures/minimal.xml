@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root xml:id="minimal_root">
+    <subroot>
+        <subsubroot>
+            entry
+        </subsubroot>
+    </subroot>
+
+</root>
