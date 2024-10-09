@@ -8,11 +8,13 @@ use Slub\LisztCommon\Controller\SearchController;
 
 defined('TYPO3') or die();
 
+
+// Attention! ToDo: research for disable Cache for this Controller and Searchbar
 ExtensionUtility::configurePlugin(
     'LisztCommon',
     'SearchListing',
     [ SearchController::class => 'index' ],
-    [ SearchController::class => '' ]
+    [ SearchController::class => 'index' ]
 );
 
 ExtensionManagementUtility::addPageTSConfig(
