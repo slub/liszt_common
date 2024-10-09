@@ -8,7 +8,15 @@
                 <source>Suchen</source>
             </trans-unit>
 
-
+			<trans-unit id="listing_title" resname="tx_publisherdb_domain_model_publishermikroitem">
+				<source>Liszt Suchergebnisse</source>
+			</trans-unit>
+			<trans-unit id="listing_description" resname="tx_publisherdb_domain_model_publishermikroitem">
+				<source>Auflistung der Suchergebnisse</source>
+			</trans-unit>
+			<trans-unit id="searchButtonLabel">
+				<source>Suchen</source>
+			</trans-unit>
         </body>
     </file>
 </xliff>

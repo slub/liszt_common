@@ -1,0 +1,28 @@
+name: slub/lisztsearchresultspage
+title: 'Liszt Suchergebnisse Seite'
+typeName: 130
+fields:
+  - identifier: categories
+    label: 'Kategorien'
+    type: Category
+  - identifier: image
+    type: File
+    allowed: common-image-types
+    maxitems: 1
+    label: 'Seitenbild'
+  - identifier: headline
+    type: Textarea
+    rows: 2
+    cols: 10
+    label: 'Rote Überschrift (zweizeilig!)'
+  - identifier: showNewsTeaser
+    type: Checkbox
+    label: 'News Teaser anzeigen'
+    items:
+      - label: 'Ja'
+  - identifier: teaserImage
+    type: File
+    allowed: common-image-types
+    maxitems: 1
+    label: 'Teaserbild'
+

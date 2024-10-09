@@ -6,3 +6,5 @@ services:
   Slub\LisztCommon\:
     resource: '../Classes/*'
     exclude: '../Classes/Domain/Model/*'
+#  if more than one! class implement the same interface (i.e.Search Interface) read: https://usetypo3.com/dependency-injection/
+# and https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/ApiOverview/DependencyInjection/Index.html
