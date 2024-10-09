@@ -8,13 +8,11 @@ use Slub\LisztCommon\Controller\SearchController;
 
 defined('TYPO3') or die();
 
-# ToDo: create search controller and search actions
 ExtensionUtility::configurePlugin(
     'LisztCommon',
-    'SearchBar',
-    [
-        SearchController::class => 'index',
-    ]
+    'SearchListing',
+    [ SearchController::class => 'index' ],
+    [ SearchController::class => '' ]
 );
 
 ExtensionManagementUtility::addPageTSConfig(

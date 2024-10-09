@@ -1,0 +1,30 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+
+<div class="t3-grid-container mb-2">
+    <div class="t3-grid-container-inner">
+        <div class="px-4 py-4">
+            <div class="row">
+                <div class="col-3">
+                    <f:if condition="{data.image.0}" >
+                        <f:then>
+                            <div class="page-header-image">
+                                <f:image class="img-fluid" image="{data.image.0}" />
+                            </div>
+                        </f:then>
+                        <f:else>
+                            <div class="page-header-image">
+                                <f:image class="img-fluid" src="EXT:liszt_web/Resources/Public/Images/Liszt-Kopf-2.gif" alt="Franz Liszt Porträt Foto" />
+                            </div>
+                        </f:else>
+                    </f:if>
+                </div>
+                <div class="col-9">
+                    <h1 style="color: #ff4208;">{f:if(condition: data.headline, then: data.headline, else: data.title )}</h1>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>

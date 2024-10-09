@@ -1,6 +1,50 @@
+mod.web_layout.BackendLayouts {
+  searchResults {
+    title = Liszt Suchergebnisse
+    ## icon = EXT:liszt_web/Resources/Public/Images/BackendLayouts/default.gif
+    config {
+      backend_layout {
+        doktype = 130
+        colCount = 1
+        rowCount = 1
+        rows {
+          1 {
+            columns {
+              1 {
+                name = Hauptinhalt
+                colPos = 0
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// add content element to wizard
+// https://docs.typo3.org/m/typo3/reference-coreapi/12.4/en-us/ApiOverview/ContentElements/AddingYourOwnContentElements.html
+mod.wizards.newContentElement.wizardItems {
+  plugins {
+    elements {
+      lisztcommon_searchlisting {
+        iconIdentifier = content-text
+        title = LLL:EXT:liszt_common/Resources/Private/Language/locallang.xlf:listing_title
+        description = LLL:EXT:liszt_common/Resources/Private/Language/locallang.xlf:listing_description
+        tt_content_defValues {
+          CType = list
+          list_type = lisztcommon_searchlisting
+        }
+      }
+    }
+    show := addToList(lisztcommon_searchlisting)
+  }
+}
+
+
 # Add layout for editors to hide SearchBar in backend page setup if needed
 
-TCEFORM {
+/*TCEFORM {
     pages {
         layout {
             addItems {
@@ -8,7 +52,7 @@ TCEFORM {
             }
         }
     }
-}
+}*/
 
 /*mod.wizards.newContentElement.wizardItems {
     // add the content elementS to the tab "plugins" TODO: can be removed
