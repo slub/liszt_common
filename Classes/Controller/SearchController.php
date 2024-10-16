@@ -39,11 +39,16 @@ final class SearchController extends ClientEnabledController
 
         $this->view->assign('totalItems', $elasticResponse['hits']['total']['value']);
 
-       $searchParams = $this->request->getQueryParams();
+        $searchParams = $this->request->getQueryParams();
         $this->view->assign('searchParams', $searchParams);
 
 
         $this->view->assign('searchResults', $elasticResponse);
+        return $this->htmlResponse();
+    }
+
+    public function searchBarAction(): ResponseInterface
+    {
         return $this->htmlResponse();
     }
 

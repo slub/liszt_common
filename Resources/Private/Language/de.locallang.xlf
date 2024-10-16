@@ -15,7 +15,7 @@
 				<source>Auflistung der Suchergebnisse</source>
 			</trans-unit>
 			<trans-unit id="searchbar_title" >
-				<source>Liszt SearchBar</source>
+				<source>Liszt Suchschlitz</source>
 			</trans-unit>
 			<trans-unit id="searchbar_description" >
 				<source>Sucheingabe / Suchschlitz</source>
