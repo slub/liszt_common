@@ -8,10 +8,10 @@
     <div class="container-xl">
 
         <f:form name="searchBar" controller="Search" action="index" method="get" extensionName="liszt_common" class="form-inline">
-            <div class="input-group mb-3">
+            <div class="input-group">
 
-                <f:form.textfield name="searchParams[searchText]" value="{searchParams.tx_liszt_common_searchlisting.searchParams.searchText}" class="form-control no-shadow" aria="{label:'Text input with dropdown button'}" placeholder="" />
-                <f:form.button class="btn btn-outline-dark" id="button-searchBar">{f:translate(key: 'searchButtonLabel', extensionName: 'liszt_common')}</f:form.button>
+                <f:form.textfield name="searchParams[searchText]" value="{searchParams.tx_liszt_common_searchlisting.searchParams.searchText}" class="" aria="{label:'Text input with dropdown button'}" placeholder="" />
+                <f:form.button class="btn btn-primary" id="button-searchBar">{f:translate(key: 'searchButtonLabel', extensionName: 'liszt_common')}</f:form.button>
             </div>
         </f:form>
 

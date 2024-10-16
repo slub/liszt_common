@@ -4,13 +4,12 @@
 
 <f:comment>ToDo: viewHelper for SearchParams</f:comment>
 <section id="searchbar" class="searchbar">
-<f:debug>{_all}</f:debug>
     <div class="container-xl">
         <form action="{f:uri.action(controller: 'Search', action: 'index', extensionName: 'liszt_common', pluginName: 'SearchListing', pageUid: '18')}" method="GET" role="search">
-            <div class="input-group mb-3">
+            <div class="input-group">
 
-                <input name="tx_liszt_common_searchlisting[searchParams][searchText]"  class="form-control no-shadow" aria-label="Text input with dropdown button" placeholder="" />
-                <button class="btn btn-outline-dark" id="button-searchBar">{f:translate(key: 'searchButtonLabel', extensionName: 'liszt_common')}
+                <input name="tx_liszt_common_searchlisting[searchParams][searchText]"  class="" aria-label="Text input with dropdown button" placeholder="" />
+                <button class="btn btn-primary" id="button-searchBar">{f:translate(key: 'searchButtonLabel', extensionName: 'liszt_common')}
                 </button>
             </div>
         </form>
