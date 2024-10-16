@@ -28,10 +28,8 @@ final class SearchController extends ClientEnabledController
 
 
 
-    public function indexAction(array $searchParams ): ResponseInterface
+    public function indexAction(array $searchParams = []): ResponseInterface
     {
-debug('hier!!');
-debug($searchParams);
         $language = $this->request->getAttribute('language');
         $locale = $language->getLocale();
 
