@@ -8,10 +8,12 @@
 <f:layout name="Default"/>
 
 
-
 <f:section name="Main">
 
-    <f:render partial="SearchBar" arguments="{_all}" />
+    <f:comment>
+        disable insert searchbar as simple partial because ViewHelper f:form can be used only in extbase context
+        <f:render partial="SearchBar" arguments="{_all}" />
+    </f:comment>
 
     <f:if condition="{f:cObject(typoscriptObjectPath: 'lib.hasContent', data: '{colPos: 0}')}">
             <main role="main" id="page-content">

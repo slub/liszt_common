@@ -1,13 +1,12 @@
 <?php
-
-
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 
 defined('TYPO3') or die();
 
-// register search Plugin
+
+// register search Results Plugin
 ExtensionUtility::registerPlugin(
     'liszt_common',
     'SearchListing',

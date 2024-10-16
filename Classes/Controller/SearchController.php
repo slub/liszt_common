@@ -28,7 +28,7 @@ final class SearchController extends ClientEnabledController
 
 
 
-    public function indexAction(): ResponseInterface
+    public function indexAction(array $searchParams = []): ResponseInterface
     {
         $language = $this->request->getAttribute('language');
         $locale = $language->getLocale();
@@ -39,7 +39,7 @@ final class SearchController extends ClientEnabledController
 
         $this->view->assign('totalItems', $elasticResponse['hits']['total']['value']);
 
-        $searchParams = $this->request->getQueryParams();
+       $searchParams = $this->request->getQueryParams();
         $this->view->assign('searchParams', $searchParams);
 
 

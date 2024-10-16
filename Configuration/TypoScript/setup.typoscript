@@ -18,11 +18,6 @@ page {
   }
 }
 
-// path to fluid templates
-// lib.contentElement {
-//  templateRootPaths.200 = EXT:liszt_common/Resources/Private/Templates/
-//}
-
 lib.contentElement {
   templateRootPaths {
     200 = EXT:liszt_common/Resources/Private/ExtensionOverrides/fluid_styled_content/Templates/
@@ -39,13 +34,6 @@ lib.contentElement {
 
 }
 
-#// register the rendering of SearchListing
-#tt_content {
-#  lisztcommon_searchlisting =< lib.contentElement
-#  lisztcommon_searchlisting {
-#  templateName = SearchListing
-#}
-#}
 
 tt_content {
   list {
@@ -53,18 +41,7 @@ tt_content {
   }
 }
 
-/*plugin.tx_liszt_common {
-    view {
-        templateRootPaths.0 = EXT:liszt_common/Resources/Private/Templates/
-        templateRootPaths.1 = {$plugin.tx_liszt_common.view.templateRootPath}
-        partialRootPaths.0 = EXT:liszt_common/Resources/Private/Partials/
-        partialRootPaths.1 = {$plugin.tx_liszt_common.view.partialRootPath}
-        layoutRootPaths.0 = EXT:liszt_common/Resources/Private/Layouts/
-        layoutRootPaths.1 = {$plugin.tx_liszt_common.view.layoutRootPath}
-    }
-}*/
 
-# maybe we need a USER object to run a initialisation?
 
 # get the selected frontend layout from page table for show/hide SearchBar, because bootstrap package not use this param
 #lib.selectedFrontendLayout = TEXT
