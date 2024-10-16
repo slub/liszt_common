@@ -36,8 +36,18 @@ mod.wizards.newContentElement.wizardItems {
           list_type = lisztcommon_searchlisting
         }
       }
+      lisztcommon_searchbar {
+        iconIdentifier = content-text
+        title = LLL:EXT:liszt_common/Resources/Private/Language/locallang.xlf:searchbar_title
+        description = LLL:EXT:liszt_common/Resources/Private/Language/locallang.xlf:searchbar_description
+        tt_content_defValues {
+          CType = list
+          list_type = lisztcommon_searchbar
+        }
+      }
     }
     show := addToList(lisztcommon_searchlisting)
+    show := addToList(lisztcommon_searchbar)
   }
 }
 
