@@ -9,7 +9,7 @@ use Slub\LisztCommon\Controller\SearchController;
 defined('TYPO3') or die();
 
 
-// Attention! ToDo: research for disable Cache for this Controller and Searchbar
+// configure Search Listing Plugin, disable caching so that the search terms entered are updated and not the entire search-page was cached in page cache
 ExtensionUtility::configurePlugin(
     'LisztCommon',
     'SearchListing',

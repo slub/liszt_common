@@ -4,18 +4,16 @@
 
 <f:comment>ToDo: viewHelper for SearchParams</f:comment>
 <section id="searchbar" class="searchbar">
-<f:debug>{lw:getQueryParams(param: 'text')}</f:debug>
+<f:debug>{_all}</f:debug>
     <div class="container-xl">
-<f:comment>Todo: write a config var for serach action in form action method</f:comment>
-<f:comment>Cache Problem: https://b13.com/blog/caching-in-typo3-part-1-frontend-caches</f:comment>
-        <form  method="get" action="/bibliografie" class="form-inline">
+
+        <f:form name="searchBar" controller="Search" action="index" method="get" extensionName="liszt_common" class="form-inline">
             <div class="input-group mb-3">
 
-                <input name="text" value="{lw:getQueryParams(param: 'text')}" class="form-control no-shadow" aria="{label:'Text input with dropdown button'}" placeholder="" />
-                <button class="btn btn-outline-dark" id="button-searchBar">{f:translate(key: 'searchButtonLabel', extensionName: 'liszt_common')}
-                </button>
+                <f:form.textfield name="searchParams[searchText]" value="{searchParams.tx_liszt_common_searchlisting.searchParams.searchText}" class="form-control no-shadow" aria="{label:'Text input with dropdown button'}" placeholder="" />
+                <f:form.button class="btn btn-outline-dark" id="button-searchBar">{f:translate(key: 'searchButtonLabel', extensionName: 'liszt_common')}</f:form.button>
             </div>
-        </form>
+        </f:form>
 
 
     </div>

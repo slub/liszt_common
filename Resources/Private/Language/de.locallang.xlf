@@ -8,11 +8,17 @@
                 <source>Suchen</source>
             </trans-unit>
 
-			<trans-unit id="listing_title" resname="tx_publisherdb_domain_model_publishermikroitem">
+			<trans-unit id="listing_title" >
 				<source>Liszt Suchergebnisse</source>
 			</trans-unit>
-			<trans-unit id="listing_description" resname="tx_publisherdb_domain_model_publishermikroitem">
+			<trans-unit id="listing_description" >
 				<source>Auflistung der Suchergebnisse</source>
+			</trans-unit>
+			<trans-unit id="searchbar_title" >
+				<source>Liszt SearchBar</source>
+			</trans-unit>
+			<trans-unit id="searchbar_description" >
+				<source>Sucheingabe / Suchschlitz</source>
 			</trans-unit>
 			<trans-unit id="searchButtonLabel">
 				<source>Suchen</source>
