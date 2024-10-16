@@ -20,6 +20,9 @@
 			<trans-unit id="searchbar_description" >
 				<source>Sucheingabe / Suchschlitz</source>
 			</trans-unit>
+			<trans-unit id="searchbar_placeholder" >
+				<source>Suche in der Bibliografie</source>
+			</trans-unit>
 			<trans-unit id="searchButtonLabel">
 				<source>Suchen</source>
 			</trans-unit>
