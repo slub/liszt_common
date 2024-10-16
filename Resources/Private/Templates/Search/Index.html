@@ -3,12 +3,14 @@
 
 
 
+<output class="searchResults-totalItems frame">{totalItems} Treffer</output>
+
 
 <aside class="sidebar">
 
     <f:for each="{searchResults.aggregations}" key="key" as="filterGroup">
         <f:if condition="{filterGroup.buckets}">
-            <div class="filter-block">
+            <div class="filter-block frame">
                 <h4 class="">{key}</h4>
                 <ul>
                     <f:for each="{filterGroup.buckets}" as="filter">
@@ -23,7 +25,7 @@
 <article class="content grid-colspan-lg-2">
 
     <f:for each="{searchResults.hits.hits}" as="hit">
-        <div class="search-result-item">
+        <div class="search-result-item frame">
             <f:if condition="{hit._source.localizedCitations.{locale}}">
                 <f:then>
                     <f:format.html >{hit._source.localizedCitations.{locale}}</f:format.html>
