@@ -22,7 +22,8 @@ ExtensionUtility::configurePlugin(
     'LisztCommon',
     'SearchBar',
     [ SearchController::class => 'searchBar' ],
-    [ ]
+    [ SearchController::class => 'searchBar' ],
+
 );
 
 ExtensionManagementUtility::addPageTSConfig(
