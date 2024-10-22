@@ -33,7 +33,7 @@ final class SearchController extends ClientEnabledController
         $language = $this->request->getAttribute('language');
         $locale = $language->getLocale();
 
-        $elasticResponse = $this->elasticSearchService->search();
+        $elasticResponse = $this->elasticSearchService->search($searchParams);
 
         $this->view->assign('locale', $locale);
 
