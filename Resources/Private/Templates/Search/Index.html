@@ -3,8 +3,8 @@
 
 
 
-<output class="searchResults-totalItems frame">{totalItems} Treffer</output>
-
+<output class="searchresults-total-items frame">{totalItems} Treffer</output>
+<f:debug>{_all}</f:debug>
 
 <aside class="sidebar">
 
@@ -25,7 +25,7 @@
 <article class="content grid-colspan-lg-3 grid-colspan-md-2">
 
     <f:for each="{searchResults.hits.hits}" as="hit">
-        <div class="search-result-item frame">
+        <div class="searchresults-item frame">
             <f:if condition="{hit._source.localizedCitations.{locale}}">
                 <f:then>
                     <f:format.html >{hit._source.localizedCitations.{locale}}</f:format.html>

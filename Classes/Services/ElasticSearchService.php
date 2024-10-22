@@ -22,6 +22,9 @@ class ElasticSearchService implements ElasticSearchServiceInterface
     protected string $bibIndex;
     protected string $localeIndex;
 
+    protected array $params = [];
+
+
     // Todo: Enable Elasticsearch Security: built-in security features are not enabled.
     public function init(): bool
     {
@@ -38,17 +41,13 @@ class ElasticSearchService implements ElasticSearchServiceInterface
         return ($this->client->info()->asArray());
     }
 
-    public function search(): Collection
+    private function createParams(array $searchParams): void
     {
-        $this->init();
-        $params = [
+        $this->params = [
             'index' => $this->bibIndex,
             'body' => [
-                'query' => [
-                    'match_all' => new \stdClass()
-                ],
-            'size' => 10,
-             '_source' => ['itemType', 'title', 'creators', 'pages','date','language', 'localizedCitations'],
+                'size' => 10,
+                '_source' => ['itemType', 'title', 'creators', 'pages','date','language', 'localizedCitations'],
                 'aggs' => [
                     'itemType' => [
                         'terms' => [
@@ -63,8 +62,38 @@ class ElasticSearchService implements ElasticSearchServiceInterface
                 ]
             ]
         ];
+
+        if (!isset($searchParams['searchText']) || $searchParams['searchText'] == '') {
+            $this->params['body']['query'] = [
+                'bool' => [
+                    'must' => [ [
+                        'match_all' => new \stdClass()
+                    ] ]
+                ]
+            ];
+        } else {
+            $this->params['body']['query'] = [
+                'bool' => [
+                    'must' => [ [
+                        'query_string' => [
+                            'query' => $searchParams['searchText']
+                        ]
+                    ] ]
+                ]
+            ];
+        }
+
+
+
+    }
+
+    public function search($searchParams): Collection
+    {
+        $this->init();
+        $this->createParams($searchParams);
+
         // ToDo: handle exceptions!
-        $response = $this->client->search($params);
+        $response = $this->client->search($this->params);
         return new Collection($response->asArray());
     }
 
