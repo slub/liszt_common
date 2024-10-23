@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Slub\LisztCommon\Services;
 
 use Elastic\Elasticsearch\Client;
@@ -8,6 +7,7 @@ use Elastic\Elasticsearch\Response\Elasticsearch;
 use Http\Promise\Promise;
 use Illuminate\Support\Collection;
 use Slub\LisztCommon\Common\ElasticClientBuilder;
+use Slub\LisztCommon\Common\QueryParamsBuilder;
 use Slub\LisztCommon\Interfaces\ElasticSearchServiceInterface;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -41,56 +41,12 @@ class ElasticSearchService implements ElasticSearchServiceInterface
         return ($this->client->info()->asArray());
     }
 
-    private function createParams(array $searchParams): void
-    {
-        $this->params = [
-            'index' => $this->bibIndex,
-            'body' => [
-                'size' => 10,
-                '_source' => ['itemType', 'title', 'creators', 'pages','date','language', 'localizedCitations'],
-                'aggs' => [
-                    'itemType' => [
-                        'terms' => [
-                            'field' => 'itemType.keyword',
-                        ]
-                    ],
-                    'place' => [
-                        'terms' => [
-                            'field' => 'place.keyword',
-                        ]
-                    ]
-                ]
-            ]
-        ];
 
-        if (!isset($searchParams['searchText']) || $searchParams['searchText'] == '') {
-            $this->params['body']['query'] = [
-                'bool' => [
-                    'must' => [ [
-                        'match_all' => new \stdClass()
-                    ] ]
-                ]
-            ];
-        } else {
-            $this->params['body']['query'] = [
-                'bool' => [
-                    'must' => [ [
-                        'query_string' => [
-                            'query' => $searchParams['searchText']
-                        ]
-                    ] ]
-                ]
-            ];
-        }
-
-
-
-    }
 
     public function search($searchParams): Collection
     {
         $this->init();
-        $this->createParams($searchParams);
+        $this->params = QueryParamsBuilder::createElasticParams($this->bibIndex, $searchParams);
 
         // ToDo: handle exceptions!
         $response = $this->client->search($this->params);
