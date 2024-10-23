@@ -7,19 +7,20 @@
 <f:debug>{_all}</f:debug>
 
 <aside class="sidebar">
-
-    <f:for each="{searchResults.aggregations}" key="key" as="filterGroup">
-        <f:if condition="{filterGroup.buckets}">
-            <div class="filter-block frame">
-                <h4 class="">{key}</h4>
-                <ul>
-                    <f:for each="{filterGroup.buckets}" as="filter">
-                        <li><span class="form-checkbox"><input class="form-check-input" type="checkbox" id="{filter.key}" value="{filter.key}"><label class="form-check-label" for="{filter.key}">{filter.key}</label></span><span class="count">{filter.doc_count}</span></li>
-                    </f:for>
-                </ul>
-            </div>
-        </f:if>
-    </f:for>
+    <div class="filter-container" >
+        <f:for each="{searchResults.aggregations}" key="key" as="filterGroup">
+            <f:if condition="{filterGroup.buckets}">
+                <div class="filter-block frame">
+                    <h4 class="">{key}</h4>
+                    <ul>
+                        <f:for each="{filterGroup.buckets}" as="filter">
+                            <li><span class="form-checkbox"><input class="form-check-input" type="checkbox" id="{filter.key}" value="{filter.key}"><label class="form-check-label" for="{filter.key}">{filter.key}</label></span><span class="count">{filter.doc_count}</span></li>
+                        </f:for>
+                    </ul>
+                </div>
+            </f:if>
+        </f:for>
+    </div>
 
 </aside>
 <article class="content grid-colspan-lg-3 grid-colspan-md-2">
