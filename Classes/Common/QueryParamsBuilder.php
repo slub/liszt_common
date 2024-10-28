@@ -12,7 +12,7 @@ class QueryParamsBuilder
             'index' => $bibIndex,
             'body' => [
                 'size' => 10,
-                '_source' => ['itemType', 'title', 'creators', 'pages', 'date', 'language', 'localizedCitations'],
+                '_source' => ['itemType', 'title', 'creators', 'pages', 'date', 'language', 'localizedCitations', 'publicationTitle', 'archiveLocation'],
                 'aggs' => [
                     'itemType' => [
                         'terms' => [
