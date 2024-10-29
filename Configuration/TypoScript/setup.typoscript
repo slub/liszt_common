@@ -1,40 +1,57 @@
-page.includeJSFooterlibs.Elasticsearch = EXT:liszt_common/Resources/Public/JavaScript/Src/elasticsearch.min.js
-page.includeJSFooter.UrlManager = EXT:liszt_common/Resources/Public/JavaScript/Src/UrlManager.js
-page.includeJSFooter.Constants = EXT:liszt_common/Resources/Public/JavaScript/Src/Constants.js
+// add doktype for ContentBlock Pagetype 'SearchResults' to select it in backend
+page {
+  10 {
+    templateName {
+      cObject = CASE
+      cObject {
+        key.field = doktype
+        130 = TEXT
+        130.value = SearchResults
+      }
+    }
+    templateRootPaths {
+      20 = EXT:liszt_common/Resources/Private/Templates/
+    }
+    partialRootPaths {
+      20 = EXT:liszt_common/Resources/Private/Partials/
+    }
+  }
+}
 
-#plugin.tx_liszt_common {
-#    view {
-#        templateRootPaths.0 = EXT:liszt_common/Resources/Private/Templates/
-#        templateRootPaths.1 = {$plugin.tx_liszt_common.view.templateRootPath}
-#        partialRootPaths.0 = EXT:liszt_common/Resources/Private/Partials/
-#        partialRootPaths.1 = {$plugin.tx_liszt_common.view.partialRootPath}
-#        layoutRootPaths.0 = EXT:liszt_common/Resources/Private/Layouts/
-#        layoutRootPaths.1 = {$plugin.tx_liszt_common.view.layoutRootPath}
-#    }
-#    persistence {
-#        storagePid = {$plugin.tx_liszt_common.persistence.storagePid}
-#        recursive = 1
-#    }
-#    features {
-#        skipDefaultArguments = 1
-#        requireCHashArgumentForActionArguments = 0
-#    }
-#    mvc {
-#        callDefaultActionIfActionCantBeResolved = 1
-#    }
-#}
+lib.contentElement {
+  templateRootPaths {
+    200 = EXT:liszt_common/Resources/Private/ExtensionOverrides/fluid_styled_content/Templates/
+  }
+  partialRootPaths {
+    200 = EXT:liszt_common/Resources/Private/ExtensionOverrides/fluid_styled_content/Partials/
+  }
+  layoutRootPaths {
+    200 = EXT:liszt_common/Resources/Private/ExtensionOverrides/fluid_styled_content/Layouts/
+  }
+  settings {
 
-# maybe we need a USER object to run a initialisation?
+  }
+
+}
+
+
+tt_content {
+  list {
+    templateName = SearchListing
+  }
+}
+
+
 
 # get the selected frontend layout from page table for show/hide SearchBar, because bootstrap package not use this param
-lib.selectedFrontendLayout = TEXT
-lib.selectedFrontendLayout.data = levelfield:-1, layout, slide
+#lib.selectedFrontendLayout = TEXT
+#lib.selectedFrontendLayout.data = levelfield:-1, layout, slide
 
 
 
 # copy element in PAGE object to display in fluid template
 # page = PAGE
-page {
+/*page {
     10 =FLUIDTEMPLATE
     10 {
         variables {
@@ -58,7 +75,8 @@ page {
             selectedFrontendLayout < lib.selectedFrontendLayout
         }
     }
-}
+}*/
 
 
-
+plugin.tx_lisztcommon_searchbar.view.pluginNamespace = tx_liszt_common_searchlisting
+plugin.tx_lisztcommon_searchlisting.view.pluginNamespace = tx_liszt_common_searchlisting

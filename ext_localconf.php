@@ -8,13 +8,21 @@ use Slub\LisztCommon\Controller\SearchController;
 
 defined('TYPO3') or die();
 
-# ToDo: create search controller and search actions
+
+// configure Search Listing Plugin, disable caching so that the search terms entered are updated and not the entire search-page was cached in page cache
+ExtensionUtility::configurePlugin(
+    'LisztCommon',
+    'SearchListing',
+    [ SearchController::class => 'index' ],
+    [ SearchController::class => 'index' ]
+);
+
+// configure Search Listing Plugin, disable caching so that the search terms entered are updated and not the entire search-page was cached in page cache
 ExtensionUtility::configurePlugin(
     'LisztCommon',
     'SearchBar',
-    [
-        SearchController::class => 'index',
-    ]
+    [ SearchController::class => 'searchBar' ],
+    [ SearchController::class => 'searchBar' ],
 );
 
 ExtensionManagementUtility::addPageTSConfig(

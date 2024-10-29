@@ -9,6 +9,25 @@
             </trans-unit>
 
 
-        </body>
+			<trans-unit id="listing_title" >
+				<source>Liszt Suchergebnisse</source>
+			</trans-unit>
+			<trans-unit id="listing_description" >
+				<source>Auflistung der Suchergebnisse</source>
+			</trans-unit>
+			<trans-unit id="searchbar_title" >
+				<source>Liszt Suchschlitz</source>
+			</trans-unit>
+			<trans-unit id="searchbar_description" >
+				<source>Sucheingabe / Suchschlitz</source>
+			</trans-unit>
+			<trans-unit id="searchbar_placeholder" >
+				<source>Suche in der Bibliografie</source>
+			</trans-unit>
+			<trans-unit id="searchButtonLabel">
+				<source>Suchen</source>
+			</trans-unit>
+
+		</body>
     </file>
 </xliff>
