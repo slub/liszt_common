@@ -23,7 +23,6 @@ ExtensionUtility::configurePlugin(
     'SearchBar',
     [ SearchController::class => 'searchBar' ],
     [ SearchController::class => 'searchBar' ],
-
 );
 
 ExtensionManagementUtility::addPageTSConfig(
