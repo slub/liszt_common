@@ -38,13 +38,14 @@ class QueryParamsBuilder
         } else {
             $params['body']['query'] = [
                 'bool' => [
-                    'must' => [[
-                        'query_string' => [
-                            'query' => $searchParams['searchText']
-                        ]
-                    ]]
+                    'must' => [
+                            ['query_string' => ['query' => $searchParams['searchText']]],
+                    ]
                 ]
             ];
+        }
+        if (isset($searchParams['f_itemType']) && $searchParams['f_itemType'] !== "") {
+            $params['body']['query']['bool']['filter']['term']['itemType.keyword'] = $searchParams['f_itemType'];
         }
         return $params;
     }
