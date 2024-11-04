@@ -27,6 +27,12 @@
 			<trans-unit id="searchButtonLabel">
 				<source>Suchen</source>
 			</trans-unit>
+			<trans-unit id="filter_container_label">
+				<source>Suchfilter</source>
+			</trans-unit>
+			<trans-unit id="filter_container_close">
+				<source>Filtermenü schließen</source>
+			</trans-unit>
 
 		</body>
     </file>

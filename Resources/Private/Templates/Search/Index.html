@@ -4,13 +4,23 @@
     data-namespace-typo3-fluid="true">
 
 
+<div class="searchresults-info frame">
+    <output class="searchresults-total-items">{totalItems} Treffer</output>
+    <button class="filter-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#filter-container" aria-controls="filter-container">
+        Filter
+    </button>
+</div>
 
-
-<output class="searchresults-total-items frame">{totalItems} Treffer</output>
-<f:debug>{_all}</f:debug>
 
 <aside class="sidebar">
-    <div class="filter-container" >
+    <nav class="filter-container offcanvas offcanvas-end" id="filter-container" aria-label="{f:translate(key: 'filter_container_label', extensionName: 'liszt_common')}" >
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title">{f:translate(key: 'filter_container_label', extensionName: 'liszt_common')}</h5>
+            <button type="button" class="btn-close " data-bs-dismiss="offcanvas" aria-label="{f:translate(key: 'filter_container_close', extensionName: 'liszt_common')}">
+                <i:icon iconfig="lzicon,close" preferredRenderTypes="svgSprite" additionalAttributes="{aria-hidden:'true'}" />
+            </button>
+        </div>
+        <div class="offcanvas-body">
         <f:for each="{searchResults.aggregations}" key="key" as="filterGroup">
             <f:if condition="{filterGroup.buckets}">
                 <div class="filter-block frame">
@@ -23,7 +33,8 @@
                 </div>
             </f:if>
         </f:for>
-    </div>
+        </div>
+    </nav>
 
 </aside>
 <div class="content grid-colspan-lg-3 grid-colspan-md-2">
