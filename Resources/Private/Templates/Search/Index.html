@@ -1,3 +1,4 @@
+{namespace lc=Slub\LisztCommon\ViewHelpers}
 <html
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:i="http://typo3.org/ns/Quellenform/Iconpack/ViewHelpers"
@@ -40,6 +41,7 @@
 <div class="content grid-colspan-lg-3 grid-colspan-md-2">
     <div class="frame">
 
+
     <f:for each="{searchResults.hits.hits}" as="hit">
         <article class="searchresults-item ">
             <header>
@@ -49,7 +51,7 @@
                     </f:for>
                 </div>
                 <div class="searchresults-item-title">
-                <div class="searchresults-item-icon"><i:icon iconfig="lziconsr,musicSheet" preferredRenderTypes="svgSprite" additionalAttributes="{aria-hidden:'true'}" /></div>
+                <div class="searchresults-item-icon"><i:icon iconfig="{lc:ItemTypeIconName(iconPackKey: 'lziconsr', itemType: hit._source.itemType)}" preferredRenderTypes="svgSprite" additionalAttributes="{aria-hidden:'true'}" /></div>
                 <h3 >
                     {hit._source.title}, {hit._source.title}
                 </h3>
