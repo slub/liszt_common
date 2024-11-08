@@ -51,7 +51,7 @@ class ElasticClientBuilder extends ClientBuilder {
 			$this->setBasicAuthentication('elastic', $this->password);
 		}
 		if ($this->caFilePath) {
-			$this->setSSLVerification($this->caFilePath);
+			$this->setCABundle($this->caFilePath);
 		}
 
 		return $this;
@@ -65,7 +65,8 @@ class ElasticClientBuilder extends ClientBuilder {
         }
 
         $this->caFilePath = $this->extConf->
-            only('elastcCredentialsFilePath', 'elasticCaFileName')->
+            sortKeysDesc()->
+            only('elasticCredentialsFilePath', 'elasticCaFileName')->
             implode('/');
     }
 
@@ -77,11 +78,13 @@ class ElasticClientBuilder extends ClientBuilder {
 		}
 
         $passwordFilePath = $this->extConf->
+            sortKeys()->
             only('elasticCredentialsFilePath', 'elasticPwdFileName')->
             implode('/');
         $passwordFile = fopen($passwordFilePath, 'r') or
             die($passwordFilePath . ' not found. Check your extension\'s configuration');
+        $size = filesize($passwordFilePath);
 
-        $this->password = $passwordFile->getContents();
+        $this->password = trim(fread($passwordFile, $size));
     }
 }
