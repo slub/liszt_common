@@ -33,7 +33,15 @@
 			<trans-unit id="filter_container_close">
 				<source>Filtermenü schließen</source>
 			</trans-unit>
-
+			<trans-unit id="searchResults_hits_label">
+				<source>Treffer</source>
+			</trans-unit>
+			<trans-unit id="searchResults_params_label">
+				<source>Ihre Suchparameter</source>
+			</trans-unit>
+			<trans-unit id="searchResults_params_remove_label">
+				<source>Suchparameter "%s" entfernen</source>
+			</trans-unit>
 		</body>
     </file>
 </xliff>
