@@ -71,14 +71,15 @@ class QueryParamsBuilder
 
         // Todo: automate the creation of parameters
         if (isset($searchParams['f_itemType']) && $searchParams['f_itemType'] !== "") {
-            $params['body']['query']['bool']['filter']['term']['itemType.keyword'] = $searchParams['f_itemType'];
+            $params['body']['query']['bool']['filter'][] = ['term' => ['itemType.keyword' => $searchParams['f_itemType']]];
         }
         if (isset($searchParams['f_place']) && $searchParams['f_place'] !== "") {
-            $params['body']['query']['bool']['filter']['term']['place.keyword'] = $searchParams['f_place'];
+            $params['body']['query']['bool']['filter'][] = ['term' => ['place.keyword' => $searchParams['f_place']]];
         }
         if (isset($searchParams['f_date']) && $searchParams['f_date'] !== "") {
-            $params['body']['query']['bool']['filter']['term']['date.keyword'] = $searchParams['f_date'];
+            $params['body']['query']['bool']['filter'][] = ['term' => ['date.keyword' => $searchParams['f_date']]];
         }
+
         return $params;
     }
 

@@ -6,11 +6,30 @@
 
 
 <div class="searchresults-info frame">
-    <output class="searchresults-total-items">{totalItems} Treffer</output>
+    <div class="searchresults-info-total">
+    <output class="searchresults-total-items">{totalItems} {f:translate(key: 'searchResults_hits_label', extensionName: 'liszt_common')}</output>
     <button class="filter-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#filter-container" aria-controls="filter-container">
-        Filter
+        {f:translate(key: 'filter_container_label', extensionName: 'liszt_common')}
     </button>
+    </div>
+    <f:debug>{_all}</f:debug>
+
+    <f:if condition="{searchParams}">
+    <div class="searchresults-filtertags" aria-label="{f:translate(key: 'searchResults_params_label', extensionName: 'liszt_common')}" role="navigation" >
+        <f:for each="{searchParams}" key="key" as="searchParam">
+            <span class="searchresults-filtertags-tag">
+                <span>{searchParam}</span>
+                 <f:link.action action="index" controller="Search" pluginName="SearchListing" arguments="{lc:searchParams(action: 'remove', searchParamsArray: searchParams, key: key)}"  additionalAttributes="{type:'button'}" class="tag-cross">
+                    <span class="visually-hidden">{f:translate(key: 'searchResults_params_remove_label',  arguments: {0: searchParam}, extensionName: 'liszt_common')}</span>
+                    <svg aria-hidden="true" stroke="currentColor" fill="none" viewBox="0 0 8 8"><path stroke-linecap="round" stroke-width="1" d="M1 1l6 6m0-6L1 7"></path></svg>
+                 </f:link.action>
+            </span>
+        </f:for>
+    </div>
+    </f:if>
+
 </div>
+
 
 <aside class="sidebar">
     <nav class="filter-container offcanvas offcanvas-end" id="filter-container" aria-label="{f:translate(key: 'filter_container_label', extensionName: 'liszt_common')}" >
