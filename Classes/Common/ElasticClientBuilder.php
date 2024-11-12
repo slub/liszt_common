@@ -59,14 +59,14 @@ class ElasticClientBuilder extends ClientBuilder {
 
     private function setCaFilePath(): void
     {
-        if ($this->extConf->get('elasticCaFileName') == '') {
+        if ($this->extConf->get('elasticCaFileFilePath') == '') {
             $this->caFilePath = '';
             return;
         }
 
         $this->caFilePath = $this->extConf->
             sortKeysDesc()->
-            only('elasticCredentialsFilePath', 'elasticCaFileName')->
+            only('elasticCredentialsFilePath', 'elasticCaFileFilePath')->
             implode('/');
     }
 

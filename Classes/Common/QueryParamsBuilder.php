@@ -2,18 +2,27 @@
 
 namespace Slub\LisztCommon\Common;
 
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 class QueryParamsBuilder
 {
 
     //Todo: get Config for bibIndex, aggs etc. from extension config?
-    public static function createElasticParams(string $bibIndex, array $searchParams): array
+    public static function createElasticParams(array $searchParams): array
     {
+        $extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('liszt_bibliography');
+        $bibIndex = $extConf['elasticIndexName'];
+        $aggs = []; // TYPOSCRIPT stuff here
+
         $params = [
             'index' => $bibIndex,
             'body' => [
                 'size' => 10,
                 '_source' => ['itemType', 'tx_lisztcommon_header', 'tx_lisztcommon_body', 'tx_lisztcommon_footer'],
-                'aggs' => [
+                //'aggs' => $aggs
+                'aggs' =>
+                [
                     'itemType' => [
                         'terms' => [
                             'field' => 'itemType.keyword',
@@ -27,6 +36,16 @@ class QueryParamsBuilder
                     'date' => [
                         'terms' => [
                             'field' => 'date.keyword',
+                        ]
+                    ],
+                    'language' => [
+                        'terms' => [
+                            'field' => 'language.keyword',
+                        ]
+                    ],
+                    'journalTitle' => [
+                        'terms' => [
+                            'field' => 'publicationTitle.keyword',
                         ]
                     ]
                 ]
