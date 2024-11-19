@@ -12,7 +12,6 @@
         {f:translate(key: 'filter_container_label', extensionName: 'liszt_common')}
     </button>
     </div>
-    <f:debug>{_all}</f:debug>
 
     <f:if condition="{searchParams}">
     <div class="searchresults-filtertags" aria-label="{f:translate(key: 'searchResults_params_label', extensionName: 'liszt_common')}" role="navigation" >
@@ -42,39 +41,10 @@
         <div class="offcanvas-body">
         <f:for each="{searchResults.aggregations}" key="key" as="filterGroup">
             <f:if condition="{filterGroup.buckets}">
-                <div class="filter-block frame">
-                    <h4 class="">{key}</h4>
-                    <f:variable name="searchParamsFilterKey">f_{key}</f:variable>
-                    <ul>
-                        <f:for each="{filterGroup.buckets}" as="filter">
-                            <li>
-                                <f:if condition="{searchParams.{searchParamsFilterKey}} == {filter.key}">
-                                <f:then>
-                                    <f:link.action action="index" controller="Search" pluginName="SearchListing" arguments="{lc:searchParams(action: 'remove', searchParamsArray: searchParams, key: searchParamsFilterKey)}" class="filter-item selected">
-                                        <span class="filter-item-label">{filter.key}</span>
-                                        <span class="filter-item-count">{filter.doc_count}</span>
-                                    </f:link.action>
-                                </f:then>
-                                <f:else>
-                                    <f:link.action action="index" controller="Search" pluginName="SearchListing" arguments="{lc:searchParams(action: 'add', searchParamsArray: searchParams, key: searchParamsFilterKey, value: filter.key)}" class="filter-item">
-                                        <span class="filter-item-label">{filter.key}</span>
-                                        <span class="filter-item-count">{filter.doc_count}</span>
-                                    </f:link.action>
-                                </f:else>
-                                </f:if>
-                            </li>
-
-
-
-                            <f:comment> <!--  old versions of filter (form input), ToDo: remove later if not needed-->
-                             <li><f:link.action action="index" controller="Search" pluginName="SearchListing" arguments="{searchParams: {f_itemType: filter.key}}" class="form-checkbox"><input class="form-check-input" type="checkbox" id="{filter.key}" value="{filter.key}"><label class="form-check-label" for="{filter.key}">{filter.key}</label><span class="count">{filter.doc_count}</span></f:link.action></li>
-                             <li><a href="{f:uri.action(controller: 'Search', action: 'index', extensionName: 'liszt_common', pluginName: 'SearchListing', pageUid: '18')}" class="form-checkbox"><input class="form-check-input" type="checkbox" id="{filter.key}" value="{filter.key}"><label class="form-check-label" for="{filter.key}">{filter.key}</label></a><span class="count">{filter.doc_count}</span></li>
-                            <li><span class="form-checkbox"><input class="form-check-input" type="checkbox" id="{filter.key}" value="{filter.key}"><label class="form-check-label" for="{filter.key}">{filter.key}</label></span><span class="count">{filter.doc_count}</span></li>
-                            </f:comment>
-
-                        </f:for>
-                    </ul>
-                </div>
+                <f:render partial="FilterBlock" arguments="{key: key, filterGroup: filterGroup, searchParams: searchParams}" />
+            </f:if>
+            <f:if condition="{filterGroup.names}">
+                <f:render partial="FilterBlock" arguments="{key: key, filterGroup: filterGroup.names, searchParams: searchParams}" />
             </f:if>
         </f:for>
         </div>
