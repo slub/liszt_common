@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-      <file source-language="en" datatype="plaintext" original="messages" date="2024-01-29UTC10:20:350">
-        <header/>
-        <body>
-
-            <trans-unit id="searchButtonLabel">
-                <source>Search</source>
-            </trans-unit>
-
-
+	<file source-language="en" datatype="plaintext" original="messages" date="2024-01-29UTC10:20:350">
+		<header/>
+		<body>
+			<trans-unit id="searchButtonLabel">
+				<source>Suchen</source>
+			</trans-unit>
 			<trans-unit id="listing_title" >
 				<source>Liszt Suchergebnisse</source>
 			</trans-unit>
@@ -42,6 +39,24 @@
 			<trans-unit id="searchResults_params_remove_label">
 				<source>Suchparameter "%s" entfernen</source>
 			</trans-unit>
+			<trans-unit resname="config.elasticHostName" id="config.elasticHostName" >
+				<source>Hostname des Elasticsearch-Servers</source>
+			</trans-unit>
+			<trans-unit resname="config.elasticCredentialsFilePath" id="config.elasticCredentialsFilePath" >
+				<source>Dateipfad der Elasticsearch-Credentials (Passwort, CA-Zertifikat)</source>
+			</trans-unit>
+			<trans-unit resname="config.elasticPwdFileName" id="config.elasticPwdFileName" >
+				<source>Name der Datei, die das Elasticsearch-Passwort enthält</source>
+			</trans-unit>
+			<trans-unit resname="config.elasticCaFileName" id="config.elasticCaFileName" >
+				<source>Name der Datei, die das HTTP-CA-Zertifikat enthält</source>
+			</trans-unit>
+			<trans-unit resname="config.paginationRange" id="config.paginationRange" >
+				<source>Suche in der Bibliografie</source>
+			</trans-unit>
+			<trans-unit resname="config.itemsPerPage" id="config.itemsPerPage" >
+				<source>Elemente pro Seite der Ergebnisliste</source>
+			</trans-unit>
 		</body>
-    </file>
+	</file>
 </xliff>
