@@ -19,7 +19,7 @@ class QueryParamsBuilder
             'index' => $bibIndex,
             'body' => [
                 'size' => 10,
-                '_source' => ['itemType', 'tx_lisztcommon_header', 'tx_lisztcommon_body', 'tx_lisztcommon_footer'],
+                '_source' => ['itemType', 'tx_lisztcommon_header', 'tx_lisztcommon_body', 'tx_lisztcommon_footer', 'tx_lisztcommon_searchable'],
                 //'aggs' => $aggs
                 'aggs' =>
                 [
@@ -38,14 +38,34 @@ class QueryParamsBuilder
                             'field' => 'date.keyword',
                         ]
                     ],
-                    'language' => [
-                        'terms' => [
-                            'field' => 'language.keyword',
-                        ]
-                    ],
                     'journalTitle' => [
                         'terms' => [
                             'field' => 'publicationTitle.keyword',
+                        ]
+                    ],
+                    'creators_name' => [
+                        'nested' => [
+                            'path' => 'creators',
+                        ],
+                        'aggs' => [
+                            'names' => [
+                                'terms' => [
+                                    'script' => [
+                                        'source' => '
+                                            String firstName = doc[\'creators.firstName.keyword\'].size() > 0 ? doc[\'creators.firstName.keyword\'].value : \'\';
+                                            String lastName = doc[\'creators.lastName.keyword\'].size() > 0 ? doc[\'creators.lastName.keyword\'].value : \'\';
+
+                                            if (firstName == \'\' && lastName == \'\') {
+                                                return null;
+                                            }
+
+                                            return (firstName + \' \' + lastName).trim();
+                                        ',
+                                        'lang' => 'painless',
+                                    ],
+                                    'size' => 15,
+                                ]
+                            ]
                         ]
                     ]
                 ]
@@ -60,10 +80,25 @@ class QueryParamsBuilder
                 ]
             ];
         } else {
+            // search in field "fulltext" exakt phrase match boost over all words must contain
             $params['body']['query'] = [
                 'bool' => [
-                    'must' => [
-                            ['query_string' => ['query' => $searchParams['searchText']]],
+                    'should' => [
+                        [
+                            'match_phrase' => [
+                                'tx_lisztcommon_searchable' => [
+                                    'query' => $searchParams['searchText'],
+                                    'boost' => 2.0 // boosting for exakt phrases
+                                ]
+                            ]
+                        ],
+                        [
+                            'query_string' => [
+                                'query' => $searchParams['searchText'],
+                                'fields' => ['fulltext'],
+                                'default_operator' => 'AND'
+                            ]
+                        ]
                     ]
                 ]
             ];
@@ -78,6 +113,20 @@ class QueryParamsBuilder
         }
         if (isset($searchParams['f_date']) && $searchParams['f_date'] !== "") {
             $params['body']['query']['bool']['filter'][] = ['term' => ['date.keyword' => $searchParams['f_date']]];
+        }
+        // filter creators name, Todo: its not a filter query because they need 100% match (with spaces from f_creators_name)
+        // better would be to build the field 'fullName' at build time with PHP?
+        if (isset($searchParams['f_creators_name']) && $searchParams['f_creators_name'] !== "") {
+            $params['body']['query']['bool']['must'][] = [
+                'nested' => [
+                    'path' => 'creators',
+                    'query' => [
+                        'match' => [
+                            'creators.fullName' => $searchParams['f_creators_name']
+                        ]
+                    ]
+                ]
+            ];
         }
 
         return $params;
