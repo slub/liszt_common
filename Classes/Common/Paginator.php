@@ -19,6 +19,8 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 
 class Paginator
 {
+    const CURRENT_PAGE = 'current';
+
     protected int $itemsPerPage = -1;
     protected int $totalItems = -1;
     protected int $currentPage = -1;
@@ -34,7 +36,7 @@ class Paginator
     ): array
     {
         return (new static($page, $totalItems, $extConf))->
-            setCurrentPage($page)->
+            setPage($page)->
             setTotalItems($totalItems)->
             setExtensionConfiguration($extConf)->
             getPagination();
@@ -49,8 +51,8 @@ class Paginator
 
     public function setExtensionConfiguration(ExtensionConfiguration $extensionConfiguration): Paginator
     {
-        $extConf = $extensionConfiguration->get('liszt_bibliography');
-        $this->itemsPerPage = $extConf['itemsPerPage'];
+        $extConf = $extensionConfiguration->get('liszt_common');
+        $this->itemsPerPage = (int) $extConf['itemsPerPage'];
         $paginationRangeString = Str::of($extConf['paginationRange']);
 
         if($paginationRangeString->match('/([1-9][0-9]*, *)*[1-9][0-9]*/') == "") {
@@ -95,6 +97,7 @@ class Paginator
         return Collection::wrap([])->
             when($this->currentPage != 1, function ($collection) { return $collection->push(1); })->
             concat($pagesBefore)->
+            push(self::CURRENT_PAGE)->
             concat($pagesAfter)->
             when($this->currentPage != $totalPages, function($collection) use ($totalPages) { return $collection->push($totalPages) ;})->
             filter()->

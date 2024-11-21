@@ -38,9 +38,17 @@ final class SearchController extends ClientEnabledController
     {
         $language = $this->request->getAttribute('language');
         $locale = $language->getLocale();
+        if (
+            isset($searchParams['searchParamsPage']) &&
+            (int) $searchParams['searchParamsPage'] > 0
+        ) {
+            $currentPage = (int) $searchParams['searchParamsPage'];
+        } else {
+            $currentPage = 1;
+        }
 
         $totalItems = $this->elasticSearchService->count($searchParams);
-        $pagination = Paginator::createPagination($searchParams['page'], $totalItems, $this->extConf);
+        $pagination = Paginator::createPagination($currentPage, $totalItems, $this->extConf);
 
         $elasticResponse = $this->elasticSearchService->search($searchParams);
 
@@ -50,6 +58,7 @@ final class SearchController extends ClientEnabledController
         $this->view->assign('searchResults', $elasticResponse);
         $this->view->assign('pagination', $pagination);
         $this->view->assign('totalItems', $totalItems);
+        $this->view->assign('currentString', Paginator::CURRENT_PAGE);
 
         return $this->htmlResponse();
     }

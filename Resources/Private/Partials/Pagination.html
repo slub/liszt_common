@@ -1,0 +1,25 @@
+{namespace lc=Slub\LisztCommon\ViewHelpers}
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<div class="filter-block frame">
+    <ul>
+        <f:for each="{pagination}" as="page">
+            <li>
+                <f:if condition="{page} == {currentString}">
+                    <f:then>
+                        <span>
+                            <f:translate key="currentPage" />
+                        </span>
+                    </f:then>
+                    <f:else>
+                        <f:link.action action="index" controller="Search" pluginName="SearchListing" arguments="{lc:searchParams(action: 'add', searchParamsArray: searchParams, key: 'searchParamsPage', value: page)}" class="filter-item selected">
+                            <span>{page}</span>
+                        </f:link.action>
+                    </f:else>
+                </f:if>
+            </li>
+        </f:for>
+    </ul>
+</div>
+
+</html>

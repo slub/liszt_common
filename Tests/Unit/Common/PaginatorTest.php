@@ -42,7 +42,7 @@ final class PaginatorTest extends UnitTestCase
         $this->subject->setPage(1);
         $this->subject->setExtensionConfiguration($this->extConf);
 
-        self::assertEquals($this->subject->getPagination(), [2, 3, 4, self::PAGE_COUNT]);
+        self::assertEquals($this->subject->getPagination(), [ Paginator::CURRENT_PAGE, 2, 3, 4, self::PAGE_COUNT]);
     }
 
     /**
@@ -56,7 +56,7 @@ final class PaginatorTest extends UnitTestCase
         $this->subject->setPage(self::PAGE_COUNT);
         $this->subject->setExtensionConfiguration($this->extConf);
 
-        self::assertEquals($this->subject->getPagination(), [1, self::PAGE_COUNT - 3, self::PAGE_COUNT - 2, self::PAGE_COUNT - 1]);
+        self::assertEquals($this->subject->getPagination(), [1, self::PAGE_COUNT - 3, self::PAGE_COUNT - 2, self::PAGE_COUNT - 1, Paginator::CURRENT_PAGE]);
     }
 
     /**
@@ -75,6 +75,7 @@ final class PaginatorTest extends UnitTestCase
             $midPage - 3,
             $midPage - 2,
             $midPage - 1,
+            Paginator::CURRENT_PAGE,
             $midPage + 1,
             $midPage + 2,
             $midPage + 3,
@@ -95,7 +96,7 @@ final class PaginatorTest extends UnitTestCase
         $this->subject->setPage(2);
         $this->subject->setExtensionConfiguration($this->extConf);
 
-        self::assertEquals($this->subject->getPagination(), [ 1, 3, 4, 5, self::PAGE_COUNT ]);
+        self::assertEquals($this->subject->getPagination(), [ 1, Paginator::CURRENT_PAGE, 3, 4, 5, self::PAGE_COUNT ]);
     }
 
     /**
@@ -104,6 +105,25 @@ final class PaginatorTest extends UnitTestCase
     public function incorrectExtConfLeadsToException()
     {
         $this->confArray['paginationRange'] = 'randomText';
+        $this->extConf->method('get')->
+            willReturn($this->confArray);
+
+        $this->expectException(\Exception::class);
+        $this->subject->setExtensionConfiguration($this->extConf);
+    }
+
+    /**
+     * @test
+     */
+    public function mildlyIncorrectExtConfLeadsToException()
+    {
+        $this->confArray['paginationRange'] = 'randomText';
+        $this->extConf->method('get')->
+            willReturn($this->confArray);
+
+        $this->expectException(\Exception::class);
+        $this->subject->setExtensionConfiguration($this->extConf);
+        $this->confArray['paginationRange'] = '1,2,a';
         $this->extConf->method('get')->
             willReturn($this->confArray);
 
@@ -127,6 +147,7 @@ final class PaginatorTest extends UnitTestCase
             $midPage - 3,
             $midPage - 2,
             $midPage - 1,
+            Paginator::CURRENT_PAGE,
             $midPage + 1,
             $midPage + 2,
             $midPage + 3,
@@ -152,6 +173,7 @@ final class PaginatorTest extends UnitTestCase
             $midPage - 5,
             $midPage - 2,
             $midPage - 1,
+            Paginator::CURRENT_PAGE,
             $midPage + 1,
             $midPage + 2,
             $midPage + 5,
@@ -175,6 +197,33 @@ final class PaginatorTest extends UnitTestCase
             $midPage - 3,
             $midPage - 2,
             $midPage - 1,
+            Paginator::CURRENT_PAGE,
+            $midPage + 1,
+            $midPage + 2,
+            $midPage + 3,
+            self::PAGE_COUNT
+        ];
+
+        self::assertEquals($this->subject->getPagination(), $expected);
+    }
+
+    /**
+     * @test
+     */
+    public function multiplePagesAreReturnedUniquely(): void
+    {
+        $this->confArray['paginationRange'] = '1,1,2,3';
+        $this->extConf->method('get')->
+            willReturn($this->confArray);
+        $midPage = ceil(self::PAGE_COUNT / 2);
+        $this->subject->setPage($midPage);
+        $this->subject->setExtensionConfiguration($this->extConf);
+        $expected = [
+            1,
+            $midPage - 3,
+            $midPage - 2,
+            $midPage - 1,
+            Paginator::CURRENT_PAGE,
             $midPage + 1,
             $midPage + 2,
             $midPage + 3,

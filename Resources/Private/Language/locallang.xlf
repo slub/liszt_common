@@ -57,6 +57,9 @@
 			<trans-unit resname="config.itemsPerPage" id="config.itemsPerPage" >
 				<source>Elemente pro Seite der Ergebnisliste</source>
 			</trans-unit>
+			<trans-unit resname="currentPage" id="currentPage" >
+				<source>...</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
