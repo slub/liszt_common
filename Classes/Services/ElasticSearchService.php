@@ -51,4 +51,12 @@ class ElasticSearchService implements ElasticSearchServiceInterface
         return new Collection($response->asArray());
     }
 
+    public function count($searchParams): int
+    {
+        $this->init();
+        $this->params = QueryParamsBuilder::createCountParams($searchParams);
+        $response = $this->client->count($this->params);
+        return $response['count'];
+    }
+
 }
