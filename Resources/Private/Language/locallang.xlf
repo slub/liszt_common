@@ -60,6 +60,12 @@
 			<trans-unit resname="currentPage" id="currentPage" >
 				<source>...</source>
 			</trans-unit>
+			<trans-unit id="searchResults_pagination_label">
+				<source>Seiten Navigation, Pagination</source>
+			</trans-unit>
+			<trans-unit id="searchResults_pagination_gotoPage">
+				<source>Gehe zur Seite %s</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
