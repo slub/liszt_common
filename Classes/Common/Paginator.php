@@ -96,14 +96,16 @@ class Paginator
 
         return Collection::wrap([])->
             when($this->currentPage != 1, function ($collection) { return $collection->push(1); })->
+            when($pagesBefore->first() > 2, function ($collection) { return $collection->push('...'); })->
             concat($pagesBefore)->
             push(self::CURRENT_PAGE)->
             concat($pagesAfter)->
-            when($this->currentPage != $totalPages, function($collection) use ($totalPages) { return $collection->push($totalPages) ;})->
+            when($this->currentPage != $totalPages, function($collection) use ($totalPages) { return $collection->push($totalPages); })->
             filter()->
             values()->
             all();
     }
+
 
     private static function getPageBefore(int $page, int $currentPage): ?int
     {
