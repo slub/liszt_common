@@ -175,9 +175,9 @@ class QueryParamsBuilder
             ]
         ];
 
-        //if ($this->searchAll == false) {
+        if ($this->searchAll == false) {
             $this->query['body']['aggs'] = self::getFilters($this->settings, $this->indexName);
-        //}
+        }
 
         $this->setCommonParams();
 
