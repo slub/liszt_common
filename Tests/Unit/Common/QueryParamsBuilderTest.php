@@ -89,8 +89,9 @@ final class QueryParamsBuilderTest extends UnitTestCase
      */
     public function emptySearchParamsAreProcessedCorrectly(): void
     {
-        $this->subject->setSearchParams([])->
-            setSettings($this->settings);
+        $this->subject->
+            setSettings($this->settings)->
+            setSearchParams([]);
         $expected = [
             'index' => self::EX_INDEX . ',' . self::EX_INDEX2,
             'body' => [
@@ -120,8 +121,9 @@ final class QueryParamsBuilderTest extends UnitTestCase
      */
     public function matchAllQueryParamsAreCalculatedCorrectly(): void
     {
-        $this->subject->setSearchParams($this->params)->
-            setSettings($this->settings);
+        $this->subject->
+            setSettings($this->settings)->
+            setSearchParams($this->params);
         $expected = [
             'index' => self::EX_INDEX,
             'body' => [
@@ -150,6 +152,12 @@ final class QueryParamsBuilderTest extends UnitTestCase
                     'bool' => [
                         'must' => [
                             [ 'match_all' => new \StdClass() ]
+                        ],
+                        'filter' => [
+                            [ 'term' => [
+                                    'filter.keyword' => self::EX_VAL
+                                ]
+                            ]
                         ]
                     ]
                 ]
