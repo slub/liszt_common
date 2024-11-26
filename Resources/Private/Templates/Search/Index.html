@@ -13,9 +13,11 @@
     </button>
     </div>
 
-    <f:if condition="{searchParams}">
+    <f:comment>Remove Page param from searchparams array for display filter tags</f:comment>
+    <f:variable name="paramsRemovePage">{lc:searchParams(action: 'remove', searchParamsArray: searchParams, key: 'searchParamsPage')}</f:variable>
+    <f:if condition="{paramsRemovePage.searchParams}">
         <div class="searchresults-filtertags" aria-label="{f:translate(key: 'searchResults_params_label', extensionName: 'liszt_common')}" role="navigation" >
-            <f:for each="{searchParams}" key="key" as="searchParam">
+            <f:for each="{paramsRemovePage.searchParams}" key="key" as="searchParam">
                 <span class="searchresults-filtertags-tag">
                     <span>{searchParam}</span>
                          <f:link.action action="index" controller="Search" pluginName="SearchListing" arguments="{lc:searchParams(action: 'remove', searchParamsArray: searchParams, key: key)}"  additionalAttributes="{type:'button'}" class="tag-cross">
