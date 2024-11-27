@@ -32,13 +32,15 @@ final class SearchParamsViewHelper extends AbstractViewHelper
         }
 
         // Convert the array to a string formatted as {key: 'value', key2: 'value2'}
+        /*
         $formattedParams = [];
         foreach ($searchParamsArray as $paramKey => $paramValue) {
             $formattedParams[] = "{$paramKey}: '" . $paramValue . "'";
         }
+        */
 
        //  return '{' . implode(', ', $formattedParams) . '}';
-        return ['searchParams' => $searchParamsArray];
+       return ['searchParams' => $searchParamsArray];
 
     }
 }

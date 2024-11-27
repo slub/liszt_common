@@ -4,18 +4,20 @@
 <div class="filter-block frame">
     <h4 class="">{key}</h4>
     <f:variable name="searchParamsFilterKey">f_{key}</f:variable>
+    <f:variable name="paramsRemovePage">{lc:searchParams(action: 'remove', searchParamsArray: searchParams, key: 'searchParamsPage')}</f:variable>
+    <f:variable name="searchParamsFromFirstPage">{paramsRemovePage.searchParams}</f:variable>
     <ul>
         <f:for each="{filterGroup.buckets}" as="filter">
             <li>
                 <f:if condition="{filter.key} && {searchParams.{searchParamsFilterKey}} == {filter.key}">
                     <f:then>
-                        <f:link.action action="index" controller="Search" pluginName="SearchListing" arguments="{lc:searchParams(action: 'remove', searchParamsArray: searchParams, key: searchParamsFilterKey)}" class="filter-item selected">
+                        <f:link.action action="index" controller="Search" pluginName="SearchListing" arguments="{lc:searchParams(action: 'remove', searchParamsArray: searchParamsFromFirstPage, key: searchParamsFilterKey)}" class="filter-item selected">
                             <span class="filter-item-label">{filter.key}</span>
                             <span class="filter-item-count">{filter.doc_count}</span>
                         </f:link.action>
                     </f:then>
                     <f:else if="{filter.key}">
-                        <f:link.action action="index" controller="Search" pluginName="SearchListing" arguments="{lc:searchParams(action: 'add', searchParamsArray: searchParams, key: searchParamsFilterKey, value: filter.key)}" class="filter-item">
+                        <f:link.action action="index" controller="Search" pluginName="SearchListing" arguments="{lc:searchParams(action: 'add', searchParamsArray: searchParamsFromFirstPage, key: searchParamsFilterKey, value: filter.key)}" class="filter-item">
                             <span class="filter-item-label">{filter.key}</span>
                             <span class="filter-item-count">{filter.doc_count}</span>
                         </f:link.action>

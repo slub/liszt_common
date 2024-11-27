@@ -13,20 +13,21 @@
     </button>
     </div>
 
-    <f:if condition="{searchParams}">
-    <div class="searchresults-filtertags" aria-label="{f:translate(key: 'searchResults_params_label', extensionName: 'liszt_common')}" role="navigation" >
-        <f:for each="{searchParams}" key="key" as="searchParam">
-            <span class="searchresults-filtertags-tag">
-                <span>{searchParam}</span>
-                 <f:link.action action="index" controller="Search" pluginName="SearchListing" arguments="{lc:searchParams(action: 'remove', searchParamsArray: searchParams, key: key)}"  additionalAttributes="{type:'button'}" class="tag-cross">
-                    <span class="visually-hidden">{f:translate(key: 'searchResults_params_remove_label',  arguments: {0: searchParam}, extensionName: 'liszt_common')}</span>
-                    <svg aria-hidden="true" stroke="currentColor" fill="none" viewBox="0 0 8 8"><path stroke-linecap="round" stroke-width="1" d="M1 1l6 6m0-6L1 7"></path></svg>
-                 </f:link.action>
-            </span>
-        </f:for>
-    </div>
+    <f:comment>Remove Page param from searchparams array for display filter tags</f:comment>
+    <f:variable name="paramsRemovePage">{lc:searchParams(action: 'remove', searchParamsArray: searchParams, key: 'searchParamsPage')}</f:variable>
+    <f:if condition="{paramsRemovePage.searchParams}">
+        <div class="searchresults-filtertags" aria-label="{f:translate(key: 'searchResults_params_label', extensionName: 'liszt_common')}" role="navigation" >
+            <f:for each="{paramsRemovePage.searchParams}" key="key" as="searchParam">
+                <span class="searchresults-filtertags-tag">
+                    <span>{searchParam}</span>
+                         <f:link.action action="index" controller="Search" pluginName="SearchListing" arguments="{lc:searchParams(action: 'remove', searchParamsArray: searchParams, key: key)}"  additionalAttributes="{type:'button'}" class="tag-cross">
+                        <span class="visually-hidden">{f:translate(key: 'searchResults_params_remove_label',  arguments: {0: searchParam}, extensionName: 'liszt_common')}</span>
+                        <svg aria-hidden="true" stroke="currentColor" fill="none" viewBox="0 0 8 8"><path stroke-linecap="round" stroke-width="1" d="M1 1l6 6m0-6L1 7"></path></svg>
+                     </f:link.action>
+                </span>
+            </f:for>
+        </div>
     </f:if>
-
 </div>
 
 
@@ -49,12 +50,10 @@
         </f:for>
         </div>
     </nav>
-
 </aside>
+
 <div class="content grid-colspan-lg-3 grid-colspan-md-2">
     <div class="frame">
-
-
     <f:for each="{searchResults.hits.hits}" as="hit">
         <article class="searchresults-item ">
             <header>
@@ -73,5 +72,7 @@
             </div>
         </article>
     </f:for>
+        <f:render partial="Pagination" arguments="{pagination: pagination, searchParams: searchParams, currentString: currentString, dots: dots}" />
+
     </div>
 </div>
