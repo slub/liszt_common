@@ -7,6 +7,6 @@ elasticPwdFileName = elastic_pwd.txt
 # cat=Elasticsearch; type=string; label=LLL:EXT:liszt_common/Resources/Private/Language/locallang.xml:config.elasticCaFileName
 elasticCaFileFilePath = http_ca.crt
 # cat=Search; type=string; label=LLL:EXT:liszt_common/Resources/Private/Language/locallang.xml:config.paginationRange
-paginationRange = 1,2,3,4,5
+paginationRange = 2,3,4,5
 # cat=Search; type=int; label=LLL:EXT:liszt_common/Resources/Private/Language/locallang.xml:config.itemsPerPage
-itemsPerPage = 50
+itemsPerPage = 10

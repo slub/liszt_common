@@ -52,7 +52,7 @@
 				<source>Name der Datei, die das HTTP-CA-Zertifikat enthält</source>
 			</trans-unit>
 			<trans-unit resname="config.paginationRange" id="config.paginationRange" >
-				<source>Suche in der Bibliografie</source>
+				<source>Abstände der in der Paginierung anzuzeigenden Seiten zur aktuellen Seite. Kommaseparierte Liste. 1 ist immer implizit gesetzt.</source>
 			</trans-unit>
 			<trans-unit resname="config.itemsPerPage" id="config.itemsPerPage" >
 				<source>Elemente pro Seite der Ergebnisliste</source>
