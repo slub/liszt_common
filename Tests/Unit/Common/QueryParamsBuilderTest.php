@@ -22,6 +22,7 @@ final class QueryParamsBuilderTest extends UnitTestCase
     const EX_EXTENSION2 = 'ex-extension2';
     const EX_FIELD1 = 'ex-field1';
     const EX_FIELD2 = 'ex-field2';
+    const EX_PAGE = 3;
 
     private QueryParamsBuilder $subject;
     private array $settings = [];
@@ -94,8 +95,8 @@ final class QueryParamsBuilderTest extends UnitTestCase
             setSearchParams([]);
         $expected = [
             'index' => self::EX_INDEX . ',' . self::EX_INDEX2,
+            'size' => PaginatorTest::ITEMS_PER_PAGE,
             'body' => [
-                'size' => PaginatorTest::ITEMS_PER_PAGE,
                 '_source' => [
                     QueryParamsBuilder::TYPE_FIELD,
                     QueryParamsBuilder::HEADER_FIELD,
@@ -114,20 +115,111 @@ final class QueryParamsBuilderTest extends UnitTestCase
             ]
         ];
 
-        self::assertEquals($this->subject->getQueryParams(), $expected);
+        self::assertEquals($expected, $this->subject->getQueryParams());
     }
+
     /**
      * @test
      */
-    public function matchAllQueryParamsAreCalculatedCorrectly(): void
+    public function IndexParamIsProcessedCorrectly(): void
     {
         $this->subject->
             setSettings($this->settings)->
-            setSearchParams($this->params);
+            setSearchParams([
+                'index' => self:: EX_INDEX
+            ]);
+
         $expected = [
             'index' => self::EX_INDEX,
+            'size' => PaginatorTest::ITEMS_PER_PAGE,
             'body' => [
-                'size' => PaginatorTest::ITEMS_PER_PAGE,
+                '_source' => [
+                    QueryParamsBuilder::TYPE_FIELD,
+                    QueryParamsBuilder::HEADER_FIELD,
+                    QueryParamsBuilder::BODY_FIELD,
+                    QueryParamsBuilder::FOOTER_FIELD,
+                    QueryParamsBuilder::SEARCHABLE_FIELD
+
+                ],
+                'aggs' => [
+                    self::EX_FIELD1 => [
+                        'terms' => [
+                            'field' => self::EX_FIELD1 . '.keyword'
+                        ]
+                    ],
+                    self::EX_FIELD2 => [
+                        'terms' => [
+                            'field' => self::EX_FIELD2 . '.keyword'
+                        ]
+                    ]
+                ],
+                'query' => [
+                    'bool' => [
+                        'must' => [
+                            [ 'match_all' => new \StdClass() ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        self::assertEquals($expected, $this->subject->getQueryParams());
+    }
+
+    /**
+     * @test
+     */
+    public function pageParamIsProcessedCorrectly(): void
+    {
+
+        $this->subject->
+            setSettings($this->settings)->
+            setSearchParams([
+                'page' => self::EX_PAGE
+            ]);
+
+        $expected = [
+            'index' => self::EX_INDEX . ',' . self::EX_INDEX2,
+            'size' => PaginatorTest::ITEMS_PER_PAGE,
+            'from' => PaginatorTest::ITEMS_PER_PAGE * (self::EX_PAGE - 1),
+            'body' => [
+                '_source' => [
+                    QueryParamsBuilder::TYPE_FIELD,
+                    QueryParamsBuilder::HEADER_FIELD,
+                    QueryParamsBuilder::BODY_FIELD,
+                    QueryParamsBuilder::FOOTER_FIELD,
+                    QueryParamsBuilder::SEARCHABLE_FIELD
+
+                ],
+                'query' => [
+                    'bool' => [
+                        'must' => [
+                            [ 'match_all' => new \StdClass() ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        self::assertEquals($expected, $this->subject->getQueryParams());
+    }
+
+    /**
+     * @test
+     */
+    public function filterParamIsProcessedCorrectly(): void
+    {
+        $this->subject->
+            setSettings($this->settings)->
+            setSearchParams([
+                'index' => self:: EX_INDEX,
+                'f_filter' => self::EX_VAL
+            ]);
+
+        $expected = [
+            'index' => self::EX_INDEX,
+            'size' => PaginatorTest::ITEMS_PER_PAGE,
+            'body' => [
                 '_source' => [
                     QueryParamsBuilder::TYPE_FIELD,
                     QueryParamsBuilder::HEADER_FIELD,
@@ -164,6 +256,40 @@ final class QueryParamsBuilderTest extends UnitTestCase
             ]
         ];
 
-        self::assertEquals($this->subject->getQueryParams(), $expected);
+        self::assertEquals($expected, $this->subject->getQueryParams());
+    }
+
+    /**
+     * @test
+     */
+    public function countQueryIsBuiltCorrectly(): void
+    {
+        $this->subject->
+            setSettings($this->settings)->
+            setSearchParams([
+                'index' => self:: EX_INDEX,
+                'f_filter' => self::EX_VAL
+            ]);
+
+        $expected = [
+            'index' => self::EX_INDEX,
+            'body' => [
+                'query' => [
+                    'bool' => [
+                        'must' => [
+                            [ 'match_all' => new \StdClass() ]
+                        ],
+                        'filter' => [
+                            [ 'term' => [
+                                    'filter.keyword' => self::EX_VAL
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        self::assertEquals($expected, $this->subject->getCountQueryParams());
     }
 }
