@@ -48,6 +48,9 @@
 			<trans-unit id="searchResults_pagination_gotoPage">
 				<source>Gehe zur Seite %s</source>
 			</trans-unit>
+			<trans-unit id="searchResults_pagination_currentPage">
+				<source>Sie befinden sich auf Seite %s</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

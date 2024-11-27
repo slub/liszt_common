@@ -24,8 +24,8 @@ class Paginator
 
     const SHOW_CLASS = 'show';
     const HIDE_CLASS = 'hide-mobile';
-    const DOTS_CLASS = 'disabled';
-    const CURRENT_CLASS = 'current disabled';
+    const DOTS_CLASS = 'dots';
+    const CURRENT_CLASS = 'current';
 
     protected int $itemsPerPage = -1;
     protected int $totalItems = -1;

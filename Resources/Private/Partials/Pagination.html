@@ -3,24 +3,19 @@
 <nav class="searchresults-pagination" aria-label="{f:translate(key: 'searchResults_pagination_label', extensionName: 'liszt_common')}">
     <ul>
         <f:for each="{pagination}" as="page">
-            <li>
-                <f:link.action action="index" controller="Search" pluginName="SearchListing" arguments="{lc:searchParams(action: 'add', searchParamsArray: searchParams, key: 'searchParamsPage', value: page.page)}" additionalAttributes="{aria-current:'true'}" class="{page.class}">
-                    {page.page}
-                </f:link.action>
-                <f:comment><!--
-                <f:if condition="{page} == {currentString}">
+            <li class="{page.class}">
+                <f:if condition="{page.page} == {dots}">
                     <f:then>
-                        <f:link.action action="index" controller="Search" pluginName="SearchListing" arguments="{lc:searchParams(action: 'add', searchParamsArray: searchParams, key: 'searchParamsPage', value: page)}" additionalAttributes="{aria-current:'true'}" class="current">
-                            {f:if(condition: searchParams.searchParamsPage, then: searchParams.searchParamsPage, else: '1')}
-                        </f:link.action>
+                        <span class="{page.class}">
+                             {page.page}
+                        </span>
                     </f:then>
                     <f:else>
-                        <f:link.action action="index" controller="Search" title="{f:translate(key: 'searchResults_pagination_gotoPage',  arguments: {0: page}, extensionName: 'liszt_common')}" pluginName="SearchListing" arguments="{lc:searchParams(action: 'add', searchParamsArray: searchParams, key: 'searchParamsPage', value: page)}" class="">
-                            {page}
+                        <f:link.action action="index" controller="Search" pluginName="SearchListing" arguments="{lc:searchParams(action: 'add', searchParamsArray: searchParams, key: 'searchParamsPage', value: page.page)}" additionalAttributes="{f:if(condition: '{page.class} == {currentString}', then: '{aria-current: \'page\', aria-label: \'{f:translate(key: \\\'searchResults_pagination_currentPage\\\',  arguments: {0: page.page}, extensionName: \\\'liszt_common\\\')}\' }', else:'{aria-label: \'{f:translate(key: \\\'searchResults_pagination_gotoPage\\\',  arguments: {0: page.page}, extensionName: \\\'liszt_common\\\')}\' }' )}">
+                            {page.page}
                         </f:link.action>
                     </f:else>
                 </f:if>
-                --></f:comment>
             </li>
         </f:for>
     </ul>
