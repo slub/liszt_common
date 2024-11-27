@@ -3,6 +3,7 @@
 namespace Slub\LisztCommon\Common;
 
 use Slub\LisztCommon\Common\Collection;
+use Slub\LisztCommon\Processing\IndexProcessor;
 use Illuminate\Support\Str;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -69,11 +70,11 @@ class QueryParamsBuilder
             'size' => $commonConf['itemsPerPage'],
             'body' => [
                 '_source' => [
-                    self::TYPE_FIELD,
-                    self::HEADER_FIELD,
-                    self::BODY_FIELD,
-                    self::FOOTER_FIELD,
-                    self::SEARCHABLE_FIELD
+                    IndexProcessor::TYPE_FIELD,
+                    IndexProcessor::HEADER_FIELD,
+                    IndexProcessor::BODY_FIELD,
+                    IndexProcessor::FOOTER_FIELD,
+                    IndexProcessor::SEARCHABLE_FIELD
                 ],
             ]
         ];
