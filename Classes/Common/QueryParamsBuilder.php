@@ -79,9 +79,9 @@ class QueryParamsBuilder
             ]
         ];
 
-        if ($this->searchAll == false) {
+        //if ($this->searchAll == false) {
             $this->query['body']['aggs'] = self::getAggs($this->settings, $this->indexName);
-        }
+        //}
 
         $this->setCommonParams();
 
@@ -200,27 +200,49 @@ class QueryParamsBuilder
             get(0)->
             get('filters')->
             mapWithKeys(function($entityType) {
-                return [$entityType['field'] => [
-                    'terms' => [
-                        'field' => $entityType['field'] . '.keyword'
+                if ($entityType['type'] == 'terms') {
+                    return [$entityType['field'] => [
+                        'terms' => [
+                            'field' => $entityType['field'] . '.keyword'
+                        ]
+                    ]];
+                }
+                return [
+                    $entityType['field'] => [
+                        'nested' => [
+                            'path' => $entityType['field']
+                        ],
+                        'aggs' => [
+                            'names' => [
+                                'terms' => [
+                                    'script' => [
+                                        'source' => $entityType['script'],
+                                        'lang' => 'painless',
+                                    ],
+                                    'size' => 15,
+                                ]
+                            ]
+                        ]
                     ]
-                ]];
+                ];
             })->
             toArray();
     }
 
     private static function getFilter(array $field): array
     {
+/*
         if (
             isset($field['type']) &&
             $field['type'] == 'terms'
         ) {
+*/
             return [
                 'term' => [
                     $field['name']. '.keyword' => $field['value']
                 ]
             ];
-        }
+        //}
 
         return [
             $field['name'] => [
@@ -292,6 +314,7 @@ class QueryParamsBuilder
                 $field = Str::of($key)->replace('f_', '')->__toString();
                 $query['body']['query']['bool']['filter'][] = self::getFilter([
                     'name' => $field,
+                    //'type' => $field['type'],
                     'type' => 'terms',
                     'value' => $value
                 ]);
