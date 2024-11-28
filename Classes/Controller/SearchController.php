@@ -59,6 +59,7 @@ final class SearchController extends ClientEnabledController
         $this->view->assign('pagination', $pagination);
         $this->view->assign('totalItems', $totalItems);
         $this->view->assign('currentString', Paginator::CURRENT_PAGE);
+        $this->view->assign('dots', Paginator::DOTS);
 
         return $this->htmlResponse();
     }

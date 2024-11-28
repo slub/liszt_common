@@ -6,8 +6,6 @@
 
 
 <div class="searchresults-info frame">
-    <f:render partial="Pagination" arguments="{pagination: pagination, searchParams: searchParams, currentString: currentString}" />
-
     <div class="searchresults-info-total">
     <output class="searchresults-total-items">{totalItems} {f:translate(key: 'searchResults_hits_label', extensionName: 'liszt_common')}</output>
     <button class="filter-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#filter-container" aria-controls="filter-container">
@@ -15,9 +13,11 @@
     </button>
     </div>
 
-    <f:if condition="{searchParams}">
+    <f:comment>Remove Page param from searchparams array for display filter tags</f:comment>
+    <f:variable name="paramsRemovePage">{lc:searchParams(action: 'remove', searchParamsArray: searchParams, key: 'searchParamsPage')}</f:variable>
+    <f:if condition="{paramsRemovePage.searchParams}">
         <div class="searchresults-filtertags" aria-label="{f:translate(key: 'searchResults_params_label', extensionName: 'liszt_common')}" role="navigation" >
-            <f:for each="{searchParams}" key="key" as="searchParam">
+            <f:for each="{paramsRemovePage.searchParams}" key="key" as="searchParam">
                 <span class="searchresults-filtertags-tag">
                     <span>{searchParam}</span>
                          <f:link.action action="index" controller="Search" pluginName="SearchListing" arguments="{lc:searchParams(action: 'remove', searchParamsArray: searchParams, key: key)}"  additionalAttributes="{type:'button'}" class="tag-cross">
@@ -28,8 +28,6 @@
             </f:for>
         </div>
     </f:if>
-
-    <f:render partial="Pagination" arguments="{pagination: pagination, searchParams: searchParams, currentString: currentString}" />
 </div>
 
 
@@ -52,12 +50,10 @@
         </f:for>
         </div>
     </nav>
-
 </aside>
+
 <div class="content grid-colspan-lg-3 grid-colspan-md-2">
     <div class="frame">
-
-
     <f:for each="{searchResults.hits.hits}" as="hit">
         <article class="searchresults-item ">
             <header>
@@ -76,5 +72,7 @@
             </div>
         </article>
     </f:for>
+        <f:render partial="Pagination" arguments="{pagination: pagination, searchParams: searchParams, currentString: currentString, dots: dots}" />
+
     </div>
 </div>

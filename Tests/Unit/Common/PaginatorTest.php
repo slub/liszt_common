@@ -42,7 +42,16 @@ final class PaginatorTest extends UnitTestCase
         $this->subject->setPage(1);
         $this->subject->setExtensionConfiguration($this->extConf);
 
-        self::assertEquals($this->subject->getPagination(), [ Paginator::CURRENT_PAGE, 2, 3, 4, self::PAGE_COUNT]);
+        $expected = [
+            [ 'page' => 1, 'class' => Paginator::CURRENT_CLASS ],
+            [ 'page' => 2, 'class' => Paginator::SHOW_CLASS ],
+            [ 'page' => 3, 'class' => Paginator::HIDE_CLASS ],
+            [ 'page' => 4, 'class' => Paginator::HIDE_CLASS ],
+            [ 'page' => Paginator::DOTS, 'class' => Paginator::DOTS_CLASS ],
+            [ 'page' => self::PAGE_COUNT, 'class' => Paginator::SHOW_CLASS ]
+        ];
+
+        self::assertEquals($expected, $this->subject->getPagination());
     }
 
     /**
@@ -56,7 +65,15 @@ final class PaginatorTest extends UnitTestCase
         $this->subject->setPage(self::PAGE_COUNT);
         $this->subject->setExtensionConfiguration($this->extConf);
 
-        self::assertEquals($this->subject->getPagination(), [1, self::PAGE_COUNT - 3, self::PAGE_COUNT - 2, self::PAGE_COUNT - 1, Paginator::CURRENT_PAGE]);
+        $expected = [
+            [ 'page' => 1, 'class' => Paginator::SHOW_CLASS ],
+            [ 'page' => Paginator::DOTS, 'class' => Paginator::DOTS_CLASS ],
+            [ 'page' => self::PAGE_COUNT - 3, 'class' => Paginator::HIDE_CLASS ],
+            [ 'page' => self::PAGE_COUNT - 2, 'class' => Paginator::HIDE_CLASS ],
+            [ 'page' => self::PAGE_COUNT - 1, 'class' => Paginator::SHOW_CLASS ],
+            [ 'page' => self::PAGE_COUNT, 'class' => Paginator::CURRENT_CLASS ]
+        ];
+        self::assertEquals($expected, $this->subject->getPagination());
     }
 
     /**
@@ -71,18 +88,20 @@ final class PaginatorTest extends UnitTestCase
         $this->subject->setPage($midPage);
         $this->subject->setExtensionConfiguration($this->extConf);
         $expected = [
-            1,
-            $midPage - 3,
-            $midPage - 2,
-            $midPage - 1,
-            Paginator::CURRENT_PAGE,
-            $midPage + 1,
-            $midPage + 2,
-            $midPage + 3,
-            self::PAGE_COUNT
+            [ 'page' => 1, 'class' => Paginator::SHOW_CLASS ],
+            [ 'page' => Paginator::DOTS, 'class' => Paginator::DOTS_CLASS ],
+            [ 'page' => $midPage - 3, 'class' => Paginator::HIDE_CLASS ],
+            [ 'page' => $midPage - 2, 'class' => Paginator::HIDE_CLASS ],
+            [ 'page' => $midPage - 1, 'class' => Paginator::SHOW_CLASS ],
+            [ 'page' => $midPage, 'class' => Paginator::CURRENT_CLASS ],
+            [ 'page' => $midPage + 1, 'class' => Paginator::SHOW_CLASS ],
+            [ 'page' => $midPage + 2, 'class' => Paginator::HIDE_CLASS ],
+            [ 'page' => $midPage + 3, 'class' => Paginator::HIDE_CLASS ],
+            [ 'page' => Paginator::DOTS, 'class' => Paginator::DOTS_CLASS ],
+            [ 'page' => self::PAGE_COUNT, 'class' => Paginator::SHOW_CLASS ]
         ];
 
-        self::assertEquals($this->subject->getPagination(), $expected);
+        self::assertEquals($expected, $this->subject->getPagination());
     }
 
     /**
@@ -95,8 +114,17 @@ final class PaginatorTest extends UnitTestCase
             willReturn($this->confArray);
         $this->subject->setPage(2);
         $this->subject->setExtensionConfiguration($this->extConf);
+        $expected = [
+            [ 'page' => 1, 'class' => Paginator::SHOW_CLASS ],
+            [ 'page' => 2, 'class' => Paginator::CURRENT_CLASS ],
+            [ 'page' => 3, 'class' => Paginator::SHOW_CLASS ],
+            [ 'page' => 4, 'class' => Paginator::HIDE_CLASS ],
+            [ 'page' => 5, 'class' => Paginator::HIDE_CLASS ],
+            [ 'page' => Paginator::DOTS, 'class' => Paginator::DOTS_CLASS ],
+            [ 'page' => self::PAGE_COUNT, 'class' => Paginator::SHOW_CLASS ]
+        ];
 
-        self::assertEquals($this->subject->getPagination(), [ 1, Paginator::CURRENT_PAGE, 3, 4, 5, self::PAGE_COUNT ]);
+        self::assertEquals($expected, $this->subject->getPagination());
     }
 
     /**
@@ -117,12 +145,6 @@ final class PaginatorTest extends UnitTestCase
      */
     public function mildlyIncorrectExtConfLeadsToException()
     {
-        $this->confArray['paginationRange'] = 'randomText';
-        $this->extConf->method('get')->
-            willReturn($this->confArray);
-
-        $this->expectException(\Exception::class);
-        $this->subject->setExtensionConfiguration($this->extConf);
         $this->confArray['paginationRange'] = '1,2,a';
         $this->extConf->method('get')->
             willReturn($this->confArray);
@@ -143,18 +165,20 @@ final class PaginatorTest extends UnitTestCase
         $this->subject->setPage($midPage);
         $this->subject->setExtensionConfiguration($this->extConf);
         $expected = [
-            1,
-            $midPage - 3,
-            $midPage - 2,
-            $midPage - 1,
-            Paginator::CURRENT_PAGE,
-            $midPage + 1,
-            $midPage + 2,
-            $midPage + 3,
-            self::PAGE_COUNT
+            [ 'page' => 1, 'class' => Paginator::SHOW_CLASS ],
+            [ 'page' => Paginator::DOTS, 'class' => Paginator::DOTS_CLASS ],
+            [ 'page' => $midPage - 3, 'class' => Paginator::HIDE_CLASS ],
+            [ 'page' => $midPage - 2, 'class' => Paginator::HIDE_CLASS ],
+            [ 'page' => $midPage - 1, 'class' => Paginator::SHOW_CLASS ],
+            [ 'page' => $midPage, 'class' => Paginator::CURRENT_CLASS ],
+            [ 'page' => $midPage + 1, 'class' => Paginator::SHOW_CLASS ],
+            [ 'page' => $midPage + 2, 'class' => Paginator::HIDE_CLASS ],
+            [ 'page' => $midPage + 3, 'class' => Paginator::HIDE_CLASS ],
+            [ 'page' => Paginator::DOTS, 'class' => Paginator::DOTS_CLASS ],
+            [ 'page' => self::PAGE_COUNT, 'class' => Paginator::SHOW_CLASS ]
         ];
 
-        self::assertEquals($this->subject->getPagination(), $expected);
+        self::assertEquals($expected, $this->subject->getPagination());
     }
 
     /**
@@ -169,15 +193,19 @@ final class PaginatorTest extends UnitTestCase
         $this->subject->setPage($midPage);
         $this->subject->setExtensionConfiguration($this->extConf);
         $expected = [
-            1,
-            $midPage - 5,
-            $midPage - 2,
-            $midPage - 1,
-            Paginator::CURRENT_PAGE,
-            $midPage + 1,
-            $midPage + 2,
-            $midPage + 5,
-            self::PAGE_COUNT
+            [ 'page' => 1, 'class' => Paginator::SHOW_CLASS ],
+            [ 'page' => Paginator::DOTS, 'class' => Paginator::DOTS_CLASS ],
+            [ 'page' => $midPage - 5, 'class' => Paginator::HIDE_CLASS ],
+            [ 'page' => Paginator::DOTS, 'class' => Paginator::DOTS_CLASS ],
+            [ 'page' => $midPage - 2, 'class' => Paginator::HIDE_CLASS ],
+            [ 'page' => $midPage - 1, 'class' => Paginator::SHOW_CLASS ],
+            [ 'page' => $midPage, 'class' => Paginator::CURRENT_CLASS ],
+            [ 'page' => $midPage + 1, 'class' => Paginator::SHOW_CLASS ],
+            [ 'page' => $midPage + 2, 'class' => Paginator::HIDE_CLASS ],
+            [ 'page' => Paginator::DOTS, 'class' => Paginator::DOTS_CLASS ],
+            [ 'page' => $midPage + 5, 'class' => Paginator::HIDE_CLASS ],
+            [ 'page' => Paginator::DOTS, 'class' => Paginator::DOTS_CLASS ],
+            [ 'page' => self::PAGE_COUNT, 'class' => Paginator::SHOW_CLASS ]
         ];
     }
 
@@ -193,18 +221,20 @@ final class PaginatorTest extends UnitTestCase
         $this->subject->setPage($midPage);
         $this->subject->setExtensionConfiguration($this->extConf);
         $expected = [
-            1,
-            $midPage - 3,
-            $midPage - 2,
-            $midPage - 1,
-            Paginator::CURRENT_PAGE,
-            $midPage + 1,
-            $midPage + 2,
-            $midPage + 3,
-            self::PAGE_COUNT
+            [ 'page' => 1, 'class' => Paginator::SHOW_CLASS ],
+            [ 'page' => Paginator::DOTS, 'class' => Paginator::DOTS_CLASS ],
+            [ 'page' => $midPage - 3, 'class' => Paginator::HIDE_CLASS ],
+            [ 'page' => $midPage - 2, 'class' => Paginator::HIDE_CLASS ],
+            [ 'page' => $midPage - 1, 'class' => Paginator::SHOW_CLASS ],
+            [ 'page' => $midPage, 'class' => Paginator::CURRENT_CLASS ],
+            [ 'page' => $midPage + 1, 'class' => Paginator::SHOW_CLASS ],
+            [ 'page' => $midPage + 2, 'class' => Paginator::HIDE_CLASS ],
+            [ 'page' => $midPage + 3, 'class' => Paginator::HIDE_CLASS ],
+            [ 'page' => Paginator::DOTS, 'class' => Paginator::DOTS_CLASS ],
+            [ 'page' => self::PAGE_COUNT, 'class' => Paginator::SHOW_CLASS ]
         ];
 
-        self::assertEquals($this->subject->getPagination(), $expected);
+        self::assertEquals($expected, $this->subject->getPagination());
     }
 
     /**
@@ -219,18 +249,72 @@ final class PaginatorTest extends UnitTestCase
         $this->subject->setPage($midPage);
         $this->subject->setExtensionConfiguration($this->extConf);
         $expected = [
-            1,
-            $midPage - 3,
-            $midPage - 2,
-            $midPage - 1,
-            Paginator::CURRENT_PAGE,
-            $midPage + 1,
-            $midPage + 2,
-            $midPage + 3,
-            self::PAGE_COUNT
+            [ 'page' => 1, 'class' => Paginator::SHOW_CLASS ],
+            [ 'page' => Paginator::DOTS, 'class' => Paginator::DOTS_CLASS ],
+            [ 'page' => $midPage - 3, 'class' => Paginator::HIDE_CLASS ],
+            [ 'page' => $midPage - 2, 'class' => Paginator::HIDE_CLASS ],
+            [ 'page' => $midPage - 1, 'class' => Paginator::SHOW_CLASS ],
+            [ 'page' => $midPage, 'class' => Paginator::CURRENT_CLASS ],
+            [ 'page' => $midPage + 1, 'class' => Paginator::SHOW_CLASS ],
+            [ 'page' => $midPage + 2, 'class' => Paginator::HIDE_CLASS ],
+            [ 'page' => $midPage + 3, 'class' => Paginator::HIDE_CLASS ],
+            [ 'page' => Paginator::DOTS, 'class' => Paginator::DOTS_CLASS ],
+            [ 'page' => self::PAGE_COUNT, 'class' => Paginator::SHOW_CLASS ]
         ];
 
-        self::assertEquals($this->subject->getPagination(), $expected);
+        self::assertEquals($expected, $this->subject->getPagination());
+    }
+
+    /**
+     * @test
+     */
+    public function neighboringPagesAreAlwaysIncluded(): void
+    {
+        $this->confArray['paginationRange'] = '2,3';
+        $this->extConf->method('get')->
+            willReturn($this->confArray);
+        $midPage = ceil(self::PAGE_COUNT / 2);
+        $this->subject->setPage($midPage);
+        $this->subject->setExtensionConfiguration($this->extConf);
+        $expected = [
+            [ 'page' => 1, 'class' => Paginator::SHOW_CLASS ],
+            [ 'page' => Paginator::DOTS, 'class' => Paginator::DOTS_CLASS ],
+            [ 'page' => $midPage - 3, 'class' => Paginator::HIDE_CLASS ],
+            [ 'page' => $midPage - 2, 'class' => Paginator::HIDE_CLASS ],
+            [ 'page' => $midPage - 1, 'class' => Paginator::SHOW_CLASS ],
+            [ 'page' => $midPage, 'class' => Paginator::CURRENT_CLASS ],
+            [ 'page' => $midPage + 1, 'class' => Paginator::SHOW_CLASS ],
+            [ 'page' => $midPage + 2, 'class' => Paginator::HIDE_CLASS ],
+            [ 'page' => $midPage + 3, 'class' => Paginator::HIDE_CLASS ],
+            [ 'page' => Paginator::DOTS, 'class' => Paginator::DOTS_CLASS ],
+            [ 'page' => self::PAGE_COUNT, 'class' => Paginator::SHOW_CLASS ]
+        ];
+
+        self::assertEquals($expected, $this->subject->getPagination());
+    }
+
+    /**
+     * @test
+     */
+    public function emptyPageRangeLeadsToSensibleResult(): void
+    {
+        $this->confArray['paginationRange'] = '';
+        $this->extConf->method('get')->
+            willReturn($this->confArray);
+        $midPage = ceil(self::PAGE_COUNT / 2);
+        $this->subject->setPage($midPage);
+        $this->subject->setExtensionConfiguration($this->extConf);
+        $expected = [
+            [ 'page' => 1, 'class' => Paginator::SHOW_CLASS ],
+            [ 'page' => Paginator::DOTS, 'class' => Paginator::DOTS_CLASS ],
+            [ 'page' => $midPage - 1, 'class' => Paginator::SHOW_CLASS ],
+            [ 'page' => $midPage, 'class' => Paginator::CURRENT_CLASS ],
+            [ 'page' => $midPage + 1, 'class' => Paginator::SHOW_CLASS ],
+            [ 'page' => Paginator::DOTS, 'class' => Paginator::DOTS_CLASS ],
+            [ 'page' => self::PAGE_COUNT, 'class' => Paginator::SHOW_CLASS ]
+        ];
+
+        self::assertEquals($expected, $this->subject->getPagination());
     }
 
 }
