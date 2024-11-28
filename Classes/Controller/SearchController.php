@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Slub\LisztCommon\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Slub\LisztCommon\Interfaces\ElasticSearchServiceInterface;
-use Psr\Http\Message\ResponseInterface;
-use Slub\LisztCommon\Interfaces\ElasticSearchServiceInterface;
 use Slub\LisztCommon\Common\Paginator;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 
