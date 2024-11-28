@@ -1,0 +1,49 @@
+iconpack:
+  title: "Liszt Custom Icons for Search Results in LQWV"
+  # The key of the iconpack (!)
+  key: "lziconsr"
+  version: 1.0.0
+
+  renderTypes:
+    svg:
+      # Source folder of the SVG files, which are rendered as <img> tag:
+      source: "EXT:liszt_common/Resources/Public/Icons/IconPackSearchResults/"
+      attributes:
+        class: "lzicon"
+
+    svgInline:
+      # Source folder of the SVG files that are rendered as <svg> tag (inline SVG):
+      source: "EXT:liszt_common/Resources/Public/Icons/IconPackSearchResults/"
+      attributes:
+        class: "lzicon-inline"
+        fill: "currentColor"
+
+
+    svgSprite:
+      source: "EXT:liszt_common/Resources/Public/Icons/IconPackSearchResults/IconSpritesSearchResults.svg"
+      attributes:
+        class: "lzicon-sprite"
+        fill: "currentColor"
+
+  # Define here which icons are provided by this iconpack
+  # In this case, the values here correspond to the file names (without file name extension)
+  icons:
+    - auctionCatalog
+    - lisztDocument
+    - book
+    - attachment
+    - encyclopediaArticle
+    - essay
+    - journalArticle
+    - lisztDocument
+    - musicSheet
+    - thesis
+    - performance
+    - profession
+    - birth
+    - corporation
+    - open-access
+    - place
+    - person
+    - death
+    - work

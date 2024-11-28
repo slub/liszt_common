@@ -31,15 +31,20 @@ lib.contentElement {
   settings {
 
   }
-
 }
-
 
 tt_content {
   list {
     templateName = SearchListing
   }
 }
+
+// same namespace for both plugins on searchresults page
+plugin.tx_lisztcommon_searchbar.view.pluginNamespace = tx_liszt_common_searchlisting
+plugin.tx_lisztcommon_searchlisting.view.pluginNamespace = tx_liszt_common_searchlisting
+// while two plugins are on searchresults page, the searchbar plugin brings "action index is not allowed by this plugin" by non searchbar actions
+// set use default action to avoid this error
+plugin.tx_lisztcommon_searchbar.mvc.callDefaultActionIfActionCantBeResolved = 1;
 
 
 
@@ -76,7 +81,6 @@ tt_content {
         }
     }
 }*/
-
 
 plugin.tx_lisztcommon_searchbar.view.pluginNamespace = tx_liszt_common_searchlisting
 plugin.tx_lisztcommon_searchlisting.view.pluginNamespace = tx_liszt_common_searchlisting

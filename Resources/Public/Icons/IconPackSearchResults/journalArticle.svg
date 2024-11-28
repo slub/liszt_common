@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="journalArticle" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28.55 25.22">
+    <g id="journal-article-Ebene_1-2">
+        <path
+            d="M26.67,2.76V0l-12.47,2.67L1.74,0v2.76H0v22.47h28.55V2.76h-1.88ZM.75,24.47V3.51h.99v18.98l9.31,1.99H.75ZM13.83,24.3l-11.34-2.43V.93l11.34,2.43v20.95ZM14.58,3.35L25.92.93v20.95l-11.34,2.43V3.35ZM27.8,24.47h-10.43l9.31-1.99V3.51h1.13v20.97Z"/>
+        <rect x="7.64" y="10.7" width=".75" height="7.41" transform="translate(-7.75 19.2) rotate(-77.82)"/>
+        <rect x="7.64" y="14.7" width=".75" height="7.41" transform="translate(-11.67 22.36) rotate(-77.82)"/>
+        <rect x="7.64" y="2.69" width=".75" height="7.41" transform="translate(.07 12.89) rotate(-77.82)"/>
+        <rect x="7.64" y="6.7" width=".75" height="7.41" transform="translate(-3.84 16.05) rotate(-77.82)"/>
+        <rect x="16.48" y="18.03" width="7.41" height=".75" transform="translate(-3.43 4.68) rotate(-12.19)"/>
+        <rect x="16.48" y="6.02" width="7.41" height=".75" transform="translate(-.9 4.41) rotate(-12.19)"/>
+        <rect x="16.48" y="10.03" width="7.41" height=".75" transform="translate(-1.74 4.5) rotate(-12.19)"/>
+        <rect x="16.48" y="14.03" width="7.41" height=".75" transform="translate(-2.59 4.59) rotate(-12.19)"/>
+    </g>
+</svg>

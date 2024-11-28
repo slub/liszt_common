@@ -1,0 +1,24 @@
+{namespace lc=Slub\LisztCommon\ViewHelpers}
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<nav class="searchresults-pagination" aria-label="{f:translate(key: 'searchResults_pagination_label', extensionName: 'liszt_common')}">
+    <ul>
+        <f:for each="{pagination}" as="page">
+            <li class="{page.class}">
+                <f:if condition="{page.page} == {dots}">
+                    <f:then>
+                        <span class="{page.class}">
+                             {page.page}
+                        </span>
+                    </f:then>
+                    <f:else>
+                        <f:link.action action="index" controller="Search" pluginName="SearchListing" arguments="{lc:searchParams(action: 'add', searchParamsArray: searchParams, key: 'searchParamsPage', value: page.page)}" additionalAttributes="{f:if(condition: '{page.class} == {currentString}', then: '{aria-current: \'page\', aria-label: \'{f:translate(key: \\\'searchResults_pagination_currentPage\\\',  arguments: {0: page.page}, extensionName: \\\'liszt_common\\\')}\' }', else:'{aria-label: \'{f:translate(key: \\\'searchResults_pagination_gotoPage\\\',  arguments: {0: page.page}, extensionName: \\\'liszt_common\\\')}\' }' )}">
+                            {page.page}
+                        </f:link.action>
+                    </f:else>
+                </f:if>
+            </li>
+        </f:for>
+    </ul>
+</nav>
+
+</html>

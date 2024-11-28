@@ -9,7 +9,8 @@ interface ElasticSearchServiceInterface
 
     public function getElasticInfo(): array;
 
-    public function search(array $searchParams): Collection;
+    public function search(array $searchParams, array $settings): Collection;
 
+    public function count(array $searchParams, array $settings): int;
 
 }

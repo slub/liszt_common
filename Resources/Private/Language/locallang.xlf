@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-      <file source-language="en" datatype="plaintext" original="messages" date="2024-01-29UTC10:20:350">
-        <header/>
-        <body>
-
-            <trans-unit id="searchButtonLabel">
-                <source>Search</source>
-            </trans-unit>
-
-
+	<file source-language="en" datatype="plaintext" original="messages" date="2024-01-29UTC10:20:350">
+		<header/>
+		<body>
+			<trans-unit id="searchButtonLabel">
+				<source>Suchen</source>
+			</trans-unit>
 			<trans-unit id="listing_title" >
 				<source>Liszt Suchergebnisse</source>
 			</trans-unit>
@@ -27,7 +24,51 @@
 			<trans-unit id="searchButtonLabel">
 				<source>Suchen</source>
 			</trans-unit>
-
+			<trans-unit id="filter_container_label">
+				<source>Suchfilter</source>
+			</trans-unit>
+			<trans-unit id="filter_container_close">
+				<source>Filtermenü schließen</source>
+			</trans-unit>
+			<trans-unit id="searchResults_hits_label">
+				<source>Treffer</source>
+			</trans-unit>
+			<trans-unit id="searchResults_params_label">
+				<source>Ihre Suchparameter</source>
+			</trans-unit>
+			<trans-unit id="searchResults_params_remove_label">
+				<source>Suchparameter "%s" entfernen</source>
+			</trans-unit>
+			<trans-unit resname="config.elasticHostName" id="config.elasticHostName" >
+				<source>Hostname des Elasticsearch-Servers</source>
+			</trans-unit>
+			<trans-unit resname="config.elasticCredentialsFilePath" id="config.elasticCredentialsFilePath" >
+				<source>Dateipfad der Elasticsearch-Credentials (Passwort, CA-Zertifikat)</source>
+			</trans-unit>
+			<trans-unit resname="config.elasticPwdFileName" id="config.elasticPwdFileName" >
+				<source>Name der Datei, die das Elasticsearch-Passwort enthält</source>
+			</trans-unit>
+			<trans-unit resname="config.elasticCaFileName" id="config.elasticCaFileName" >
+				<source>Name der Datei, die das HTTP-CA-Zertifikat enthält</source>
+			</trans-unit>
+			<trans-unit resname="config.paginationRange" id="config.paginationRange" >
+				<source>Abstände der in der Paginierung anzuzeigenden Seiten zur aktuellen Seite. Kommaseparierte Liste. 1 ist immer implizit gesetzt.</source>
+			</trans-unit>
+			<trans-unit resname="config.itemsPerPage" id="config.itemsPerPage" >
+				<source>Elemente pro Seite der Ergebnisliste</source>
+			</trans-unit>
+			<trans-unit resname="currentPage" id="currentPage" >
+				<source>...</source>
+			</trans-unit>
+			<trans-unit id="searchResults_pagination_label">
+				<source>Seiten Navigation, Pagination</source>
+			</trans-unit>
+			<trans-unit id="searchResults_pagination_gotoPage">
+				<source>Gehe zur Seite %s</source>
+			</trans-unit>
+			<trans-unit id="searchResults_pagination_currentPage">
+				<source>Sie befinden sich auf Seite %s</source>
+			</trans-unit>
 		</body>
-    </file>
+	</file>
 </xliff>

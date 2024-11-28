@@ -41,17 +41,22 @@ class ElasticSearchService implements ElasticSearchServiceInterface
         return ($this->client->info()->asArray());
     }
 
-
-
-    public function search($searchParams): Collection
+    public function search(array $searchParams, array $settings): Collection
     {
         $this->init();
-        $this->params = QueryParamsBuilder::createElasticParams($this->bibIndex, $searchParams);
+        $this->params = QueryParamsBuilder::createQueryParamsBuilder($searchParams, $settings)->getQueryParams();
 
         // ToDo: handle exceptions!
         $response = $this->client->search($this->params);
         return new Collection($response->asArray());
     }
 
+    public function count(array $searchParams, array $settings): int
+    {
+        $this->init();
+        $this->params = QueryParamsBuilder::createQueryParamsBuilder($searchParams, $settings)->getCountQueryParams();
+        $response = $this->client->count($this->params);
+        return $response['count'];
+    }
 
 }

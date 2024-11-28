@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-      <file source-language="de" datatype="plaintext" original="messages" date="2024-01-29UTC10:20:350">
-        <header/>
-        <body>
-
-            <trans-unit id="searchButtonLabel">
-                <source>Suchen</source>
-            </trans-unit>
-
+	<file source-language="de" datatype="plaintext" original="messages" date="2024-01-29UTC10:20:350">
+		<header/>
+		<body>
+			<trans-unit id="searchButtonLabel">
+				<source>Suchen</source>
+			</trans-unit>
 			<trans-unit id="listing_title" >
 				<source>Liszt Suchergebnisse</source>
 			</trans-unit>
@@ -26,6 +24,33 @@
 			<trans-unit id="searchButtonLabel">
 				<source>Suchen</source>
 			</trans-unit>
-        </body>
-    </file>
+			<trans-unit id="filter_container_label">
+				<source>Suchfilter</source>
+			</trans-unit>
+			<trans-unit id="filter_container_close">
+				<source>Filtermenü schließen</source>
+			</trans-unit>
+			<trans-unit id="searchResults_hits_label">
+				<source>Treffer</source>
+			</trans-unit>
+			<trans-unit id="searchResults_params_label">
+				<source>Ihre Suchparameter</source>
+			</trans-unit>
+			<trans-unit id="searchResults_params_remove_label">
+				<source>Suchparameter "%s" entfernen</source>
+			</trans-unit>
+			<trans-unit resname="currentPage" id="currentPage" >
+				<source>...</source>
+			</trans-unit>
+			<trans-unit id="searchResults_pagination_label">
+				<source>Seiten Navigation, Pagination</source>
+			</trans-unit>
+			<trans-unit id="searchResults_pagination_gotoPage">
+				<source>Gehe zur Seite %s</source>
+			</trans-unit>
+			<trans-unit id="searchResults_pagination_currentPage">
+				<source>Sie befinden sich auf Seite %s</source>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>
