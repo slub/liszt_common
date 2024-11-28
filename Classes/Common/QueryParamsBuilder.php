@@ -51,10 +51,14 @@ class QueryParamsBuilder
             $this->indexName = $this->params['index'];
         } else {
             $this->searchAll = true;
-            $this->indexName = Collection::wrap($this->settings)->
+            $indexNames = Collection::wrap($this->settings)->
                 recursive()->
                 get('entityTypes')->
-                pluck('indexName')->
+                pluck('indexName');
+            if ($indexNames->count() == 1) {
+                $this->searchAll = false;
+            }
+            $this->indexName = $indexNames->
                 join(',');
         }
 
@@ -79,9 +83,9 @@ class QueryParamsBuilder
             ]
         ];
 
-        //if ($this->searchAll == false) {
+        if ($this->searchAll == false) {
             $this->query['body']['aggs'] = self::getAggs($this->settings, $this->indexName);
-        //}
+        }
 
         $this->setCommonParams();
 
