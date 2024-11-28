@@ -23,10 +23,12 @@ final class QueryParamsBuilderTest extends UnitTestCase
     const EX_FIELD1 = 'ex-field1';
     const EX_FIELD2 = 'ex-field2';
     const EX_PAGE = 3;
+    const EX_SCRIPT = 'ex-script';
 
     private QueryParamsBuilder $subject;
     private array $settings = [];
     private array $params = [];
+    private ?ExtensionConfiguration $extConf = null;
 
     protected function setUp(): void
     {
@@ -42,10 +44,9 @@ final class QueryParamsBuilderTest extends UnitTestCase
 
         $confArray = [];
         $confArray['itemsPerPage'] = PaginatorTest::ITEMS_PER_PAGE;
-        $extConf = $this->getAccessibleMock(ExtensionConfiguration::class, ['get'], [], '', false);
-        $extConf->method('get')->
+        $this->extConf = $this->getAccessibleMock(ExtensionConfiguration::class, ['get'], [], '', false);
+        $this->extConf->method('get')->
             willReturn($confArray);
-        GeneralUtility::addInstance(ExtensionConfiguration::class, $extConf);
 
         $this->settings = [
             'entityTypes' => [
@@ -61,7 +62,7 @@ final class QueryParamsBuilderTest extends UnitTestCase
                         1 => [
                             'field' => self::EX_FIELD2,
                             'type' => 'nested',
-                            'script' => 'example'
+                            'script' => self::EX_SCRIPT
                         ]
                     ]
                 ],
@@ -77,7 +78,7 @@ final class QueryParamsBuilderTest extends UnitTestCase
                         1 => [
                             'field' => self::EX_FIELD2,
                             'type' => 'nested',
-                            'script' => 'example'
+                            'script' => self::EX_SCRIPT
                         ]
                     ]
                 ]
@@ -93,6 +94,8 @@ final class QueryParamsBuilderTest extends UnitTestCase
         $this->subject->
             setSettings($this->settings)->
             setSearchParams([]);
+        GeneralUtility::addInstance(ExtensionConfiguration::class, $this->extConf);
+
         $expected = [
             'index' => self::EX_INDEX . ',' . self::EX_INDEX2,
             'size' => PaginatorTest::ITEMS_PER_PAGE,
@@ -128,6 +131,7 @@ final class QueryParamsBuilderTest extends UnitTestCase
             setSearchParams([
                 'index' => self:: EX_INDEX
             ]);
+        GeneralUtility::addInstance(ExtensionConfiguration::class, $this->extConf);
 
         $expected = [
             'index' => self::EX_INDEX,
@@ -148,8 +152,19 @@ final class QueryParamsBuilderTest extends UnitTestCase
                         ]
                     ],
                     self::EX_FIELD2 => [
-                        'terms' => [
-                            'field' => self::EX_FIELD2 . '.keyword'
+                        'nested' => [
+                            'path' => self::EX_FIELD2
+                        ],
+                        'aggs' => [
+                            'names' => [
+                                'terms' => [
+                                    'script' => [
+                                        'source' => self::EX_SCRIPT,
+                                        'lang' => 'painless'
+                                    ],
+                                    'size' => 15
+                                ]
+                            ]
                         ]
                     ]
                 ],
@@ -177,6 +192,7 @@ final class QueryParamsBuilderTest extends UnitTestCase
             setSearchParams([
                 'page' => self::EX_PAGE
             ]);
+        GeneralUtility::addInstance(ExtensionConfiguration::class, $this->extConf);
 
         $expected = [
             'index' => self::EX_INDEX . ',' . self::EX_INDEX2,
@@ -215,6 +231,7 @@ final class QueryParamsBuilderTest extends UnitTestCase
                 'index' => self:: EX_INDEX,
                 'f_filter' => self::EX_VAL
             ]);
+        GeneralUtility::addInstance(ExtensionConfiguration::class, $this->extConf);
 
         $expected = [
             'index' => self::EX_INDEX,
@@ -235,8 +252,19 @@ final class QueryParamsBuilderTest extends UnitTestCase
                         ]
                     ],
                     self::EX_FIELD2 => [
-                        'terms' => [
-                            'field' => self::EX_FIELD2 . '.keyword'
+                        'nested' => [
+                            'path' => self::EX_FIELD2
+                        ],
+                        'aggs' => [
+                            'names' => [
+                                'terms' => [
+                                    'script' => [
+                                        'source' => self::EX_SCRIPT,
+                                        'lang' => 'painless'
+                                    ],
+                                    'size' => 15
+                                ]
+                            ]
                         ]
                     ]
                 ],

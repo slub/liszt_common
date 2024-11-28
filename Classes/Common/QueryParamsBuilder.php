@@ -221,7 +221,7 @@ class QueryParamsBuilder
                                 'terms' => [
                                     'script' => [
                                         'source' => $entityType['script'],
-                                        'lang' => 'painless',
+                                        'lang' => 'painless'
                                     ],
                                     'size' => 15,
                                 ]
@@ -258,7 +258,7 @@ class QueryParamsBuilder
                         'terms' => [
                             'script' => [
                                 'source' => $field['script'],
-                                'lang' => 'painless',
+                                'lang' => 'painless'
                             ],
                             'size' => 15,
                         ]
