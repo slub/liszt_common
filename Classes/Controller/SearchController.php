@@ -3,7 +3,8 @@
 declare(strict_types=1);
 
 namespace Slub\LisztCommon\Controller;
-
+use Psr\Http\Message\ResponseInterface;
+use Slub\LisztCommon\Interfaces\ElasticSearchServiceInterface;
 use Psr\Http\Message\ResponseInterface;
 use Slub\LisztCommon\Interfaces\ElasticSearchServiceInterface;
 use Slub\LisztCommon\Common\Paginator;
@@ -16,10 +17,8 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 
 final class SearchController extends ClientEnabledController
 {
-
     // set resultLimit as intern variable from $this->settings['resultLimit'];
     protected int $resultLimit;
-
 
     // Dependency Injection of Repository
     // https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/ApiOverview/DependencyInjection/Index.html#Dependency-Injection
@@ -31,8 +30,6 @@ final class SearchController extends ClientEnabledController
     {
         $this->resultLimit = $this->settings['resultLimit'] ?? 25;
     }
-
-
 
     public function indexAction(array $searchParams = []): ResponseInterface
     {
@@ -69,6 +66,5 @@ final class SearchController extends ClientEnabledController
         $this->view->assign('searchParams', $searchParams);
         return $this->htmlResponse();
     }
-
 
 }
