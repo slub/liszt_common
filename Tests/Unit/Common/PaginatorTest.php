@@ -7,7 +7,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 
 /**
- * @covers Slub\LisztCommon\Common\XmlDocument
+ * @covers Slub\LisztCommon\Common\Paginator
  */
 final class PaginatorTest extends UnitTestCase
 {
