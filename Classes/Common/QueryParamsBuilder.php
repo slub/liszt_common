@@ -89,25 +89,9 @@ class QueryParamsBuilder
 
         $this->setCommonParams();
 
-        // Todo: automate the creation of parameters
-        // filter creators name, Todo: its not a filter query because they need 100% match (with spaces from f_creators_name)
-        // better would be to build the field 'fullName' at build time with PHP?
-        if (isset($this->params['f_creators_name']) && $this->params['f_creators_name'] !== "") {
-            $this->query['body']['query']['bool']['must'][] = [
-                'nested' => [
-                    'path' => 'creators',
-                    'query' => [
-                        'match' => [
-                            'creators.fullName' => $this->params['f_creators_name']
-                        ]
-                    ]
-                ]
-            ];
-        }
         if (isset($this->params['page']) && $this->params['page'] !== "") {
             $this->query['from'] = ($this->params['page'] - 1) * $commonConf['itemsPerPage'];
         }
-
         return $this->query;
     }
 
@@ -316,12 +300,27 @@ class QueryParamsBuilder
             filter(function($_, $key) { return Str::of($key)->startsWith('f_'); })->
             each(function($value, $key) use (&$query) {
                 $field = Str::of($key)->replace('f_', '')->__toString();
-                $query['body']['query']['bool']['filter'][] = self::getFilter([
-                    'name' => $field,
-                    //'type' => $field['type'],
-                    'type' => 'terms',
-                    'value' => $value
-                ]);
+                if ($field !== 'creators') {
+                    $query['body']['query']['bool']['filter'][] = self::getFilter([
+                        'name' => $field,
+                        //'type' => $field['type'],
+                        'type' => 'terms',
+                        'value' => $value
+                    ]);
+                } else  {
+                    // its not a filter query because they need 100% match (with spaces from f_creators_name)
+                    // better would be to build the field 'fullName' at build time with PHP?
+                        $query['body']['query']['bool']['must'][] = [
+                            'nested' => [
+                                'path' => 'creators',
+                                'query' => [
+                                    'match' => [
+                                        'creators.fullName' => $value
+                                    ]
+                                ]
+                            ]
+                        ];
+                }
             });
         $this->query = $query;
 
