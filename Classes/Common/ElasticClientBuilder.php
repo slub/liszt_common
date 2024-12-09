@@ -12,7 +12,7 @@ namespace Slub\LisztCommon\Common;
  */
 
 use Illuminate\Support\Collection;
-use Elastic\Elasticsearch\Client;
+use Elastic\Elasticsearch\ClientInterface;
 use Elastic\Elasticsearch\ClientBuilder;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -24,9 +24,9 @@ class ElasticClientBuilder extends ClientBuilder {
     protected array $hosts;
     protected string $password;
 
-    public static function getClient(): Client
+    public static function getClient(): ClientInterface
     {
-        return parent::create()->
+        return GeneralUtility::makeInstance(self::class)->
             initialize()->
             autoconfig()->
             build();
