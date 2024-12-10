@@ -5,7 +5,7 @@ namespace Slub\LisztCommon\Services;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\Response\Elasticsearch;
 use Http\Promise\Promise;
-use Illuminate\Support\Collection;
+use Slub\LisztCommon\Common\Collection;
 use Slub\LisztCommon\Common\ElasticClientBuilder;
 use Slub\LisztCommon\Common\QueryParamsBuilder;
 use Slub\LisztCommon\Interfaces\ElasticSearchServiceInterface;
@@ -47,8 +47,22 @@ class ElasticSearchService implements ElasticSearchServiceInterface
         $this->params = QueryParamsBuilder::createQueryParamsBuilder($searchParams, $settings)->getQueryParams();
 
         // ToDo: handle exceptions!
-        $response = $this->client->search($this->params);
-        return new Collection($response->asArray());
+        $response = $this->client->search($this->params)->asArray();
+        $aggs = $response['aggregations'];
+
+        $sortedAggsFromSettings = Collection::wrap($this->params)->
+            recursive()->
+            get('body')->
+            // to retain their order, we retrieve the aggs from the params
+            get('aggs')->
+            // retrieve their keys
+            keys()->
+            // and get the respective part from the response aggregations
+            mapWithKeys(function ($key) use ($aggs) { return [ $key => $aggs[$key] ]; })->
+            all();
+        $response['aggregations'] = $sortedAggsFromSettings;
+
+        return new Collection($response);
     }
 
     public function count(array $searchParams, array $settings): int
