@@ -19,19 +19,19 @@ class ElasticSearchService implements ElasticSearchServiceInterface
 {
 
     protected ?Client $client = null;
-    protected string $bibIndex;
-    protected string $localeIndex;
+    //protected string $bibIndex;
+    //protected string $localeIndex;
+    protected string $index;
 
     protected array $params = [];
-
 
     // Todo: Enable Elasticsearch Security: built-in security features are not enabled.
     public function init(): bool
     {
         $this->client = ElasticClientBuilder::getClient();
-        $extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('liszt_bibliography');
-        $this->bibIndex = $extConf['elasticIndexName'];
-        $this->localeIndex = $extConf['elasticLocaleIndexName'];
+        //$extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('liszt_bibliography');
+        //$this->bibIndex = $extConf['elasticIndexName'];
+        //$this->localeIndex = $extConf['elasticLocaleIndexName'];
         return true;
     }
 
@@ -57,6 +57,11 @@ class ElasticSearchService implements ElasticSearchServiceInterface
         $this->params = QueryParamsBuilder::createQueryParamsBuilder($searchParams, $settings)->getCountQueryParams();
         $response = $this->client->count($this->params);
         return $response['count'];
+    }
+
+    public function get(string $id, string $index): ElasticSearchServiceInterface
+    {
+        return Collection::wrap($this->client->search([ 'index' => $index, 'id' => $id ]));
     }
 
 }
