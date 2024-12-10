@@ -2,7 +2,9 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 
 <div class="filter-block frame">
-    <h4 class="">{key}</h4>
+    <h4 class="">
+        <lc:translate key="{key}" index="{translationIndex}" locale="{locale}" />
+    </h4>
     <f:variable name="searchParamsFilterKey">f_{key}</f:variable>
     <f:variable name="paramsRemovePage">{lc:searchParams(action: 'remove', searchParamsArray: searchParams, key: 'searchParamsPage')}</f:variable>
     <f:variable name="searchParamsFromFirstPage">{paramsRemovePage.searchParams}</f:variable>
