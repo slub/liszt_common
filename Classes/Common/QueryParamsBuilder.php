@@ -101,70 +101,6 @@ class QueryParamsBuilder
 
         $this->setCommonParams();
 
-/*
-        $params = [
-            //'index' => $bibIndex,
-            'body' => [ ]
-        ];
-        if (!isset($searchParams['searchText']) || $searchParams['searchText'] == '') {
-            $params['body']['query'] = [
-                'bool' => [
-                    'must' => [[
-                        'match_all' => new \stdClass()
-                    ]]
-                ]
-            ];
-        } else {
-            // search in field "fulltext" exakt phrase match boost over all words must contain
-            $params['body']['query'] = [
-                'bool' => [
-                    'should' => [
-                        [
-                            'match_phrase' => [
-                                'tx_lisztcommon_searchable' => [
-                                    'query' => $searchParams['searchText'],
-                                    'boost' => 2.0 // boosting for exakt phrases
-                                ]
-                            ]
-                        ],
-                        [
-                            'query_string' => [
-                                'query' => $searchParams['searchText'],
-                                'fields' => ['fulltext'],
-                                'default_operator' => 'AND'
-                            ]
-                        ]
-                    ]
-                ]
-            ];
-        }
-
-        // Todo: automate the creation of parameters
-        if (isset($searchParams['f_itemType']) && $searchParams['f_itemType'] !== "") {
-            $params['body']['query']['bool']['filter'][] = ['term' => ['itemType.keyword' => $searchParams['f_itemType']]];
-        }
-        if (isset($searchParams['f_place']) && $searchParams['f_place'] !== "") {
-            $params['body']['query']['bool']['filter'][] = ['term' => ['place.keyword' => $searchParams['f_place']]];
-        }
-        if (isset($searchParams['f_date']) && $searchParams['f_date'] !== "") {
-            $params['body']['query']['bool']['filter'][] = ['term' => ['date.keyword' => $searchParams['f_date']]];
-        }
-        // filter creators name, Todo: its not a filter query because they need 100% match (with spaces from f_creators_name)
-        // better would be to build the field 'fullName' at build time with PHP?
-        if (isset($searchParams['f_creators_name']) && $searchParams['f_creators_name'] !== "") {
-            $params['body']['query']['bool']['must'][] = [
-                'nested' => [
-                    'path' => 'creators',
-                    'query' => [
-                        'match' => [
-                            'creators.fullName' => $searchParams['f_creators_name']
-                        ]
-                    ]
-                ]
-            ];
-        }
-
-*/
         return $this->query;
     }
     private function getIndexName(): string
@@ -233,13 +169,13 @@ class QueryParamsBuilder
         ) {
 */
             return [
-                'term' => [
+                'terms' => [
                     $field['name']. '.keyword' => $field['value']
                 ]
             ];
         //}
 
-        return [
+/*        return [
             $field['name'] => [
                 'nested' => [
                     'path' => $field['name']
@@ -256,7 +192,7 @@ class QueryParamsBuilder
                     ]
                 ]
             ]
-        ];
+        ];*/
     }
 
     /**
@@ -303,17 +239,30 @@ class QueryParamsBuilder
 
         // set filters
         $query = $this->query;
-        Collection::wrap($this->params)->
-            filter(function($_, $key) { return Str::of($key)->startsWith('f_'); })->
-            each(function($value, $key) use (&$query) {
-                $field = Str::of($key)->replace('f_', '')->__toString();
-                if ($field !== 'creators') {
-                    $query['body']['query']['bool']['filter'][] = self::getFilter([
-                        'name' => $field,
+        Collection::wrap($this->params['filter'] ?? [])
+            ->each(function($value, $key) use (&$query) {
+            // get array keys from $value as new array for multiple facettes
+                $value = array_keys($value);
+              // $value = array('Rochester','Bonn');
+
+                if ($key !== 'creators') {
+/*                    $query['body']['query']['bool']['filter'][] = self::getFilter([
+                        'name' => $key,
                         //'type' => $field['type'],
                         'type' => 'terms',
                         'value' => $value
-                    ]);
+                    ]);*/
+
+                    // post_filter for multiple selection facettes and OR function to combine results from multiple facettes
+                    $query['body']['post_filter']['bool']['should'][] = self::getFilter([
+                        'name' => $key,
+                        //'type' => $field['type'],
+                        'type' => 'terms',
+                        'value' => $value
+                    ],
+                    );
+
+
                 } else  {
                     // its not a filter query because they need 100% match (with spaces from f_creators_name)
                     // better would be to build the field 'fullName' at build time with PHP?

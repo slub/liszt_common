@@ -42,17 +42,18 @@ final class SearchController extends ClientEnabledController
             $currentPage = 1;
         }
 
-        $totalItems = $this->elasticSearchService->count($searchParams, $this->settings);
-        $pagination = Paginator::createPagination($currentPage, $totalItems, $this->extConf);
+     //  $totalItems = $this->elasticSearchService->count($searchParams, $this->settings);
+        //$totalItems = 100;
 
         $elasticResponse = $this->elasticSearchService->search($searchParams, $this->settings);
+        $pagination = Paginator::createPagination($currentPage, $elasticResponse['hits']['total']['value'], $this->extConf);
 
         $this->view->assign('locale', $locale);
         $this->view->assign('totalItems', $elasticResponse['hits']['total']['value']);
         $this->view->assign('searchParams', $searchParams);
         $this->view->assign('searchResults', $elasticResponse);
         $this->view->assign('pagination', $pagination);
-        $this->view->assign('totalItems', $totalItems);
+     //   $this->view->assign('totalItems', $totalItems);
         $this->view->assign('currentString', Paginator::CURRENT_PAGE);
         $this->view->assign('dots', Paginator::DOTS);
 
