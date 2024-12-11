@@ -162,37 +162,38 @@ class QueryParamsBuilder
 
     private static function getFilter(array $field): array
     {
-/*
         if (
             isset($field['type']) &&
             $field['type'] == 'terms'
         ) {
-*/
             return [
                 'terms' => [
-                    $field['name']. '.keyword' => $field['value']
+                    $field['name'] . '.keyword' => $field['value']
                 ]
             ];
-        //}
+        }
 
-/*        return [
-            $field['name'] => [
-                'nested' => [
-                    'path' => $field['name']
-                ],
-                'aggs' => [
-                    'names' => [
-                        'terms' => [
-                            'script' => [
-                                'source' => $field['script'],
-                                'lang' => 'painless'
-                            ],
-                            'size' => 15,
-                        ]
+        if (
+            isset($field['type']) &&
+            $field['type'] == 'keyword'
+        ) {
+            return [
+                'terms' => [
+                    $field['name'] => $field['value']
+                ]
+            ];
+        }
+
+        return [
+            'nested' => [
+                'path' => $field['name'],
+                'query' => [
+                    'match' => [
+                        $field['name'] . '.' . $field['path'] => $field['value']
                     ]
                 ]
             ]
-        ];*/
+        ];
     }
 
     /**
@@ -201,7 +202,8 @@ class QueryParamsBuilder
     private function setCommonParams(): void
     {
         // set index name
-        $this->query['index'] = $this->indexName;
+        $index = $this->indexName;
+        $this->query['index'] = $index;
 
         // set body
         if (!isset($this->params['searchText']) || $this->params['searchText'] == '') {
