@@ -226,33 +226,34 @@ class QueryParamsBuilder
 
     private static function getFilter(array $field): array
     {
-/*
         if (
             isset($field['type']) &&
             $field['type'] == 'terms'
         ) {
-*/
             return [
                 'term' => [
-                    $field['name']. '.keyword' => $field['value']
+                    $field['name'] . '.keyword' => $field['value']
                 ]
             ];
-        //}
+        }
+
+        if (
+            isset($field['type']) &&
+            $field['type'] == 'keyword'
+        ) {
+            return [
+                'term' => [
+                    $field['name'] => $field['value']
+                ]
+            ];
+        }
 
         return [
-            $field['name'] => [
-                'nested' => [
-                    'path' => $field['name']
-                ],
-                'aggs' => [
-                    'names' => [
-                        'terms' => [
-                            'script' => [
-                                'source' => $field['script'],
-                                'lang' => 'painless'
-                            ],
-                            'size' => 15,
-                        ]
+            'nested' => [
+                'path' => $field['name'],
+                'query' => [
+                    'match' => [
+                        $field['name'] . '.' . $field['path'] => $field['value']
                     ]
                 ]
             ]
@@ -265,7 +266,8 @@ class QueryParamsBuilder
     private function setCommonParams(): void
     {
         // set index name
-        $this->query['index'] = $this->indexName;
+        $index = $this->indexName;
+        $this->query['index'] = $index;
 
         // set body
         if (!isset($this->params['searchText']) || $this->params['searchText'] == '') {
@@ -302,34 +304,36 @@ class QueryParamsBuilder
         }
 
         // set filters
-        $query = $this->query;
-        Collection::wrap($this->params)->
-            filter(function($_, $key) { return Str::of($key)->startsWith('f_'); })->
-            each(function($value, $key) use (&$query) {
-                $field = Str::of($key)->replace('f_', '')->__toString();
-                if ($field !== 'creators') {
-                    $query['body']['query']['bool']['filter'][] = self::getFilter([
-                        'name' => $field,
-                        //'type' => $field['type'],
-                        'type' => 'terms',
-                        'value' => $value
-                    ]);
-                } else  {
-                    // its not a filter query because they need 100% match (with spaces from f_creators_name)
-                    // better would be to build the field 'fullName' at build time with PHP?
-                        $query['body']['query']['bool']['must'][] = [
-                            'nested' => [
-                                'path' => 'creators',
-                                'query' => [
-                                    'match' => [
-                                        'creators.fullName' => $value
-                                    ]
-                                ]
-                            ]
-                        ];
-                }
-            });
-        $this->query = $query;
+        if ($this->searchAll == false) {
+            $filterTypes = Collection::wrap($this->settings)->
+                recursive()->
+                get('entityTypes')->
+                filter(function($entityType) use ($index) {return $entityType->get('indexName') === $index;})->
+                values()->
+                get(0)->
+                get('filters')->
+                mapWithKeys(function($filter) { return [
+                    $filter['field'] => [
+                        'type' => $filter['type'],
+                        'path' => isset($filter['path']) ? $filter['path'] : ''
+                    ]];
+                })->
+                all();
+
+            $query = $this->query;
+            Collection::wrap($this->params)->
+                filter(function($_, $key) { return Str::of($key)->startsWith('f_'); })->
+                each(function($value, $key) use (&$query, $filterTypes) {
+                    $field = Str::of($key)->replace('f_', '')->__toString();
+                        $query['body']['query']['bool']['filter'][] = self::getFilter([
+                            'name' => $field,
+                            'type' => $filterTypes[$field]['type'],
+                            'value' => $value,
+                            'path' => $filterTypes[$field]['path']
+                        ]);
+                });
+            $this->query = $query;
+        }
 
     }
 

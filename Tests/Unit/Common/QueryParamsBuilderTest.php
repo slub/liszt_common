@@ -22,8 +22,10 @@ final class QueryParamsBuilderTest extends UnitTestCase
     const EX_EXTENSION2 = 'ex-extension2';
     const EX_FIELD1 = 'ex-field1';
     const EX_FIELD2 = 'ex-field2';
+    const EX_FIELD3 = 'ex-field3';
     const EX_PAGE = 3;
     const EX_SCRIPT = 'ex-script';
+    const EX_PATH = 'ex-path';
 
     private QueryParamsBuilder $subject;
     private array $settings = [];
@@ -61,8 +63,13 @@ final class QueryParamsBuilderTest extends UnitTestCase
                         ],
                         1 => [
                             'field' => self::EX_FIELD2,
+                            'type' => 'keyword',
+                        ],
+                        2 => [
+                            'field' => self::EX_FIELD3,
                             'type' => 'nested',
-                            'script' => self::EX_SCRIPT
+                            'script' => self::EX_SCRIPT,
+                            'path' => self::EX_PATH
                         ]
                     ]
                 ],
@@ -77,8 +84,7 @@ final class QueryParamsBuilderTest extends UnitTestCase
                         ],
                         1 => [
                             'field' => self::EX_FIELD2,
-                            'type' => 'nested',
-                            'script' => self::EX_SCRIPT
+                            'type' => 'keyword'
                         ]
                     ]
                 ]
@@ -152,8 +158,13 @@ final class QueryParamsBuilderTest extends UnitTestCase
                         ]
                     ],
                     self::EX_FIELD2 => [
+                        'terms' => [
+                            'field' => self::EX_FIELD2
+                        ]
+                    ],
+                    self::EX_FIELD3 => [
                         'nested' => [
-                            'path' => self::EX_FIELD2
+                            'path' => self::EX_FIELD3
                         ],
                         'aggs' => [
                             'names' => [
@@ -223,13 +234,13 @@ final class QueryParamsBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function filterParamIsProcessedCorrectly(): void
+    public function termsFilterParamIsProcessedCorrectly(): void
     {
         $this->subject->
             setSettings($this->settings)->
             setSearchParams([
                 'index' => self:: EX_INDEX,
-                'f_filter' => self::EX_VAL
+                'f_' . self::EX_FIELD1 => self::EX_VAL
             ]);
         GeneralUtility::addInstance(ExtensionConfiguration::class, $this->extConf);
 
@@ -252,8 +263,13 @@ final class QueryParamsBuilderTest extends UnitTestCase
                         ]
                     ],
                     self::EX_FIELD2 => [
+                        'terms' => [
+                            'field' => self::EX_FIELD2
+                        ]
+                    ],
+                    self::EX_FIELD3 => [
                         'nested' => [
-                            'path' => self::EX_FIELD2
+                            'path' => self::EX_FIELD3
                         ],
                         'aggs' => [
                             'names' => [
@@ -275,7 +291,156 @@ final class QueryParamsBuilderTest extends UnitTestCase
                         ],
                         'filter' => [
                             [ 'term' => [
-                                    'filter.keyword' => self::EX_VAL
+                                    self::EX_FIELD1 . '.keyword' => self::EX_VAL
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        self::assertEquals($expected, $this->subject->getQueryParams());
+    }
+
+    /**
+     * @test
+     */
+    public function keywordFilterParamIsProcessedCorrectly(): void
+    {
+        $this->subject->
+            setSettings($this->settings)->
+            setSearchParams([
+                'index' => self:: EX_INDEX,
+                'f_' . self::EX_FIELD2 => self::EX_VAL
+            ]);
+        GeneralUtility::addInstance(ExtensionConfiguration::class, $this->extConf);
+
+        $expected = [
+            'index' => self::EX_INDEX,
+            'size' => PaginatorTest::ITEMS_PER_PAGE,
+            'body' => [
+                '_source' => [
+                    QueryParamsBuilder::TYPE_FIELD,
+                    QueryParamsBuilder::HEADER_FIELD,
+                    QueryParamsBuilder::BODY_FIELD,
+                    QueryParamsBuilder::FOOTER_FIELD,
+                    QueryParamsBuilder::SEARCHABLE_FIELD
+
+                ],
+                'aggs' => [
+                    self::EX_FIELD1 => [
+                        'terms' => [
+                            'field' => self::EX_FIELD1 . '.keyword'
+                        ]
+                    ],
+                    self::EX_FIELD2 => [
+                        'terms' => [
+                            'field' => self::EX_FIELD2
+                        ]
+                    ],
+                    self::EX_FIELD3 => [
+                        'nested' => [
+                            'path' => self::EX_FIELD3
+                        ],
+                        'aggs' => [
+                            'names' => [
+                                'terms' => [
+                                    'script' => [
+                                        'source' => self::EX_SCRIPT,
+                                        'lang' => 'painless'
+                                    ],
+                                    'size' => 15
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                'query' => [
+                    'bool' => [
+                        'must' => [
+                            [ 'match_all' => new \StdClass() ]
+                        ],
+                        'filter' => [
+                            [ 'term' => [
+                                    self::EX_FIELD2 => self::EX_VAL
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        self::assertEquals($expected, $this->subject->getQueryParams());
+    }
+
+    /**
+     * @test
+     */
+    public function nestedFilterParamIsProcessedCorrectly(): void
+    {
+        $this->subject->
+            setSettings($this->settings)->
+            setSearchParams([
+                'index' => self:: EX_INDEX,
+                'f_' . self::EX_FIELD3 => self::EX_VAL
+            ]);
+        GeneralUtility::addInstance(ExtensionConfiguration::class, $this->extConf);
+
+        $expected = [
+            'index' => self::EX_INDEX,
+            'size' => PaginatorTest::ITEMS_PER_PAGE,
+            'body' => [
+                '_source' => [
+                    QueryParamsBuilder::TYPE_FIELD,
+                    QueryParamsBuilder::HEADER_FIELD,
+                    QueryParamsBuilder::BODY_FIELD,
+                    QueryParamsBuilder::FOOTER_FIELD,
+                    QueryParamsBuilder::SEARCHABLE_FIELD
+
+                ],
+                'aggs' => [
+                    self::EX_FIELD1 => [
+                        'terms' => [
+                            'field' => self::EX_FIELD1 . '.keyword'
+                        ]
+                    ],
+                    self::EX_FIELD2 => [
+                        'terms' => [
+                            'field' => self::EX_FIELD2
+                        ]
+                    ],
+                    self::EX_FIELD3 => [
+                        'nested' => [
+                            'path' => self::EX_FIELD3
+                        ],
+                        'aggs' => [
+                            'names' => [
+                                'terms' => [
+                                    'script' => [
+                                        'source' => self::EX_SCRIPT,
+                                        'lang' => 'painless'
+                                    ],
+                                    'size' => 15
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                'query' => [
+                    'bool' => [
+                        'must' => [
+                            [ 'match_all' => new \StdClass() ]
+                        ],
+                        'filter' => [
+                            [ 'nested' => [
+                                    'path' => self::EX_FIELD3,
+                                    'query' => [
+                                        'match' => [
+                                            self::EX_FIELD3 . '.' . self::EX_PATH => self::EX_VAL
+                                        ]
+                                    ]
                                 ]
                             ]
                         ]
@@ -296,7 +461,7 @@ final class QueryParamsBuilderTest extends UnitTestCase
             setSettings($this->settings)->
             setSearchParams([
                 'index' => self:: EX_INDEX,
-                'f_filter' => self::EX_VAL
+                'f_' . self::EX_FIELD1 => self::EX_VAL
             ]);
 
         $expected = [
@@ -309,7 +474,7 @@ final class QueryParamsBuilderTest extends UnitTestCase
                         ],
                         'filter' => [
                             [ 'term' => [
-                                    'filter.keyword' => self::EX_VAL
+                                    self::EX_FIELD1 . '.keyword' => self::EX_VAL
                                 ]
                             ]
                         ]
