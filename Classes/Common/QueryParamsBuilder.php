@@ -195,6 +195,13 @@ class QueryParamsBuilder
                         ]
                     ]];
                 }
+                if ($entityType['type'] == 'keyword') {
+                    return [$entityType['field'] => [
+                        'terms' => [
+                            'field' => $entityType['field']
+                        ]
+                    ]];
+                }
                 return [
                     $entityType['field'] => [
                         'nested' => [

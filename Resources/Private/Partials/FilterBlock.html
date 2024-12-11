@@ -4,7 +4,7 @@
 <div class="filter-block frame">
     <h4 class="">{key}</h4>
     <f:variable name="searchParamsFilterKey">f_{key}</f:variable>
-    <f:variable name="paramsRemovePage">{lc:searchParams(action: 'remove', searchParamsArray: searchParams, key: 'searchParamsPage')}</f:variable>
+    <f:variable name="paramsRemovePage">{lc:searchParams(action: 'remove', searchParamsArray: searchParams, key: 'page')}</f:variable>
     <f:variable name="searchParamsFromFirstPage">{paramsRemovePage.searchParams}</f:variable>
     <ul>
         <f:for each="{filterGroup.buckets}" as="filter">
