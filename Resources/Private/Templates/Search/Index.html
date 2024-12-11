@@ -15,7 +15,7 @@
     </div>
 
     <f:comment>Remove Page param from searchparams array for display filter tags</f:comment>
-    <f:variable name="paramsRemovePage">{lc:searchParams(action: 'remove', searchParamsArray: searchParams, key: 'searchParamsPage')}</f:variable>
+    <f:variable name="paramsRemovePage">{lc:searchParams(action: 'remove', searchParamsArray: searchParams, key: 'page')}</f:variable>
     <f:if condition="{paramsRemovePage.searchParams}">
         <div class="searchresults-filtertags" aria-label="{f:translate(key: 'searchResults_params_label', extensionName: 'liszt_common')}" role="navigation" >
             <f:for each="{paramsRemovePage.searchParams}" key="key" as="searchParam">

@@ -34,10 +34,10 @@ final class SearchController extends ClientEnabledController
         $language = $this->request->getAttribute('language');
         $locale = $language->getLocale();
         if (
-            isset($searchParams['searchParamsPage']) &&
-            (int) $searchParams['searchParamsPage'] > 0
+            isset($searchParams['page']) &&
+            (int) $searchParams['page'] > 0
         ) {
-            $currentPage = (int) $searchParams['searchParamsPage'];
+            $currentPage = (int) $searchParams['page'];
         } else {
             $currentPage = 1;
         }
