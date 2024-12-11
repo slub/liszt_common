@@ -25,10 +25,25 @@ final class SearchParamsViewHelper extends AbstractViewHelper
         $value = $arguments['value'] ?? null;
         $searchParamsArray = $arguments['searchParamsArray'];
 
-        if ($action === 'add') {
-            $searchParamsArray[$key] = $value;
-        } elseif ($action === 'remove') {
-            unset($searchParamsArray[$key]);
+        switch ($action) {
+            case 'add':
+                $searchParamsArray[$key] = $value;
+                break;
+
+            case 'remove':
+                unset($searchParamsArray[$key]);
+                break;
+            // later here are special values possible like "disableFilter" with value=0
+            case 'addFilter':
+                $searchParamsArray['filter'][$key][$value] = 1;
+                break;
+
+            case 'removeFilter':
+                unset($searchParamsArray['filter'][$key][$value]);
+                break;
+
+            default:
+                break;
         }
 
         // Convert the array to a string formatted as {key: 'value', key2: 'value2'}

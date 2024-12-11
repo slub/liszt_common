@@ -9,15 +9,15 @@
     <ul>
         <f:for each="{filterGroup.buckets}" as="filter">
             <li>
-                <f:if condition="{filter.key} && {searchParams.{searchParamsFilterKey}} == {filter.key}">
+                <f:if condition="{filter.key} && {searchParams.filter.{searchParamsFilterKey}.{filter.key}} == 1">
                     <f:then>
-                        <f:link.action action="index" controller="Search" pluginName="SearchListing" arguments="{lc:searchParams(action: 'remove', searchParamsArray: searchParamsFromFirstPage, key: searchParamsFilterKey)}" class="filter-item selected">
+                        <f:link.action action="index" controller="Search" pluginName="SearchListing" arguments="{lc:searchParams(action: 'removeFilter', searchParamsArray: searchParamsFromFirstPage, key: searchParamsFilterKey, value: filter.key)}" class="filter-item selected">
                             <span class="filter-item-label">{filter.key}</span>
                             <span class="filter-item-count">{filter.doc_count}</span>
                         </f:link.action>
                     </f:then>
                     <f:else if="{filter.key}">
-                        <f:link.action action="index" controller="Search" pluginName="SearchListing" arguments="{lc:searchParams(action: 'add', searchParamsArray: searchParamsFromFirstPage, key: searchParamsFilterKey, value: filter.key)}" class="filter-item">
+                        <f:link.action action="index" controller="Search" pluginName="SearchListing" arguments="{lc:searchParams(action: 'addFilter', searchParamsArray: searchParamsFromFirstPage, key: searchParamsFilterKey, value: filter.key)}" class="filter-item">
                             <span class="filter-item-label">{filter.key}</span>
                             <span class="filter-item-count">{filter.doc_count}</span>
                         </f:link.action>
