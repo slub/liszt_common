@@ -89,25 +89,9 @@ class QueryParamsBuilder
 
         $this->setCommonParams();
 
-        // Todo: automate the creation of parameters
-        // filter creators name, Todo: its not a filter query because they need 100% match (with spaces from f_creators_name)
-        // better would be to build the field 'fullName' at build time with PHP?
-        if (isset($this->params['f_creators_name']) && $this->params['f_creators_name'] !== "") {
-            $this->query['body']['query']['bool']['must'][] = [
-                'nested' => [
-                    'path' => 'creators',
-                    'query' => [
-                        'match' => [
-                            'creators.fullName' => $this->params['f_creators_name']
-                        ]
-                    ]
-                ]
-            ];
-        }
         if (isset($this->params['page']) && $this->params['page'] !== "") {
             $this->query['from'] = ($this->params['page'] - 1) * $commonConf['itemsPerPage'];
         }
-
         return $this->query;
     }
 
@@ -117,70 +101,6 @@ class QueryParamsBuilder
 
         $this->setCommonParams();
 
-/*
-        $params = [
-            //'index' => $bibIndex,
-            'body' => [ ]
-        ];
-        if (!isset($searchParams['searchText']) || $searchParams['searchText'] == '') {
-            $params['body']['query'] = [
-                'bool' => [
-                    'must' => [[
-                        'match_all' => new \stdClass()
-                    ]]
-                ]
-            ];
-        } else {
-            // search in field "fulltext" exakt phrase match boost over all words must contain
-            $params['body']['query'] = [
-                'bool' => [
-                    'should' => [
-                        [
-                            'match_phrase' => [
-                                'tx_lisztcommon_searchable' => [
-                                    'query' => $searchParams['searchText'],
-                                    'boost' => 2.0 // boosting for exakt phrases
-                                ]
-                            ]
-                        ],
-                        [
-                            'query_string' => [
-                                'query' => $searchParams['searchText'],
-                                'fields' => ['fulltext'],
-                                'default_operator' => 'AND'
-                            ]
-                        ]
-                    ]
-                ]
-            ];
-        }
-
-        // Todo: automate the creation of parameters
-        if (isset($searchParams['f_itemType']) && $searchParams['f_itemType'] !== "") {
-            $params['body']['query']['bool']['filter'][] = ['term' => ['itemType.keyword' => $searchParams['f_itemType']]];
-        }
-        if (isset($searchParams['f_place']) && $searchParams['f_place'] !== "") {
-            $params['body']['query']['bool']['filter'][] = ['term' => ['place.keyword' => $searchParams['f_place']]];
-        }
-        if (isset($searchParams['f_date']) && $searchParams['f_date'] !== "") {
-            $params['body']['query']['bool']['filter'][] = ['term' => ['date.keyword' => $searchParams['f_date']]];
-        }
-        // filter creators name, Todo: its not a filter query because they need 100% match (with spaces from f_creators_name)
-        // better would be to build the field 'fullName' at build time with PHP?
-        if (isset($searchParams['f_creators_name']) && $searchParams['f_creators_name'] !== "") {
-            $params['body']['query']['bool']['must'][] = [
-                'nested' => [
-                    'path' => 'creators',
-                    'query' => [
-                        'match' => [
-                            'creators.fullName' => $searchParams['f_creators_name']
-                        ]
-                    ]
-                ]
-            ];
-        }
-
-*/
         return $this->query;
     }
     private function getIndexName(): string
@@ -211,6 +131,13 @@ class QueryParamsBuilder
                         ]
                     ]];
                 }
+                if ($entityType['type'] == 'keyword') {
+                    return [$entityType['field'] => [
+                        'terms' => [
+                            'field' => $entityType['field']
+                        ]
+                    ]];
+                }
                 return [
                     $entityType['field'] => [
                         'nested' => [
@@ -235,33 +162,34 @@ class QueryParamsBuilder
 
     private static function getFilter(array $field): array
     {
-/*
         if (
             isset($field['type']) &&
             $field['type'] == 'terms'
         ) {
-*/
             return [
-                'term' => [
-                    $field['name']. '.keyword' => $field['value']
+                'terms' => [
+                    $field['name'] . '.keyword' => $field['value']
                 ]
             ];
-        //}
+        }
+
+        if (
+            isset($field['type']) &&
+            $field['type'] == 'keyword'
+        ) {
+            return [
+                'terms' => [
+                    $field['name'] => $field['value']
+                ]
+            ];
+        }
 
         return [
-            $field['name'] => [
-                'nested' => [
-                    'path' => $field['name']
-                ],
-                'aggs' => [
-                    'names' => [
-                        'terms' => [
-                            'script' => [
-                                'source' => $field['script'],
-                                'lang' => 'painless'
-                            ],
-                            'size' => 15,
-                        ]
+            'nested' => [
+                'path' => $field['name'],
+                'query' => [
+                    'match' => [
+                        $field['name'] . '.' . $field['path'] => $field['value']
                     ]
                 ]
             ]
@@ -274,7 +202,8 @@ class QueryParamsBuilder
     private function setCommonParams(): void
     {
         // set index name
-        $this->query['index'] = $this->indexName;
+        $index = $this->indexName;
+        $this->query['index'] = $index;
 
         // set body
         if (!isset($this->params['searchText']) || $this->params['searchText'] == '') {
@@ -312,16 +241,44 @@ class QueryParamsBuilder
 
         // set filters
         $query = $this->query;
-        Collection::wrap($this->params)->
-            filter(function($_, $key) { return Str::of($key)->startsWith('f_'); })->
-            each(function($value, $key) use (&$query) {
-                $field = Str::of($key)->replace('f_', '')->__toString();
-                $query['body']['query']['bool']['filter'][] = self::getFilter([
-                    'name' => $field,
-                    //'type' => $field['type'],
-                    'type' => 'terms',
-                    'value' => $value
-                ]);
+        Collection::wrap($this->params['filter'] ?? [])
+            ->each(function($value, $key) use (&$query) {
+            // get array keys from $value as new array for multiple facettes
+                $value = array_keys($value);
+              // $value = array('Rochester','Bonn');
+
+                if ($key !== 'creators') {
+/*                    $query['body']['query']['bool']['filter'][] = self::getFilter([
+                        'name' => $key,
+                        //'type' => $field['type'],
+                        'type' => 'terms',
+                        'value' => $value
+                    ]);*/
+
+                    // post_filter for multiple selection facettes and OR function to combine results from multiple facettes
+                    $query['body']['post_filter']['bool']['should'][] = self::getFilter([
+                        'name' => $key,
+                        //'type' => $field['type'],
+                        'type' => 'terms',
+                        'value' => $value
+                    ],
+                    );
+
+
+                } else  {
+                    // its not a filter query because they need 100% match (with spaces from f_creators_name)
+                    // better would be to build the field 'fullName' at build time with PHP?
+                        $query['body']['query']['bool']['must'][] = [
+                            'nested' => [
+                                'path' => 'creators',
+                                'query' => [
+                                    'match' => [
+                                        'creators.fullName' => $value
+                                    ]
+                                ]
+                            ]
+                        ];
+                }
             });
         $this->query = $query;
 
