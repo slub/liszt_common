@@ -248,21 +248,21 @@ class QueryParamsBuilder
               // $value = array('Rochester','Bonn');
 
                 if ($key !== 'creators') {
-/*                    $query['body']['query']['bool']['filter'][] = self::getFilter([
+                   $query['body']['query']['bool']['filter'][] = self::getFilter([
                         'name' => $key,
                         //'type' => $field['type'],
                         'type' => 'terms',
                         'value' => $value
-                    ]);*/
+                    ]);
 
                     // post_filter for multiple selection facettes and OR function to combine results from multiple facettes
-                    $query['body']['post_filter']['bool']['should'][] = self::getFilter([
+                  /*  $query['body']['post_filter']['bool']['should'][] = self::getFilter([
                         'name' => $key,
                         //'type' => $field['type'],
                         'type' => 'terms',
                         'value' => $value
                     ],
-                    );
+                    );*/
 
 
                 } else  {
