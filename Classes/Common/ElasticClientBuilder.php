@@ -32,7 +32,7 @@ class ElasticClientBuilder extends ClientBuilder {
             build();
     }
 
-    protected function initialize(): ElasticClientBuilder
+    public function initialize(): ElasticClientBuilder
     {
         $this->extConf = new Collection(
             GeneralUtility::makeInstance(ExtensionConfiguration::class)->
@@ -45,7 +45,7 @@ class ElasticClientBuilder extends ClientBuilder {
         return $this;
     }
 
-	protected function autoconfig (): ElasticClientBuilder {
+	public function autoconfig (): ElasticClientBuilder {
 		$this->sethosts($this->hosts);
 		if ($this->password) {
 			$this->setBasicAuthentication('elastic', $this->password);
