@@ -1,14 +1,17 @@
 {namespace lc=Slub\LisztCommon\ViewHelpers}
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 
+
+<f:comment>ToDo: refactor with view helper from double code for ul content</f:comment>
 <div class="filter-block frame">
     <h4 class="">{key}</h4>
     <f:variable name="paramsRemovePage">{lc:searchParams(action: 'remove', searchParamsArray: searchParams, key: 'page')}</f:variable>
     <f:variable name="searchParamsFromFirstPage">{paramsRemovePage.searchParams}</f:variable>
     <ul>
-        <f:for each="{filterGroup.buckets}" as="filter">
+        <f:if condition="{filterGroup.{key}.buckets -> f:count()} > 0">
+        <f:for each="{filterGroup.{key}.buckets}" as="filter">
             <li>
-                <f:if condition="{filter.key} && {searchParams.filter.{key}.{filter.key}} == 1">
+                <f:if condition="{filter.key} && {lc:GetValueByKeyPath(data: searchParams, keys: '{0: \'filter\', 1: key, 2: filter.key}')} == 1">
                     <f:then>
                         <f:link.action action="index" controller="Search" pluginName="SearchListing" arguments="{lc:searchParams(action: 'removeFilter', searchParamsArray: searchParamsFromFirstPage, key: key, value: filter.key)}" class="filter-item selected">
                             <span class="filter-item-label">{filter.key}</span>
@@ -23,15 +26,30 @@
                     </f:else>
                 </f:if>
             </li>
-
-            <f:comment> <!--  old versions of filter (form input), ToDo: remove later if not needed-->
-                <li><f:link.action action="index" controller="Search" pluginName="SearchListing" arguments="{searchParams: {f_itemType: filter.key}}" class="form-checkbox"><input class="form-check-input" type="checkbox" id="{filter.key}" value="{filter.key}"><label class="form-check-label" for="{filter.key}">{filter.key}</label><span class="count">{filter.doc_count}</span></f:link.action></li>
-                <li><a href="{f:uri.action(controller: 'Search', action: 'index', extensionName: 'liszt_common', pluginName: 'SearchListing', pageUid: '18')}" class="form-checkbox"><input class="form-check-input" type="checkbox" id="{filter.key}" value="{filter.key}"><label class="form-check-label" for="{filter.key}">{filter.key}</label></a><span class="count">{filter.doc_count}</span></li>
-                <li><span class="form-checkbox"><input class="form-check-input" type="checkbox" id="{filter.key}" value="{filter.key}"><label class="form-check-label" for="{filter.key}">{filter.key}</label></span><span class="count">{filter.doc_count}</span></li>
-            </f:comment>
-
         </f:for>
+        </f:if>
+
+        <f:if condition="{filterGroup.filtered_params.{key}.buckets -> f:count()} > 0">
+            <f:for each="{filterGroup.filtered_params.{key}.buckets}" as="filter">
+                <li>
+                    <f:if condition="{filter.key} && {lc:GetValueByKeyPath(data: searchParams, keys: '{0: \'filter\', 1: key, 2: filter.key}')} == 1">
+                        <f:then>
+                            <f:link.action action="index" controller="Search" pluginName="SearchListing" arguments="{lc:searchParams(action: 'removeFilter', searchParamsArray: searchParamsFromFirstPage, key: key, value: filter.key)}" class="filter-item selected">
+                                <span class="filter-item-label">{filter.key}</span>
+                                <span class="filter-item-count">{filter.doc_count}</span>
+                            </f:link.action>
+                        </f:then>
+                        <f:else if="{filter.key}">
+                            <f:link.action action="index" controller="Search" pluginName="SearchListing" arguments="{lc:searchParams(action: 'addFilter', searchParamsArray: searchParamsFromFirstPage, key: key, value: filter.key)}" class="filter-item">
+                                <span class="filter-item-label">{filter.key}</span>
+                                <span class="filter-item-count">{filter.doc_count}</span>
+                            </f:link.action>
+                        </f:else>
+                    </f:if>
+                </li>
+            </f:for>
+        </f:if>
+
     </ul>
 </div>
-
 </html>

@@ -13,7 +13,6 @@
     </button>
     </div>
 
-
     <f:if condition="{searchParams.filter}">
         <div class="searchresults-filtertags" aria-label="{f:translate(key: 'searchResults_params_label', extensionName: 'liszt_common')}" role="navigation">
             <f:for each="{searchParams.filter}" key="key" as="filterParam">
@@ -47,12 +46,7 @@
         </div>
         <div class="offcanvas-body">
         <f:for each="{searchResults.aggregations}" key="key" as="filterGroup">
-            <f:if condition="{filterGroup.buckets}">
                 <f:render partial="FilterBlock" arguments="{key: key, filterGroup: filterGroup, searchParams: searchParams}" />
-            </f:if>
-            <f:if condition="{filterGroup.names}">
-                <f:render partial="FilterBlock" arguments="{key: key, filterGroup: filterGroup.names, searchParams: searchParams}" />
-            </f:if>
         </f:for>
         </div>
     </nav>
