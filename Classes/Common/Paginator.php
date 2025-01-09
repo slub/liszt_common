@@ -82,18 +82,28 @@ class Paginator
         return $this;
     }
 
-    public function getPagination(): array
+    public function getTotalPages(): int
     {
         if (
             $this->totalItems < 0 ||
-            $this->currentPage < 0 ||
             $this->itemsPerPage < 0
         ) {
-            throw new \Exception('Please specify total items, items per page and current page before retrieving the pagination.');
+            throw new \Exception('Please specify total items and items per page before retrieving the pagination.');
+        }
+
+        return (int) ceil($this->totalItems / $this->itemsPerPage);
+    }
+
+    public function getPagination(): array
+    {
+        if (
+            $this->currentPage < 0
+        ) {
+            throw new \Exception('Please specify current page before retrieving the pagination.');
         }
 
         $pagination = new Collection();
-        $totalPages = (int) ceil($this->totalItems / $this->itemsPerPage);
+        $totalPages = $this->getTotalPages();
         $currentPage = $this->currentPage;
 
         $pagesBefore = $this->paginationRange->

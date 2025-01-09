@@ -72,6 +72,8 @@
             </div>
         </article>
     </f:for>
-    <f:render partial="Pagination" arguments="{pagination: pagination, searchParams: searchParams, currentString: currentString, dots: dots}" />
+    <f:if condition="{showPagination}">
+        <f:render partial="Pagination" arguments="{pagination: pagination, searchParams: searchParams, currentString: currentString, dots: dots}" />
+    </f:if>
     </div>
 </div>
