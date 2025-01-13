@@ -138,13 +138,14 @@ class QueryParamsBuilder
 
                 $entityField = $entityType['field'];
                 $entityTypeKey = $entityType['key'] ?? null;
+                $entityTypeMultiselect = $entityType['multiselect'] ?? null;
 
-                // create filter in aggs for filtering aggs (without filtering the own key for multiple selections)
+                // create filter in aggs for filtering aggs (without filtering the own key for multiple selections if multiselect == yes)
                 $filters = array_values(
                     array_filter(
                         array_map(
-                            function ($key, $values) use ($entityField, $filterTypes) {
-                                if ($key !== $entityField) {
+                            function ($key, $values) use ($entityField, $filterTypes, $entityType) {
+                                if ($key !== $entityField || ($filterTypes[$key]['multiselect'] !== 'yes')) {
                                     // handle nested fields
                                     if (($filterTypes[$key]['type'] == 'nested') && (isset($filterTypes[$key]['key'])))  {
                                         return [
@@ -215,7 +216,8 @@ class QueryParamsBuilder
                             $entityField => [
                                 'terms' => [
                                     'field' => $entityField . '.keyword',
-                                    'min_doc_count' => 0
+                                    // show docs with count 0 only for multiple select fields
+                                    'min_doc_count' => $entityTypeMultiselect === 'yes' ? 0 : 1,
                                 ]
                             ]
                         ],
@@ -327,7 +329,8 @@ class QueryParamsBuilder
                 return [
                     $filter['field'] => [
                         'type' => $filter['type'],
-                        'key' => $filter['key'] ?? ''
+                        'key' => $filter['key'] ?? '',
+                        'multiselect' => $filter['multiselect'] ?? ''
                     ]
                 ];
             })
