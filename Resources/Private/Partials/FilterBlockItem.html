@@ -1,0 +1,19 @@
+{namespace lc=Slub\LisztCommon\ViewHelpers}
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+            <li>
+                <f:if condition="{filter.key} && {lc:GetValueByKeyPath(data: searchParams, keys: '{0: \'filter\', 1: key, 2: filter.key}')} == 1">
+                    <f:then>
+                        <f:link.action action="index" controller="Search" pluginName="SearchListing" arguments="{lc:searchParams(action: 'removeFilter', searchParamsArray: searchParamsFromFirstPage, key: key, value: filter.key)}" class="filter-item selected">
+                            <span class="filter-item-label">{f:translate(key: '{languageFilePath}:{key}_{filter.key}', default: '{filter.key}')}</span>
+                            <span class="filter-item-count">{filter.doc_count}</span>
+                        </f:link.action>
+                    </f:then>
+                    <f:else if="{filter.key}">
+                        <f:link.action action="index" controller="Search" pluginName="SearchListing" arguments="{lc:searchParams(action: 'addFilter', searchParamsArray: searchParamsFromFirstPage, key: key, value: filter.key)}" class="filter-item">
+                            <span class="filter-item-label">{f:translate(key: '{languageFilePath}:{key}_{filter.key}', default: '{filter.key}')}</span>
+                            <span class="filter-item-count">{filter.doc_count}</span>
+                        </f:link.action>
+                    </f:else>
+                </f:if>
+            </li>
+</html>

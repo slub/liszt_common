@@ -1,55 +1,23 @@
 {namespace lc=Slub\LisztCommon\ViewHelpers}
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:variable name="languageFilePath">LLL:EXT:{settings.entityTypes.1.extensionName}/Resources/Private/Language/{settings.entityTypes.1.languageFile}.xlf</f:variable>
 
-
-<f:comment>ToDo: refactor with view helper from double code for ul content</f:comment>
 <div class="filter-block frame">
-    <h4 class="">{key}</h4>
+    <h4 class="">{f:translate(key: '{languageFilePath}:{key}', default: '{key}')}</h4>
     <f:variable name="paramsRemovePage">{lc:searchParams(action: 'remove', searchParamsArray: searchParams, key: 'page')}</f:variable>
     <f:variable name="searchParamsFromFirstPage">{paramsRemovePage.searchParams}</f:variable>
     <ul>
         <f:if condition="{filterGroup.{key}.buckets -> f:count()} > 0">
-        <f:for each="{filterGroup.{key}.buckets}" as="filter">
-            <li>
-                <f:if condition="{filter.key} && {lc:GetValueByKeyPath(data: searchParams, keys: '{0: \'filter\', 1: key, 2: filter.key}')} == 1">
-                    <f:then>
-                        <f:link.action action="index" controller="Search" pluginName="SearchListing" arguments="{lc:searchParams(action: 'removeFilter', searchParamsArray: searchParamsFromFirstPage, key: key, value: filter.key)}" class="filter-item selected">
-                            <span class="filter-item-label">{filter.key}</span>
-                            <span class="filter-item-count">{filter.doc_count}</span>
-                        </f:link.action>
-                    </f:then>
-                    <f:else if="{filter.key}">
-                        <f:link.action action="index" controller="Search" pluginName="SearchListing" arguments="{lc:searchParams(action: 'addFilter', searchParamsArray: searchParamsFromFirstPage, key: key, value: filter.key)}" class="filter-item">
-                            <span class="filter-item-label">{filter.key}</span>
-                            <span class="filter-item-count">{filter.doc_count}</span>
-                        </f:link.action>
-                    </f:else>
-                </f:if>
-            </li>
-        </f:for>
-        </f:if>
-
-        <f:if condition="{filterGroup.filtered_params.{key}.buckets -> f:count()} > 0">
-            <f:for each="{filterGroup.filtered_params.{key}.buckets}" as="filter">
-                <li>
-                    <f:if condition="{filter.key} && {lc:GetValueByKeyPath(data: searchParams, keys: '{0: \'filter\', 1: key, 2: filter.key}')} == 1">
-                        <f:then>
-                            <f:link.action action="index" controller="Search" pluginName="SearchListing" arguments="{lc:searchParams(action: 'removeFilter', searchParamsArray: searchParamsFromFirstPage, key: key, value: filter.key)}" class="filter-item selected">
-                                <span class="filter-item-label">{filter.key}</span>
-                                <span class="filter-item-count">{filter.doc_count}</span>
-                            </f:link.action>
-                        </f:then>
-                        <f:else if="{filter.key}">
-                            <f:link.action action="index" controller="Search" pluginName="SearchListing" arguments="{lc:searchParams(action: 'addFilter', searchParamsArray: searchParamsFromFirstPage, key: key, value: filter.key)}" class="filter-item">
-                                <span class="filter-item-label">{filter.key}</span>
-                                <span class="filter-item-count">{filter.doc_count}</span>
-                            </f:link.action>
-                        </f:else>
-                    </f:if>
-                </li>
+            <f:for each="{filterGroup.{key}.buckets}" as="filter">
+                <f:render partial="FilterBlockItem" arguments="{key: key, filter: filter, searchParams: searchParams, searchParamsFromFirstPage: searchParamsFromFirstPage, languageFilePath: languageFilePath}" />
             </f:for>
         </f:if>
-
+        <f:comment>nested fields are nested deeper, that does not seem to be solvable</f:comment>
+        <f:if condition="{filterGroup.filtered_params.{key}.buckets -> f:count()} > 0">
+            <f:for each="{filterGroup.filtered_params.{key}.buckets}" as="filter">
+                <f:render partial="FilterBlockItem" arguments="{key: key, filter: filter, searchParams: searchParams, searchParamsFromFirstPage: searchParamsFromFirstPage, languageFilePath: languageFilePath}" />
+            </f:for>
+        </f:if>
     </ul>
 </div>
 </html>

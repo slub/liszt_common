@@ -5,6 +5,10 @@ namespace Slub\LisztCommon\ViewHelpers;
 
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
+/*
+ * This ViewHelper ist for returning object keys wich have an point in her name
+ * uses in facets to display right filter item names
+*/
 class GetValueByKeyPathViewHelper extends AbstractViewHelper
 {
     /**
