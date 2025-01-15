@@ -138,6 +138,8 @@ class QueryParamsBuilder
                 $entityField = $entityType['field'];
                 $entityTypeKey = $entityType['key'] ?? null;
                 $entityTypeMultiselect = $entityType['multiselect'] ?? null;
+                $entityTypeSize = $entityType['size'] ?? 10;
+
 
                 // create filter in aggs for filtering aggs (without filtering the own key for multiple selections if multiselect is set)
                 $filters = array_values(
@@ -197,7 +199,7 @@ class QueryParamsBuilder
                                         $entityField => [
                                             'terms' => [
                                                 'field' => $entityField . '.' . $entityTypeKey . '.keyword',
-                                                'size' => 15,
+                                                'size' => $entityTypeSize,
                                             ]
                                         ]
                                     ]
@@ -217,6 +219,7 @@ class QueryParamsBuilder
                                     'field' => $entityField . '.keyword',
                                     // show docs with count 0 only for multiple select fields
                                     'min_doc_count' => $entityTypeMultiselect ? 0 : 1,
+                                    'size' => $entityTypeSize,
                                 ]
                             ]
                         ],
