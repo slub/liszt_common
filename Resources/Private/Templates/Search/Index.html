@@ -4,6 +4,7 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:i="http://typo3.org/ns/Quellenform/Iconpack/ViewHelpers"
     data-namespace-typo3-fluid="true">
+<f:variable name="languageFilePath">LLL:EXT:{settings.entityTypes.1.extensionName}/Resources/Private/Language/{settings.entityTypes.1.languageFile}.xlf</f:variable>
 
 <div class="searchresults-info frame">
     <div class="searchresults-info-total">
@@ -18,7 +19,7 @@
             <f:for each="{searchParams.filter}" key="key" as="filterParam">
                 <f:for each="{filterParam}" key="innerKey" as="value">
                 <span class="searchresults-filtertags-tag {key} filter-tag-value-{value}">
-                    <span>{innerKey}</span>
+                    <span>{f:translate(key: '{languageFilePath}:{key}_{innerKey}', default: '{innerKey}')}</span>
                     <f:link.action action="index" controller="Search" pluginName="SearchListing"
                                    arguments="{lc:searchParams(action: 'removeFilter', searchParamsArray: searchParams, key: key, value: innerKey)}"
                                    additionalAttributes="{type:'button'}"
@@ -46,7 +47,7 @@
         </div>
         <div class="offcanvas-body">
         <f:for each="{searchResults.aggregations}" key="key" as="filterGroup">
-                <f:render partial="FilterBlock" arguments="{key: key, filterGroup: filterGroup, searchParams: searchParams}" />
+                <f:render partial="FilterBlock" arguments="{key: key, filterGroup: filterGroup, searchParams: searchParams, languageFilePath: languageFilePath}" />
         </f:for>
         </div>
     </nav>
