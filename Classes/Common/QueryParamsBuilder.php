@@ -138,7 +138,7 @@ class QueryParamsBuilder
                 $entityField = $entityType['field'];
                 $entityTypeKey = $entityType['key'] ?? null;
                 $entityTypeMultiselect = $entityType['multiselect'] ?? null;
-                $entityTypeSize = $entityType['size'] ?? 10;
+                $entityTypeSize = $entityType['maxSize'] ?? 10;
 
 
                 // create filter in aggs for filtering aggs (without filtering the own key for multiple selections if multiselect is set)
