@@ -30,6 +30,15 @@
 			<trans-unit id="filter_container_close">
 				<source>Filtermenü schließen</source>
 			</trans-unit>
+			<trans-unit id="filter_remove_item">
+				<source>Filter entfernen</source>
+			</trans-unit>
+			<trans-unit id="filter_add_item">
+				<source>Filter auswählen</source>
+			</trans-unit>
+			<trans-unit id="filter_show_more_button">
+				<source>Mehr anzeigen</source>
+			</trans-unit>
 			<trans-unit id="searchResults_hits_label">
 				<source>Treffer</source>
 			</trans-unit>

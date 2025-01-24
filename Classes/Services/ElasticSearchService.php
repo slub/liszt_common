@@ -45,7 +45,6 @@ class ElasticSearchService implements ElasticSearchServiceInterface
     {
         $this->init();
         $this->params = QueryParamsBuilder::createQueryParamsBuilder($searchParams, $settings)->getQueryParams();
-
         // ToDo: handle exceptions!
         $response = $this->client->search($this->params)->asArray();
         $aggs = $response['aggregations'];
@@ -64,13 +63,4 @@ class ElasticSearchService implements ElasticSearchServiceInterface
 
         return new Collection($response);
     }
-
-    public function count(array $searchParams, array $settings): int
-    {
-        $this->init();
-        $this->params = QueryParamsBuilder::createQueryParamsBuilder($searchParams, $settings)->getCountQueryParams();
-        $response = $this->client->count($this->params);
-        return $response['count'];
-    }
-
 }
