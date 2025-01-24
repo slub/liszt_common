@@ -96,15 +96,6 @@ class QueryParamsBuilder
         return $this->query;
     }
 
-    // count is not needed anymore because we use this parameter from search request
-/*    public function getCountQueryParams(): array
-    {
-        $this->query = [ 'body' => [ ] ];
-
-        $this->setCommonParams();
-
-        return $this->query;
-    }*/
     private function getIndexName(): string
     {
         if (isset($this->params['index'])) {
@@ -116,121 +107,134 @@ class QueryParamsBuilder
             join(',');
     }
 
-
-
     private function getAggs(): array
     {
         $settings = $this->settings;
         $index = $this->indexName;
         $filterParams = $this->params['filter'] ?? [];
         $filterTypes = $this->getFilterTypes();
-        return  Collection::wrap($settings)
-            ->recursive()
-            ->get('entityTypes')
-            ->filter(function($entityTypes) use ($index) {
+        return  Collection::wrap($settings)->
+            recursive()->
+            get('entityTypes')->
+            filter(function($entityTypes) use ($index) {
                 return $entityTypes->get('indexName') === $index;
-            })
-            ->values()
-            ->get(0)
-            ->get('filters')
-            ->mapWithKeys(function($entityType) use ($filterParams, $filterTypes) {
+            })->
+            values()->
+            get(0)->
+            get('filters')->
+            mapWithKeys(function ($entityType) use ($filterParams, $filterTypes) {
+                return self::retrieveFilterParamsForEntityType($entityType, $filterParams, $filterTypes);
+            })->
+            toArray();
+    }
 
-                $entityField = $entityType['field'];
-                $entityTypeKey = $entityType['key'] ?? null;
-                $entityTypeMultiselect = $entityType['multiselect'] ?? null;
-                $entityTypeSize = $entityType['maxSize'] ?? 10;
+    private static function retrieveFilterParamsForEntityType(
+        Collection $entityType,
+        array $filterParams,
+        array $filterTypes
+    ): array
+    {
+        $entityField = $entityType['field'];
+        $entityTypeKey = $entityType['key'] ?? null;
+        $entityTypeMultiselect = $entityType['multiselect'] ?? null;
+        $entityTypeSize = $entityType['maxSize'] ?? 10;
 
+        // create filter in aggs for filtering aggs (without filtering the current key for multiple selections if multiselect is set)
+        $filters = Collection::wrap($filterParams)->
+            map(function ($value, $key) use ($entityField, $filterTypes) {
+                return self::retrieveFilterParamForEntityField($key, $value, $entityField, $filterTypes);
+            })->
+            filter()->
+            values()->
+            toArray();
 
-                // create filter in aggs for filtering aggs (without filtering the own key for multiple selections if multiselect is set)
-                $filters = array_values(
-                    array_filter(
-                        array_map(
-                            function ($key, $values) use ($entityField, $filterTypes, $entityType) {
-                                if ($key !== $entityField || (!isset($filterTypes[$key]['multiselect']))) {
-                                    // handle nested fields
-                                    if (($filterTypes[$key]['type'] == 'nested') && (isset($filterTypes[$key]['key'])))  {
-                                        return [
-                                            'nested' => [
-                                                'path' => $key,
-                                                'query' => [
-                                                    'bool' => [
-                                                        'filter' => [
-                                                            'terms' => [ $key.'.'.$filterTypes[$key]['key'].'.keyword' => array_keys($values)]
-                                                        ]
-                                                    ]
-                                                ]
-                                            ]
-                                        ];
-                                    }
-                                    // handle all other fields (not nested fields)
-                                    return ['terms' => [$key . '.keyword' => array_keys($values)]];
-                                }
-                                return null; // exclude own key for multiple selects
-                            },
-                            array_keys($filterParams),
-                            $filterParams
-                        )
-                    )
-                );
+        // return match_all if filters are empty because elasticsearch throws an error without the filter key
+        if (empty($filters)) {
+            $filters = [
+                ['match_all' => (object) []]
+            ];
+        }
 
-                // match_all if filters are empty because elastics error without the filter key
-                if (empty($filters)) {
-                    $filters = [
-                        ['match_all' => (object) []]
-                    ];
-                }
+        // special aggs for nested fields
+        if ($entityType['type'] === 'nested') {
 
-                // special aggs for nested fields
-                if ($entityType['type'] === 'nested') {
-
-                    return [
-                        $entityType['field'] => [
-                            'filter' => [
-                                'bool' => [
-                                    'filter' => $filters
-                                ]
+            return [
+                $entityType['field'] => [
+                    'filter' => [
+                        'bool' => [
+                            'filter' => $filters
+                        ]
+                    ],
+                    'aggs' => [
+                        'filtered_params' => [
+                            'nested' => [
+                                'path' => $entityField
                             ],
                             'aggs' => [
-                                'filtered_params' => [
-                                    'nested' => [
-                                        'path' => $entityField
-                                    ],
-                                    'aggs' => [
-                                        $entityField => [
-                                            'terms' => [
-                                                'field' => $entityField . '.' . $entityTypeKey . '.keyword',
-                                                'size' => $entityTypeSize,
-                                            ]
-                                        ]
+                                $entityField => [
+                                    'terms' => [
+                                        'field' => $entityField . '.' . $entityTypeKey . '.keyword',
+                                        'size' => $entityTypeSize,
                                     ]
                                 ]
                             ]
                         ]
-                    ];
+                    ]
+                ]
+            ];
 
-                }
+        }
 
-                // all other (not nested fields)
-                return [
+        // all other (not nested fields)
+        return [
+            $entityField => [
+                'aggs' => [
                     $entityField => [
-                        'aggs' => [
-                            $entityField => [
-                                'terms' => [
-                                    'field' => $entityField . '.keyword',
-                                    // show docs with count 0 only for multiple select fields
-                                    'min_doc_count' => $entityTypeMultiselect ? 0 : 1,
-                                    'size' => $entityTypeSize,
-                                ]
-                            ]
-                        ],
-                        'filter' => [
-                            'bool' => [
-                                'filter' => $filters
+                        'terms' => [
+                            'field' => $entityField . '.keyword',
+                            // show docs with count 0 only for multiple select fields
+                            'min_doc_count' => $entityTypeMultiselect ? 0 : 1,
+                            'size' => $entityTypeSize,
+                        ]
+                    ]
+                ],
+                'filter' => [
+                    'bool' => [
+                        'filter' => $filters
+                    ]
+                ]
+            ]
+        ];
+    }
+
+    private static function retrieveFilterParamForEntityField (
+        string $key,
+        array $values,
+        string $entityField,
+        array $filterTypes
+    ): ?array
+    {
+        // exclude current key for multiple selects
+        if ($key === $entityField && isset($filterTypes[$key]['multiselect'])) {
+            return null;
+        }
+        // handle nested fields
+        if (($filterTypes[$key]['type'] == 'nested') && (isset($filterTypes[$key]['key'])))  {
+            return [
+                'nested' => [
+                    'path' => $key,
+                    'query' => [
+                        'bool' => [
+                            'filter' => [
+                                'terms' => [ $key.'.'.$filterTypes[$key]['key'].'.keyword' => array_keys($values)]
                             ]
                         ]
                     ]
-                ];
-            })->toArray();
+                ]
+            ];
+        }
+        // handle all other fields (not nested fields)
+        return ['terms' => [$key . '.keyword' => array_keys($values)]];
     }
 
     /**
@@ -309,8 +313,6 @@ class QueryParamsBuilder
 
     }
 
-
-
     /**
      * Retrieves filter types based on the current indexName and settings from extension.
      *
@@ -318,14 +320,18 @@ class QueryParamsBuilder
      */
     private function getFilterTypes(): array
     {
-        return Collection::wrap($this->settings)
+        $filters = Collection::wrap($this->settings)
             ->recursive()
             ->get('entityTypes')
             ->filter(function ($entityType) {
                 return $entityType->get('indexName') === $this->indexName;
             })
-            ->values()
-            ->get(0)
+            ->values();
+        if ($filters->count() === 0) {
+            return [];
+        }
+
+        return $filters->get(0)
             ->get('filters')
             ->mapWithKeys(function ($filter) {
                 return [
