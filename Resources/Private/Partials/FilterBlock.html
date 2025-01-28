@@ -8,7 +8,7 @@
     <f:if condition="{buckets -> f:count()} > 0">
         <div class="filter-block frame">
         <h4 class="">{f:translate(key: '{languageFilePath}:{key}', default: '{key}')}</h4>
-            <ul>
+            <ul style="view-transition-name:filterblock-{key};">
             <f:for each="{buckets}" as="filter">
                 <f:render partial="FilterBlockItem" arguments="{key: key, filter: filter, searchParams: searchParams, searchParamsFromFirstPage: searchParamsFromFirstPage, languageFilePath: languageFilePath}" />
             </f:for>
