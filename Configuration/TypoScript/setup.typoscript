@@ -7,6 +7,8 @@ page {
         key.field = doktype
         130 = TEXT
         130.value = SearchResults
+        140 = TEXT
+        140.value = Detail
       }
     }
     templateRootPaths {
@@ -17,6 +19,7 @@ page {
     }
   }
 }
+
 
 lib.contentElement {
   templateRootPaths {
