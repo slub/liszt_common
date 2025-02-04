@@ -195,6 +195,8 @@ class QueryParamsBuilder
                             // show docs with count 0 only for multiple select fields
                             'min_doc_count' => $entityTypeMultiselect ? 0 : 1,
                             'size' => $entityTypeSize,
+                         //   'include' => 'Slowakisch|.*',
+
                         ]
                     ]
                 ],

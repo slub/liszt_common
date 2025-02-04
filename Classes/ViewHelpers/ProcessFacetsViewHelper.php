@@ -59,6 +59,11 @@ final class ProcessFacetsViewHelper extends AbstractViewHelper
             return $item['doc_count'] > 0 || ($item['selected'] ?? false);
         });
 
+        // Sort the array so that selected items come first
+        usort($returnBucket, function ($a, $b) {
+            return ($b['selected'] ?? false) <=> ($a['selected'] ?? false);
+        });
+
         return $returnBucket;
 
     }
