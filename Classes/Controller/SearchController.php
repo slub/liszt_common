@@ -72,4 +72,10 @@ final class SearchController extends ClientEnabledController
         return $this->htmlResponse();
     }
 
+    public function detailsAction(array $searchParams = []): ResponseInterface
+    {
+        $this->view->assign('searchParams', $searchParams);
+        return $this->htmlResponse();
+    }
+
 }

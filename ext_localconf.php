@@ -25,6 +25,13 @@ ExtensionUtility::configurePlugin(
     [ SearchController::class => 'searchBar' ],
 );
 
+ExtensionUtility::configurePlugin(
+    'LisztCommon',
+    'SearchDetails',
+    [ SearchController::class => 'details' ],
+    [ SearchController::class => 'details' ],
+);
+
 ExtensionManagementUtility::addPageTSConfig(
     '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:liszt_common/Configuration/TsConfig/page.tsconfig">'
 );

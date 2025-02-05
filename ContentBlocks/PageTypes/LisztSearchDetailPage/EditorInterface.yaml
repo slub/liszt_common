@@ -1,8 +1,8 @@
-name: slub/lisztdetailpage
-title: 'Liszt Suchergebnisse Seite'
+name: slub/lisztsearchdetailpage
+title: 'Liszt Suchergebnisse Detail Seite'
 typeName: 140
 fields:
   - identifier: categories
     label: 'Kategorien'
     type: Category
- 
+

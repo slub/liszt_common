@@ -20,6 +20,27 @@ mod.web_layout.BackendLayouts {
       }
     }
   }
+  searchDetails {
+    title = Liszt Detailseite
+    ## icon = EXT:liszt_web/Resources/Public/Images/BackendLayouts/default.gif
+    config {
+      backend_layout {
+        doktype = 140
+        colCount = 1
+        rowCount = 1
+        rows {
+          1 {
+            columns {
+              1 {
+                name = Hauptinhalt
+                colPos = 0
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 // add content element to wizard
@@ -45,9 +66,19 @@ mod.wizards.newContentElement.wizardItems {
           list_type = lisztcommon_searchbar
         }
       }
+      lisztcommon_searchdetails {
+        iconIdentifier = content-text
+        title = LLL:EXT:liszt_common/Resources/Private/Language/locallang.xlf:searchdetails_title
+        description = LLL:EXT:liszt_common/Resources/Private/Language/locallang.xlf:searchdetails_description
+        tt_content_defValues {
+          CType = list
+          list_type = lisztcommon_searchdetails
+        }
+      }
     }
     show := addToList(lisztcommon_searchlisting)
     show := addToList(lisztcommon_searchbar)
+    show := addToList(lisztcommon_searchdetails)
   }
 }
 
