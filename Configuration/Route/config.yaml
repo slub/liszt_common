@@ -1,0 +1,9 @@
+routeEnhancers:
+  SearchDetailRoute:
+    type: Extbase
+    limitToPages: [38]
+    extension: LisztCommon
+    plugin: SearchDetails
+    routes:
+      - routePath: '/{detailId}'
+        _controller: 'Search::details'

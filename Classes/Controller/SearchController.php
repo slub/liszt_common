@@ -74,7 +74,18 @@ final class SearchController extends ClientEnabledController
 
     public function detailsAction(array $searchParams = []): ResponseInterface
     {
+
+        $routing = $this->request->getAttribute('routing');
+        $routingArgs = $routing->getArguments();
+
+        $detailId = $routing->get('detailId');
+
+
         $this->view->assign('searchParams', $searchParams);
+        $this->view->assign('routingArgs', $routingArgs);
+        $this->view->assign('detailId', $detailId);
+
+
         return $this->htmlResponse();
     }
 
