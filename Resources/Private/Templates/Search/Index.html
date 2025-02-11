@@ -52,7 +52,6 @@
         </div>
     </nav>
 </aside>
-
 <div class="content grid-colspan-lg-3 grid-colspan-md-2">
     <div class="frame">
     <f:for each="{searchResults.hits.hits}" as="hit">
@@ -63,9 +62,18 @@
                 </div>
                 <div class="searchresults-item-title">
                 <div class="searchresults-item-icon"><i:icon iconfig="{lc:ItemTypeIconName(iconPackKey: 'lziconsr', itemType: hit._source.itemType)}" preferredRenderTypes="svgSprite" additionalAttributes="{aria-hidden:'true'}" /></div>
-                <h3 >
+                <f:comment>ToDo: pageUid not hardcodet here -> from config?</f:comment>
+                    <f:link.action
+                    action="details"
+                    controller="Search"
+                    pluginName="SearchDetails"
+                    pageUid="38"
+                    arguments="{documentId: hit._id}"
+                    class="searchresults-item-detail-link" >
+                    <h3 >
                     {hit._source.tx_lisztcommon_body}
-                </h3>
+                    </h3>
+                </f:link.action>
                 </div>
             </header>
             <div class="searchresults-item-details">

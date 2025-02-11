@@ -7,6 +7,10 @@ use Psr\Http\Message\ResponseInterface;
 use Slub\LisztCommon\Interfaces\ElasticSearchServiceInterface;
 use Slub\LisztCommon\Common\Paginator;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Elastic\Elasticsearch\Exception\ClientResponseException;
+use Elastic\Transport\Exception\RuntimeException;
 
 // ToDo:
 // Organize the transfer of the necessary parameters (index name, fields, etc.) from the other extensions (ExtensionConfiguration?) -> see in ElasticSearchServic
@@ -78,15 +82,43 @@ final class SearchController extends ClientEnabledController
         $routing = $this->request->getAttribute('routing');
         $routingArgs = $routing->getArguments();
 
-        $detailId = $routing->get('detailId');
+        // Check if 'tx_lisztcommon_searchdetails' exists and if 'detailId' has a valid value.
+        $documentId = null;
+        if (!empty($routingArgs['tx_lisztcommon_searchdetails']['documentId'])) {
+            $documentId = $routingArgs['tx_lisztcommon_searchdetails']['documentId'];
+        } else {
+            return $this->redirectToNotFoundPage();
+        }
 
+        try {
+            $elasticResponse = $this->elasticSearchService->getDocumentById($documentId, []);
+        } catch (ClientResponseException $e) {
+            // Handle 404 errors
+            if ($e->getCode() === 404) {
+                return $this->redirectToNotFoundPage();
+            }
+            throw $e; // Re-throw for other client errors
+
+        }
 
         $this->view->assign('searchParams', $searchParams);
         $this->view->assign('routingArgs', $routingArgs);
-        $this->view->assign('detailId', $detailId);
-
+        $this->view->assign('detailId', $documentId);
+        $this->view->assign('searchResult', $elasticResponse);
 
         return $this->htmlResponse();
+
+
+    }
+
+
+    public function redirectToNotFoundPage(): ResponseInterface
+    {
+    // see: https://docs.typo3.org/m/typo3/reference-coreapi/12.4/en-us/ExtensionArchitecture/Extbase/Reference/Controller/ActionController.html
+        // $uri could also be https://example.com/any/uri
+        // $this->resourceFactory is injected as part of the `ActionController` inheritance
+        return $this->responseFactory->createResponse(301)
+            ->withHeader('Location', '/404/');   // the uri of the 404 page from typo installation
     }
 
 }
