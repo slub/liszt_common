@@ -34,25 +34,32 @@ final class SearchController extends ClientEnabledController
         $language = $this->request->getAttribute('language');
         $locale = $language->getLocale();
         if (
-            isset($searchParams['searchParamsPage']) &&
-            (int) $searchParams['searchParamsPage'] > 0
+            isset($searchParams['page']) &&
+            (int) $searchParams['page'] > 0
         ) {
-            $currentPage = (int) $searchParams['searchParamsPage'];
+            $currentPage = (int) $searchParams['page'];
         } else {
             $currentPage = 1;
         }
 
-        $totalItems = $this->elasticSearchService->count($searchParams, $this->settings);
-        $pagination = Paginator::createPagination($currentPage, $totalItems, $this->extConf);
+    //  $totalItems = $this->elasticSearchService->count($searchParams, $this->settings);
+        //$totalItems = 100;
 
         $elasticResponse = $this->elasticSearchService->search($searchParams, $this->settings);
+        $paginator = (new Paginator())->
+            setPage($currentPage)->
+            setTotalItems($elasticResponse['hits']['total']['value'])->
+            setExtensionConfiguration($this->extConf);
+        $pagination = $paginator->getPagination();
+        $showPagination = $paginator->getTotalPages() > 1 ? true : false;
 
         $this->view->assign('locale', $locale);
         $this->view->assign('totalItems', $elasticResponse['hits']['total']['value']);
         $this->view->assign('searchParams', $searchParams);
         $this->view->assign('searchResults', $elasticResponse);
         $this->view->assign('pagination', $pagination);
-        $this->view->assign('totalItems', $totalItems);
+        $this->view->assign('showPagination', $showPagination);
+     //   $this->view->assign('totalItems', $totalItems);
         $this->view->assign('currentString', Paginator::CURRENT_PAGE);
         $this->view->assign('dots', Paginator::DOTS);
 

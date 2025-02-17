@@ -1,0 +1,18 @@
+{namespace lc=Slub\LisztCommon\ViewHelpers}
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:variable name="searchParamsAction" value="{filter.selected ? 'removeFilter' : 'addFilter'}" />
+            <li class="{f:if(condition: '{filter.hidden}', then: 'hidden', else: '')}">
+                <f:if condition="{filter.key}">
+                        <f:link.action
+                            action="index"
+                            controller="Search"
+                            pluginName="SearchListing"
+                            title="{f:if(condition: '{filter.selected}', then: '{f:translate(key:\'filter_remove_item\')}', else: '{f:translate(key:\'filter_add_item\')}')}"
+                            arguments="{lc:searchParams(action: searchParamsAction, searchParamsArray: searchParamsFromFirstPage, key: key, value: filter.key)}"
+                            class="filter-item {f:if(condition: '{filter.selected}', then: 'selected', else: '')} {f:if(condition: '{filter.hidden}', then: 'hidden', else: '')}">
+                            <span class="filter-item-label">{f:translate(key: '{languageFilePath}:{key}_{filter.key}', default: '{filter.key}')}</span>
+                            <span class="filter-item-count">{filter.doc_count}</span>
+                        </f:link.action>
+                </f:if>
+            </li>
+</html>

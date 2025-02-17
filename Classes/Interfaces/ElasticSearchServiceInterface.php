@@ -11,6 +11,6 @@ interface ElasticSearchServiceInterface
 
     public function search(array $searchParams, array $settings): Collection;
 
-    public function count(array $searchParams, array $settings): int;
+   // public function count(array $searchParams, array $settings): int;
 
 }

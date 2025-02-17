@@ -11,7 +11,7 @@
                         </span>
                     </f:then>
                     <f:else>
-                        <f:link.action action="index" controller="Search" pluginName="SearchListing" arguments="{lc:searchParams(action: 'add', searchParamsArray: searchParams, key: 'searchParamsPage', value: page.page)}" additionalAttributes="{f:if(condition: '{page.class} == {currentString}', then: '{aria-current: \'page\', aria-label: \'{f:translate(key: \\\'searchResults_pagination_currentPage\\\',  arguments: {0: page.page}, extensionName: \\\'liszt_common\\\')}\' }', else:'{aria-label: \'{f:translate(key: \\\'searchResults_pagination_gotoPage\\\',  arguments: {0: page.page}, extensionName: \\\'liszt_common\\\')}\' }' )}">
+                        <f:link.action action="index" controller="Search" pluginName="SearchListing" arguments="{lc:searchParams(action: 'add', searchParamsArray: searchParams, key: 'page', value: page.page)}" additionalAttributes="{f:if(condition: '{page.class} == {currentString}', then: '{aria-current: \'page\', aria-label: \'{f:translate(key: \\\'searchResults_pagination_currentPage\\\',  arguments: {0: page.page}, extensionName: \\\'liszt_common\\\')}\' }', else:'{aria-label: \'{f:translate(key: \\\'searchResults_pagination_gotoPage\\\',  arguments: {0: page.page}, extensionName: \\\'liszt_common\\\')}\' }' )}">
                             {page.page}
                         </f:link.action>
                     </f:else>

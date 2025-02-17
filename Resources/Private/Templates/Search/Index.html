@@ -4,28 +4,33 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:i="http://typo3.org/ns/Quellenform/Iconpack/ViewHelpers"
     data-namespace-typo3-fluid="true">
-
+<f:variable name="languageFilePath">LLL:EXT:{settings.entityTypes.1.extensionName}/Resources/Private/Language/{settings.entityTypes.1.languageFile}.xlf</f:variable>
 
 <div class="searchresults-info frame">
     <div class="searchresults-info-total">
     <output class="searchresults-total-items">{totalItems} {f:translate(key: 'searchResults_hits_label', extensionName: 'liszt_common')}</output>
-    <button class="filter-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#filter-container" aria-controls="filter-container">
-        {f:translate(key: 'filter_container_label', extensionName: 'liszt_common')}
+    <button class="filter-toggler btn btn-black" type="button" data-bs-toggle="offcanvas" data-bs-target="#filter-container" aria-controls="filter-container">
+        <i:icon iconfig="lzicon,filter" preferredRenderTypes="svgSprite" additionalAttributes="{aria-hidden:'true'}" />  {f:translate(key: 'filter_container_label', extensionName: 'liszt_common')}
     </button>
     </div>
 
-    <f:comment>Remove Page param from searchparams array for display filter tags</f:comment>
-    <f:variable name="paramsRemovePage">{lc:searchParams(action: 'remove', searchParamsArray: searchParams, key: 'searchParamsPage')}</f:variable>
-    <f:if condition="{paramsRemovePage.searchParams}">
-        <div class="searchresults-filtertags" aria-label="{f:translate(key: 'searchResults_params_label', extensionName: 'liszt_common')}" role="navigation" >
-            <f:for each="{paramsRemovePage.searchParams}" key="key" as="searchParam">
-                <span class="searchresults-filtertags-tag">
-                    <span>{searchParam}</span>
-                         <f:link.action action="index" controller="Search" pluginName="SearchListing" arguments="{lc:searchParams(action: 'remove', searchParamsArray: searchParams, key: key)}"  additionalAttributes="{type:'button'}" class="tag-cross">
-                        <span class="visually-hidden">{f:translate(key: 'searchResults_params_remove_label',  arguments: {0: searchParam}, extensionName: 'liszt_common')}</span>
-                        <svg aria-hidden="true" stroke="currentColor" fill="none" viewBox="0 0 8 8"><path stroke-linecap="round" stroke-width="1" d="M1 1l6 6m0-6L1 7"></path></svg>
-                     </f:link.action>
+    <f:if condition="{searchParams.filter}">
+        <div class="searchresults-filtertags" aria-label="{f:translate(key: 'searchResults_params_label', extensionName: 'liszt_common')}" role="navigation">
+            <f:for each="{searchParams.filter}" key="key" as="filterParam">
+                <f:for each="{filterParam}" key="innerKey" as="value">
+                <span class="searchresults-filtertags-tag {key} filter-tag-value-{value}">
+                    <span>{f:translate(key: '{languageFilePath}:{key}_{innerKey}', default: '{innerKey}')}</span>
+                    <f:link.action action="index" controller="Search" pluginName="SearchListing"
+                                   arguments="{lc:searchParams(action: 'removeFilter', searchParamsArray: searchParams, key: key, value: innerKey)}"
+                                   additionalAttributes="{type:'button'}"
+                                   class="tag-cross">
+                        <span class="visually-hidden">{f:translate(key: 'searchResults_params_remove_label', arguments: {0: innerKey}, extensionName: 'liszt_common')}</span>
+                        <svg aria-hidden="true" stroke="currentColor" fill="none" viewBox="0 0 8 8">
+                            <path stroke-linecap="round" stroke-width="1" d="M1 1l6 6m0-6L1 7"></path>
+                        </svg>
+                    </f:link.action>
                 </span>
+                </f:for>
             </f:for>
         </div>
     </f:if>
@@ -42,12 +47,7 @@
         </div>
         <div class="offcanvas-body">
         <f:for each="{searchResults.aggregations}" key="key" as="filterGroup">
-            <f:if condition="{filterGroup.buckets}">
-                <f:render partial="FilterBlock" arguments="{key: key, filterGroup: filterGroup, searchParams: searchParams}" />
-            </f:if>
-            <f:if condition="{filterGroup.names}">
-                <f:render partial="FilterBlock" arguments="{key: key, filterGroup: filterGroup.names, searchParams: searchParams}" />
-            </f:if>
+                <f:render partial="FilterBlock" arguments="{key: key, filterGroup: filterGroup, searchParams: searchParams, languageFilePath: languageFilePath}" />
         </f:for>
         </div>
     </nav>
@@ -73,6 +73,8 @@
             </div>
         </article>
     </f:for>
-    <f:render partial="Pagination" arguments="{pagination: pagination, searchParams: searchParams, currentString: currentString, dots: dots}" />
+    <f:if condition="{showPagination}">
+        <f:render partial="Pagination" arguments="{pagination: pagination, searchParams: searchParams, currentString: currentString, dots: dots}" />
+    </f:if>
     </div>
 </div>

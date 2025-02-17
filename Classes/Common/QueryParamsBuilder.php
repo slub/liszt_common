@@ -22,9 +22,11 @@ class QueryParamsBuilder
     protected string $indexName = '';
     protected bool $searchAll = false;
 
-    public static function createQueryParamsBuilder(array $searchParams, array $settings): QueryParamsBuilder
+    // ToDo: @Matthias: check searchAll condition
+
+    public static function createQueryParamsBuilder(array $searchParams, array $settings): self
     {
-        $queryParamsBuilder = new QueryParamsBuilder();
+        $queryParamsBuilder = new self();
 
         return $queryParamsBuilder->
             setSettings($settings)->
@@ -65,7 +67,6 @@ class QueryParamsBuilder
         return $this;
     }
 
-    //Todo: get Config for bibIndex, aggs etc. from extension config?
     public function getQueryParams(): array
     {
         $commonConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('liszt_common');
@@ -84,105 +85,17 @@ class QueryParamsBuilder
         ];
 
         if ($this->searchAll == false) {
-            $this->query['body']['aggs'] = self::getAggs($this->settings, $this->indexName);
+            $this->query['body']['aggs'] = $this->getAggs();
         }
 
         $this->setCommonParams();
 
-        // Todo: automate the creation of parameters
-        // filter creators name, Todo: its not a filter query because they need 100% match (with spaces from f_creators_name)
-        // better would be to build the field 'fullName' at build time with PHP?
-        if (isset($this->params['f_creators_name']) && $this->params['f_creators_name'] !== "") {
-            $this->query['body']['query']['bool']['must'][] = [
-                'nested' => [
-                    'path' => 'creators',
-                    'query' => [
-                        'match' => [
-                            'creators.fullName' => $this->params['f_creators_name']
-                        ]
-                    ]
-                ]
-            ];
-        }
         if (isset($this->params['page']) && $this->params['page'] !== "") {
             $this->query['from'] = ($this->params['page'] - 1) * $commonConf['itemsPerPage'];
         }
-
         return $this->query;
     }
 
-    public function getCountQueryParams(): array
-    {
-        $this->query = [ 'body' => [ ] ];
-
-        $this->setCommonParams();
-
-/*
-        $params = [
-            //'index' => $bibIndex,
-            'body' => [ ]
-        ];
-        if (!isset($searchParams['searchText']) || $searchParams['searchText'] == '') {
-            $params['body']['query'] = [
-                'bool' => [
-                    'must' => [[
-                        'match_all' => new \stdClass()
-                    ]]
-                ]
-            ];
-        } else {
-            // search in field "fulltext" exakt phrase match boost over all words must contain
-            $params['body']['query'] = [
-                'bool' => [
-                    'should' => [
-                        [
-                            'match_phrase' => [
-                                'tx_lisztcommon_searchable' => [
-                                    'query' => $searchParams['searchText'],
-                                    'boost' => 2.0 // boosting for exakt phrases
-                                ]
-                            ]
-                        ],
-                        [
-                            'query_string' => [
-                                'query' => $searchParams['searchText'],
-                                'fields' => ['fulltext'],
-                                'default_operator' => 'AND'
-                            ]
-                        ]
-                    ]
-                ]
-            ];
-        }
-
-        // Todo: automate the creation of parameters
-        if (isset($searchParams['f_itemType']) && $searchParams['f_itemType'] !== "") {
-            $params['body']['query']['bool']['filter'][] = ['term' => ['itemType.keyword' => $searchParams['f_itemType']]];
-        }
-        if (isset($searchParams['f_place']) && $searchParams['f_place'] !== "") {
-            $params['body']['query']['bool']['filter'][] = ['term' => ['place.keyword' => $searchParams['f_place']]];
-        }
-        if (isset($searchParams['f_date']) && $searchParams['f_date'] !== "") {
-            $params['body']['query']['bool']['filter'][] = ['term' => ['date.keyword' => $searchParams['f_date']]];
-        }
-        // filter creators name, Todo: its not a filter query because they need 100% match (with spaces from f_creators_name)
-        // better would be to build the field 'fullName' at build time with PHP?
-        if (isset($searchParams['f_creators_name']) && $searchParams['f_creators_name'] !== "") {
-            $params['body']['query']['bool']['must'][] = [
-                'nested' => [
-                    'path' => 'creators',
-                    'query' => [
-                        'match' => [
-                            'creators.fullName' => $searchParams['f_creators_name']
-                        ]
-                    ]
-                ]
-            ];
-        }
-
-*/
-        return $this->query;
-    }
     private function getIndexName(): string
     {
         if (isset($this->params['index'])) {
@@ -194,78 +107,136 @@ class QueryParamsBuilder
             join(',');
     }
 
-    private static function getAggs(array $settings, string $index): array
+    private function getAggs(): array
     {
-        return Collection::wrap($settings)->
+        $settings = $this->settings;
+        $index = $this->indexName;
+        $filterParams = $this->params['filter'] ?? [];
+        $filterTypes = $this->getFilterTypes();
+        return  Collection::wrap($settings)->
             recursive()->
             get('entityTypes')->
-            filter(function($entityType) use ($index) {return $entityType->get('indexName') === $index;})->
+            filter(function($entityTypes) use ($index) {
+                return $entityTypes->get('indexName') === $index;
+            })->
             values()->
             get(0)->
             get('filters')->
-            mapWithKeys(function($entityType) {
-                if ($entityType['type'] == 'terms') {
-                    return [$entityType['field'] => [
-                        'terms' => [
-                            'field' => $entityType['field'] . '.keyword'
-                        ]
-                    ]];
-                }
-                return [
-                    $entityType['field'] => [
-                        'nested' => [
-                            'path' => $entityType['field']
-                        ],
-                        'aggs' => [
-                            'names' => [
-                                'terms' => [
-                                    'script' => [
-                                        'source' => $entityType['script'],
-                                        'lang' => 'painless'
-                                    ],
-                                    'size' => 15,
-                                ]
-                            ]
-                        ]
-                    ]
-                ];
+            mapWithKeys(function ($entityType) use ($filterParams, $filterTypes) {
+                return self::retrieveFilterParamsForEntityType($entityType, $filterParams, $filterTypes);
             })->
             toArray();
     }
 
-    private static function getFilter(array $field): array
+    private static function retrieveFilterParamsForEntityType(
+        Collection $entityType,
+        array $filterParams,
+        array $filterTypes
+    ): array
     {
-/*
-        if (
-            isset($field['type']) &&
-            $field['type'] == 'terms'
-        ) {
-*/
+        $entityField = $entityType['field'];
+        $entityTypeKey = $entityType['key'] ?? null;
+        $entityTypeMultiselect = $entityType['multiselect'] ?? null;
+        $entityTypeSize = $entityType['maxSize'] ?? 10;
+
+        // create filter in aggs for filtering aggs (without filtering the current key for multiple selections if multiselect is set)
+        $filters = Collection::wrap($filterParams)->
+            map(function ($value, $key) use ($entityField, $filterTypes) {
+                return self::retrieveFilterParamForEntityField($key, $value, $entityField, $filterTypes);
+            })->
+            filter()->
+            values()->
+            toArray();
+
+        // return match_all if filters are empty because elasticsearch throws an error without the filter key
+        if (empty($filters)) {
+            $filters = [
+                ['match_all' => (object) []]
+            ];
+        }
+
+        // special aggs for nested fields
+        if ($entityType['type'] === 'nested') {
+
             return [
-                'term' => [
-                    $field['name']. '.keyword' => $field['value']
+                $entityType['field'] => [
+                    'filter' => [
+                        'bool' => [
+                            'filter' => $filters
+                        ]
+                    ],
+                    'aggs' => [
+                        'filtered_params' => [
+                            'nested' => [
+                                'path' => $entityField
+                            ],
+                            'aggs' => [
+                                $entityField => [
+                                    'terms' => [
+                                        'field' => $entityField . '.' . $entityTypeKey . '.keyword',
+                                        'size' => $entityTypeSize,
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
                 ]
             ];
-        //}
 
+        }
+
+        // all other (not nested fields)
         return [
-            $field['name'] => [
-                'nested' => [
-                    'path' => $field['name']
-                ],
+            $entityField => [
                 'aggs' => [
-                    'names' => [
+                    $entityField => [
                         'terms' => [
-                            'script' => [
-                                'source' => $field['script'],
-                                'lang' => 'painless'
-                            ],
-                            'size' => 15,
+                            'field' => $entityField . '.keyword',
+                            // show docs with count 0 only for multiple select fields
+                            'min_doc_count' => $entityTypeMultiselect ? 0 : 1,
+                            'size' => $entityTypeSize,
+                         //   'include' => 'Slowakisch|.*',
+
                         ]
+                    ]
+                ],
+                'filter' => [
+                    'bool' => [
+                        'filter' => $filters
                     ]
                 ]
             ]
         ];
+    }
+
+    private static function retrieveFilterParamForEntityField (
+        string $key,
+        array $values,
+        string $entityField,
+        array $filterTypes
+    ): ?array
+    {
+        // exclude current key for multiple selects
+        if ($key === $entityField && isset($filterTypes[$key]['multiselect'])) {
+            return null;
+        }
+        // handle nested fields
+        if (($filterTypes[$key]['type'] == 'nested') && (isset($filterTypes[$key]['key'])))  {
+            return [
+                'nested' => [
+                    'path' => $key,
+                    'query' => [
+                        'bool' => [
+                            'filter' => [
+                                'terms' => [ $key.'.'.$filterTypes[$key]['key'].'.keyword' => array_keys($values)]
+                            ]
+                        ]
+                    ]
+                ]
+            ];
+        }
+        // handle all other fields (not nested fields)
+        return ['terms' => [$key . '.keyword' => array_keys($values)]];
     }
 
     /**
@@ -274,10 +245,11 @@ class QueryParamsBuilder
     private function setCommonParams(): void
     {
         // set index name
-        $this->query['index'] = $this->indexName;
+        $index = $this->indexName;
+        $this->query['index'] = $index;
 
         // set body
-        if (!isset($this->params['searchText']) || $this->params['searchText'] == '') {
+        if (empty($this->params['searchText'])) {
             $this->query['body']['query'] = [
                 'bool' => [
                     'must' => [[
@@ -310,21 +282,69 @@ class QueryParamsBuilder
             ];
         }
 
-        // set filters
+        $filterTypes = $this->getFilterTypes();
         $query = $this->query;
-        Collection::wrap($this->params)->
-            filter(function($_, $key) { return Str::of($key)->startsWith('f_'); })->
-            each(function($value, $key) use (&$query) {
-                $field = Str::of($key)->replace('f_', '')->__toString();
-                $query['body']['query']['bool']['filter'][] = self::getFilter([
-                    'name' => $field,
-                    //'type' => $field['type'],
-                    'type' => 'terms',
-                    'value' => $value
-                ]);
+        Collection::wrap($this->params['filter'] ?? [])
+            ->each(function($value, $key) use (&$query, $filterTypes) {
+                $value = array_keys($value);
+                if (($filterTypes[$key]['type'] == 'nested') && (isset($filterTypes[$key]['key'])))  {
+
+                // nested filter query (for multiple Names)
+                    $query['body']['post_filter']['bool']['filter'][] = [
+                        'nested' => [
+                            'path' => $key,
+                            'query' => [
+                                'terms' => [
+                                    $key.'.'.$filterTypes[$key]['key'].'.keyword' => $value
+                                ]
+                            ]
+                        ]
+                    ];
+
+                } else  {
+
+                    // post_filter, runs the search without considering the aggregations, for muliple select aggregations we run the filters again on each agg in getAggs()
+                    $query['body']['post_filter']['bool']['filter'][] = [
+                        'terms' => [
+                            $key . '.keyword' => $value
+                            ]
+                        ];
+                }
             });
         $this->query = $query;
 
+    }
+
+    /**
+     * Retrieves filter types based on the current indexName and settings from extension.
+     *
+     * @return array
+     */
+    private function getFilterTypes(): array
+    {
+        $filters = Collection::wrap($this->settings)
+            ->recursive()
+            ->get('entityTypes')
+            ->filter(function ($entityType) {
+                return $entityType->get('indexName') === $this->indexName;
+            })
+            ->values();
+        if ($filters->count() === 0) {
+            return [];
+        }
+
+        return $filters->get(0)
+            ->get('filters')
+            ->mapWithKeys(function ($filter) {
+                return [
+                    $filter['field'] => [
+                        'type' => $filter['type'],
+                        'key' => $filter['key'] ?? '',
+                        'multiselect' => $filter['multiselect'] ?? null
+                    ]
+                ];
+            })
+            ->all();
     }
 
 }
