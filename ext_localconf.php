@@ -5,9 +5,12 @@ declare(strict_types=1);
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use Slub\LisztCommon\Controller\SearchController;
+use Slub\LisztCommon\Routing\Aspect\DetailpageDocumentIdMapper;
 
 defined('TYPO3') or die();
 
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['routing']['aspects']['DetailpageDocumentIdMapper'] =
+    DetailpageDocumentIdMapper::class;
 
 // configure Search Listing Plugin, disable caching so that the search terms entered are updated and not the entire search-page was cached in page cache
 ExtensionUtility::configurePlugin(
@@ -31,6 +34,7 @@ ExtensionUtility::configurePlugin(
     [ SearchController::class => 'details' ],
     [ SearchController::class => 'details' ],
 );
+
 
 ExtensionManagementUtility::addPageTSConfig(
     '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:liszt_common/Configuration/TsConfig/page.tsconfig">'

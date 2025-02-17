@@ -7,3 +7,10 @@ routeEnhancers:
     routes:
       - routePath: '/{documentId}'
         _controller: 'Search::details'
+        _arguments:
+          documentId: 'documentId'
+    defaultController: 'Search::index'
+    aspects:
+      documentId:
+        type: DetailpageDocumentIdMapper
+

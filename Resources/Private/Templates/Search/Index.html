@@ -55,31 +55,35 @@
 <div class="content grid-colspan-lg-3 grid-colspan-md-2">
     <div class="frame">
     <f:for each="{searchResults.hits.hits}" as="hit">
+
         <article class="searchresults-item ">
+            <f:comment>ToDo: pageUid should not hardcodet here -> from config?</f:comment>
+            <f:link.action
+                action="details"
+                controller="Search"
+                pluginName="SearchDetails"
+                pageUid="38"
+                arguments="{documentId: hit._id}"
+                class="searchresults-item-detail-link" >
             <header>
                 <div class="searchresults-item-label">
                     {hit._source.tx_lisztcommon_header}
                 </div>
                 <div class="searchresults-item-title">
                 <div class="searchresults-item-icon"><i:icon iconfig="{lc:ItemTypeIconName(iconPackKey: 'lziconsr', itemType: hit._source.itemType)}" preferredRenderTypes="svgSprite" additionalAttributes="{aria-hidden:'true'}" /></div>
-                <f:comment>ToDo: pageUid not hardcodet here -> from config?</f:comment>
-                    <f:link.action
-                    action="details"
-                    controller="Search"
-                    pluginName="SearchDetails"
-                    pageUid="38"
-                    arguments="{documentId: hit._id}"
-                    class="searchresults-item-detail-link" >
+
                     <h3 >
                     {hit._source.tx_lisztcommon_body}
                     </h3>
-                </f:link.action>
+
                 </div>
             </header>
             <div class="searchresults-item-details">
                 {hit._source.tx_lisztcommon_footer}
             </div>
+            </f:link.action>
         </article>
+
     </f:for>
     <f:if condition="{showPagination}">
         <f:render partial="Pagination" arguments="{pagination: pagination, searchParams: searchParams, currentString: currentString, dots: dots}" />
