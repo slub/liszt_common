@@ -72,6 +72,9 @@
 			<trans-unit resname="config.itemsPerPage" id="config.itemsPerPage" >
 				<source>Elemente pro Seite der Ergebnisliste</source>
 			</trans-unit>
+			<trans-unit resname="config.detailPageId" id="config.detailPageId" >
+				<source>Id der Detailseite</source>
+			</trans-unit>
 			<trans-unit resname="currentPage" id="currentPage" >
 				<source>...</source>
 			</trans-unit>

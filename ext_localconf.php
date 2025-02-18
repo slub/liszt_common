@@ -28,11 +28,12 @@ ExtensionUtility::configurePlugin(
     [ SearchController::class => 'searchBar' ],
 );
 
+// cache Detail Pages?
 ExtensionUtility::configurePlugin(
     'LisztCommon',
     'SearchDetails',
     [ SearchController::class => 'details' ],
-    [ SearchController::class => 'details' ],
+    [ ],
 );
 
 

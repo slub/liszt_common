@@ -3,14 +3,8 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:vac="http://typo3.org/ns/Praetorius/ViteAssetCollector/ViewHelpers"
 >
-
-
 <f:layout name="Default"/>
-
-
 <f:section name="Main">
-
-    <f:cObject typoscriptObjectPath="tt_content.list.20.lisztcommon_searchbar" />
 
     <f:if condition="{f:cObject(typoscriptObjectPath: 'lib.hasContent', data: '{colPos: 0}')}">
             <main role="main" id="page-content">

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace Slub\LisztCommon\Controller;
+use Illuminate\Support\Collection;
 use Psr\Http\Message\ResponseInterface;
 use Slub\LisztCommon\Interfaces\ElasticSearchServiceInterface;
 use Slub\LisztCommon\Common\Paginator;
@@ -21,6 +22,7 @@ final class SearchController extends ClientEnabledController
 {
     // set resultLimit as intern variable from $this->settings['resultLimit'];
     protected int $resultLimit;
+
 
     // Dependency Injection of Repository
     // https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/ApiOverview/DependencyInjection/Index.html#Dependency-Injection
@@ -66,6 +68,8 @@ final class SearchController extends ClientEnabledController
      //   $this->view->assign('totalItems', $totalItems);
         $this->view->assign('currentString', Paginator::CURRENT_PAGE);
         $this->view->assign('dots', Paginator::DOTS);
+        $this->view->assign('detailPageId', $this->extConf->get('liszt_common','detailPageId'));
+
 
         return $this->htmlResponse();
     }
@@ -105,6 +109,7 @@ final class SearchController extends ClientEnabledController
         $this->view->assign('routingArgs', $routingArgs);
         $this->view->assign('detailId', $documentId);
         $this->view->assign('searchResult', $elasticResponse);
+        $this->view->assign('detailPageId', $this->extConf->get('liszt_common','detailPageId'));
 
         return $this->htmlResponse();
 
