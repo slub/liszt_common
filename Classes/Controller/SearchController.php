@@ -12,7 +12,8 @@ use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Elastic\Elasticsearch\Exception\ClientResponseException;
 use Elastic\Transport\Exception\RuntimeException;
-
+use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
+use Slub\LisztCommon\Common\PageTitleProvider;
 // ToDo:
 // Organize the transfer of the necessary parameters (index name, fields, etc.) from the other extensions (ExtensionConfiguration?) -> see in ElasticSearchServic
 // Elastic Search Index return standardized fields? Standardized search fields or own params from the respective extension?
@@ -29,7 +30,8 @@ final class SearchController extends ClientEnabledController
 
     public function __construct(
         private readonly ElasticSearchServiceInterface $elasticSearchService,
-        protected ExtensionConfiguration $extConf
+        protected ExtensionConfiguration $extConf,
+        private readonly PageTitleProvider $titleProvider,
     )
     {
         $this->resultLimit = $this->settings['resultLimit'] ?? 25;
@@ -105,11 +107,40 @@ final class SearchController extends ClientEnabledController
 
         }
 
+        // Set the page title
+        $pageTitle = $elasticResponse['_source']['title'] ?? 'Details';
+        $maxTitleLength = 50;
+        if (strlen($pageTitle) > $maxTitleLength) {
+            $pageTitle = mb_substr($pageTitle, 0, $maxTitleLength - 3) . '...';
+        }
+        $this->titleProvider->setTitle($pageTitle);
+        // set metatag description
+        $metaTagManager = GeneralUtility::makeInstance(MetaTagManagerRegistry::class)->getManagerForProperty('description');
+        $metaTagManager->addProperty('description', $elasticResponse['_source']['tx_lisztcommon_searchable'] ?? '');
+
+
+/*        $request = $this->request;
+        $debugData = [
+            'Method' => $request->getMethod(),
+            'URI' => (string)$request->getUri(),
+            'Headers' => $request->getHeaders(),
+            'QueryParams' => $request->getQueryParams(),
+            'ParsedBody' => $request->getParsedBody(),
+            'Attributes' => $request->getAttributes(),
+            'UploadedFiles' => $request->getUploadedFiles(),
+            'ServerParams' => $request->getServerParams()
+        ];
+
+        // Ausgabe mit Symfony VarDumper (empfohlen)
+        dump($debugData);*/
+
+
         $this->view->assign('searchParams', $searchParams);
         $this->view->assign('routingArgs', $routingArgs);
         $this->view->assign('detailId', $documentId);
         $this->view->assign('searchResult', $elasticResponse);
         $this->view->assign('detailPageId', $this->extConf->get('liszt_common','detailPageId'));
+
 
         return $this->htmlResponse();
 

@@ -1,0 +1,32 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<header id="page-header" class="page-header navbar">
+    <div class="container-xl page-header-container">
+
+        <f:render partial="Logo" arguments="{rootPage: rootPage}" />
+
+        <div class="page-header-title page-header-title-detailpage">
+            <f:if condition="{data.subtitle}">
+
+                    <p class="page-header-subtitle"  style="view-transition-name: detail-sub-{detailId};">{data.subtitle}</p>
+
+            </f:if>
+
+            <h1 style="view-transition-name: detail-headline-{detailId};">
+                <f:if condition="{data.headline}">
+                    <f:then>
+                        <f:format.nl2br>{data.headline}</f:format.nl2br>
+                    </f:then>
+                    <f:else>
+                        {data.title}
+                    </f:else>
+                </f:if>
+            </h1>
+        </div>
+
+        <f:render partial="NavbarToggler" />
+
+        <f:render partial="MainNav" arguments="{_all}" />
+
+    </div>
+</header>

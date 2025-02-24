@@ -5,8 +5,13 @@
     xmlns:i="http://typo3.org/ns/Quellenform/Iconpack/ViewHelpers"
     data-namespace-typo3-fluid="true">
 <f:variable name="languageFilePath">LLL:EXT:{settings.entityTypes.1.extensionName}/Resources/Private/Language/{settings.entityTypes.1.languageFile}.xlf</f:variable>
-<f:debug>{_all}</f:debug>
+<f:debug  title="Details View" >{_all}</f:debug>
 
+
+<f:render partial="DetailBreadcrumb" arguments="{_all}" />
+
+<main role="main" id="page-content">
+    <div class="container-xl sidebar-right grid grid-4col-lg grid-3col-md searchresults">
 
 <div class="searchresults-info frame">
 
@@ -128,3 +133,5 @@
 
     </div>
 </div>
+</div>
+</main>
