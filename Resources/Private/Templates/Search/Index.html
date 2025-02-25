@@ -57,14 +57,13 @@
     <f:for each="{searchResults.hits.hits}" as="hit">
 
         <article class="searchresults-item ">
-            <f:comment>ToDo: pageUid should not hardcodet here -> from config?</f:comment>
             <f:link.action
                 action="details"
                 controller="Search"
                 pluginName="SearchDetails"
                 pageUid="{detailPageId}"
                 arguments="{documentId: hit._id}"
-                class="searchresults-item-detail-link" >
+                class="searchresults-item-detail-link prefetch-link" >
             <header>
                 <div class="searchresults-item-label"  style="view-transition-name: detail-sub-{hit._id};">
                     {hit._source.tx_lisztcommon_header}

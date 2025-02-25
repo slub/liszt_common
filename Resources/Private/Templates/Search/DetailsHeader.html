@@ -1,0 +1,19 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<div class="page-header-title page-header-title-detailpage">
+    <f:if condition="{searchResult._source.tx_lisztcommon_header}">
+        <p class="page-header-subtitle"  style="view-transition-name: detail-sub-{searchResult._id};">{searchResult._source.tx_lisztcommon_header}</p>
+    </f:if>
+    <h1 style="view-transition-name: detail-headline-{searchResult._id};">
+        <f:if condition="{searchResult._source.tx_lisztcommon_body}">
+            <f:then>
+                <f:format.nl2br>{searchResult._source.tx_lisztcommon_body}</f:format.nl2br>
+            </f:then>
+            <f:else>
+                {searchResult._source.title}
+            </f:else>
+        </f:if>
+    </h1>
+</div>
+
+</html>

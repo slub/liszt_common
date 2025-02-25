@@ -76,20 +76,7 @@ config {
 #lib.selectedFrontendLayout = TEXT
 #lib.selectedFrontendLayout.data = levelfield:-1, layout, slide
 
-// enable view transition animations
-// only for users without reduced motion sickness
-/*  page {
-    cssInline {
-      10 = TEXT
-      10.value (
-      @media screen and (prefers-reduced-motion: no-preference) {
-            @view-transition {
-              navigation: auto;
-            }
-      }
-      )
-    }
-  }*/
+
 
 // Partial Root Path to find logo and other Partials from liszt_web
 /*plugin.tx_lisztcommon_searchdetails {
