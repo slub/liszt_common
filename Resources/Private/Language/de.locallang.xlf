@@ -18,6 +18,12 @@
 			<trans-unit id="searchbar_description" >
 				<source>Sucheingabe / Suchschlitz</source>
 			</trans-unit>
+			<trans-unit id="searchdetails_title" >
+				<source>Liszt Detailseite</source>
+			</trans-unit>
+			<trans-unit id="searchdetails_description" >
+				<source>Anzeige einer Detailseite</source>
+			</trans-unit>
 			<trans-unit id="searchbar_placeholder" >
 				<source>Suche in der Bibliografie</source>
 			</trans-unit>
@@ -47,6 +53,30 @@
 			</trans-unit>
 			<trans-unit id="searchResults_params_remove_label">
 				<source>Suchparameter "%s" entfernen</source>
+			</trans-unit>
+			<trans-unit resname="config.elasticHostName" id="config.elasticHostName" >
+				<source>Hostname des Elasticsearch-Servers</source>
+			</trans-unit>
+			<trans-unit resname="config.elasticCredentialsFilePath" id="config.elasticCredentialsFilePath" >
+				<source>Dateipfad der Elasticsearch-Credentials (Passwort, CA-Zertifikat)</source>
+			</trans-unit>
+			<trans-unit resname="config.elasticPwdFileName" id="config.elasticPwdFileName" >
+				<source>Name der Datei, die das Elasticsearch-Passwort enthält</source>
+			</trans-unit>
+			<trans-unit resname="config.elasticCaFileName" id="config.elasticCaFileName" >
+				<source>Name der Datei, die das HTTP-CA-Zertifikat enthält</source>
+			</trans-unit>
+			<trans-unit resname="config.paginationRange" id="config.paginationRange" >
+				<source>Abstände der in der Paginierung anzuzeigenden Seiten zur aktuellen Seite. Kommaseparierte Liste. 1 ist immer implizit gesetzt.</source>
+			</trans-unit>
+			<trans-unit resname="config.itemsPerPage" id="config.itemsPerPage" >
+				<source>Elemente pro Seite der Ergebnisliste</source>
+			</trans-unit>
+			<trans-unit resname="config.searchPageId" id="config.searchPageId" >
+				<source>Id der Suchseite</source>
+			</trans-unit>
+			<trans-unit resname="config.detailPageId" id="config.detailPageId" >
+				<source>Id der Detailseite</source>
 			</trans-unit>
 			<trans-unit resname="currentPage" id="currentPage" >
 				<source>...</source>

@@ -7,6 +7,8 @@ page {
         key.field = doktype
         130 = TEXT
         130.value = SearchResults
+        140 = TEXT
+        140.value = SearchDetails
       }
     }
     templateRootPaths {
@@ -15,8 +17,17 @@ page {
     partialRootPaths {
       20 = EXT:liszt_common/Resources/Private/Partials/
     }
+    layoutRootPaths {
+      20 = EXT:liszt_common/Resources/Private/Layouts/
+    }
+
   }
+
+// 20 < tt_content.list.20.lisztcommon_searchdetails
+
 }
+
+
 
 lib.contentElement {
   templateRootPaths {
@@ -42,17 +53,41 @@ tt_content {
 // same namespace for both plugins on searchresults page
 plugin.tx_lisztcommon_searchbar.view.pluginNamespace = tx_liszt_common_searchlisting
 plugin.tx_lisztcommon_searchlisting.view.pluginNamespace = tx_liszt_common_searchlisting
+
+// plugin.tx_lisztcommon_searchdetails.view.pluginNamespace = tx_liszt_common_searchlisting
+
+
 // while two plugins are on searchresults page, the searchbar plugin brings "action index is not allowed by this plugin" by non searchbar actions
 // set use default action to avoid this error
 plugin.tx_lisztcommon_searchbar.mvc.callDefaultActionIfActionCantBeResolved = 1;
 
 
+// set own pageTitlePovider
+config {
+  pageTitleProviders {
+    liszt_common {
+      provider = Slub\LisztCommon\Common\PageTitleProvider
+      before = record
+    }
+  }
+}
 
 # get the selected frontend layout from page table for show/hide SearchBar, because bootstrap package not use this param
 #lib.selectedFrontendLayout = TEXT
 #lib.selectedFrontendLayout.data = levelfield:-1, layout, slide
 
 
+
+// Partial Root Path to find logo and other Partials from liszt_web
+/*plugin.tx_lisztcommon_searchdetails {
+  view {
+    partialRootPaths {
+      10 = EXT:liszt_common/Resources/Private/Partials/
+      20 = EXT:liszt_web/Resources/Private/Partials/
+    }
+  }
+}
+*/
 
 # copy element in PAGE object to display in fluid template
 # page = PAGE
@@ -82,5 +117,3 @@ plugin.tx_lisztcommon_searchbar.mvc.callDefaultActionIfActionCantBeResolved = 1;
     }
 }*/
 
-plugin.tx_lisztcommon_searchbar.view.pluginNamespace = tx_liszt_common_searchlisting
-plugin.tx_lisztcommon_searchlisting.view.pluginNamespace = tx_liszt_common_searchlisting
