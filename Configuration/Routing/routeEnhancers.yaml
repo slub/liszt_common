@@ -1,3 +1,4 @@
+#Attention: the value for will be overwritten with detailPageId from extension config in SiteConfigurationLoadedEventListener
 routeEnhancers:
   SearchDetailsRoute:
     type: Extbase
@@ -13,4 +14,3 @@ routeEnhancers:
     aspects:
       documentId:
         type: DetailpageDocumentIdMapper
-
