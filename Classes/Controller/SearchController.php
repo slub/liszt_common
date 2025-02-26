@@ -3,10 +3,15 @@
 declare(strict_types=1);
 
 namespace Slub\LisztCommon\Controller;
+use Illuminate\Support\Collection;
 use Psr\Http\Message\ResponseInterface;
 use Slub\LisztCommon\Interfaces\ElasticSearchServiceInterface;
 use Slub\LisztCommon\Common\Paginator;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Elastic\Elasticsearch\Exception\ClientResponseException;
+use Elastic\Transport\Exception\RuntimeException;
 
 // ToDo:
 // Organize the transfer of the necessary parameters (index name, fields, etc.) from the other extensions (ExtensionConfiguration?) -> see in ElasticSearchServic
@@ -17,6 +22,7 @@ final class SearchController extends ClientEnabledController
 {
     // set resultLimit as intern variable from $this->settings['resultLimit'];
     protected int $resultLimit;
+
 
     // Dependency Injection of Repository
     // https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/ApiOverview/DependencyInjection/Index.html#Dependency-Injection
@@ -62,6 +68,8 @@ final class SearchController extends ClientEnabledController
      //   $this->view->assign('totalItems', $totalItems);
         $this->view->assign('currentString', Paginator::CURRENT_PAGE);
         $this->view->assign('dots', Paginator::DOTS);
+        $this->view->assign('detailPageId', $this->extConf->get('liszt_common','detailPageId'));
+
 
         return $this->htmlResponse();
     }
@@ -70,6 +78,52 @@ final class SearchController extends ClientEnabledController
     {
         $this->view->assign('searchParams', $searchParams);
         return $this->htmlResponse();
+    }
+
+    public function detailsAction(array $searchParams = []): ResponseInterface
+    {
+
+        $routing = $this->request->getAttribute('routing');
+        $routingArgs = $routing->getArguments();
+
+        // Check if 'tx_lisztcommon_searchdetails' exists and if 'detailId' has a valid value.
+        $documentId = null;
+        if (!empty($routingArgs['tx_lisztcommon_searchdetails']['documentId'])) {
+            $documentId = $routingArgs['tx_lisztcommon_searchdetails']['documentId'];
+        } else {
+            return $this->redirectToNotFoundPage();
+        }
+
+        try {
+            $elasticResponse = $this->elasticSearchService->getDocumentById($documentId, []);
+        } catch (ClientResponseException $e) {
+            // Handle 404 errors
+            if ($e->getCode() === 404) {
+                return $this->redirectToNotFoundPage();
+            }
+            throw $e; // Re-throw for other client errors
+
+        }
+
+        $this->view->assign('searchParams', $searchParams);
+        $this->view->assign('routingArgs', $routingArgs);
+        $this->view->assign('detailId', $documentId);
+        $this->view->assign('searchResult', $elasticResponse);
+        $this->view->assign('detailPageId', $this->extConf->get('liszt_common','detailPageId'));
+
+        return $this->htmlResponse();
+
+
+    }
+
+
+    public function redirectToNotFoundPage(): ResponseInterface
+    {
+    // see: https://docs.typo3.org/m/typo3/reference-coreapi/12.4/en-us/ExtensionArchitecture/Extbase/Reference/Controller/ActionController.html
+        // $uri could also be https://example.com/any/uri
+        // $this->resourceFactory is injected as part of the `ActionController` inheritance
+        return $this->responseFactory->createResponse(301)
+            ->withHeader('Location', '/404/');   // the uri of the 404 page from typo installation
     }
 
 }

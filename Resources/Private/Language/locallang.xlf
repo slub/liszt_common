@@ -18,6 +18,12 @@
 			<trans-unit id="searchbar_description" >
 				<source>Sucheingabe / Suchschlitz</source>
 			</trans-unit>
+			<trans-unit id="searchdetails_title" >
+				<source>Liszt Detailseite</source>
+			</trans-unit>
+			<trans-unit id="searchdetails_description" >
+				<source>Anzeige einer Detailseite</source>
+			</trans-unit>
 			<trans-unit id="searchbar_placeholder" >
 				<source>Suche in der Bibliografie</source>
 			</trans-unit>
@@ -65,6 +71,9 @@
 			</trans-unit>
 			<trans-unit resname="config.itemsPerPage" id="config.itemsPerPage" >
 				<source>Elemente pro Seite der Ergebnisliste</source>
+			</trans-unit>
+			<trans-unit resname="config.detailPageId" id="config.detailPageId" >
+				<source>Id der Detailseite</source>
 			</trans-unit>
 			<trans-unit resname="currentPage" id="currentPage" >
 				<source>...</source>

@@ -3,13 +3,10 @@
 namespace Slub\LisztCommon\Services;
 
 use Elastic\Elasticsearch\Client;
-use Elastic\Elasticsearch\Response\Elasticsearch;
-use Http\Promise\Promise;
 use Slub\LisztCommon\Common\Collection;
 use Slub\LisztCommon\Common\ElasticClientBuilder;
 use Slub\LisztCommon\Common\QueryParamsBuilder;
 use Slub\LisztCommon\Interfaces\ElasticSearchServiceInterface;
-
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 
@@ -61,6 +58,18 @@ class ElasticSearchService implements ElasticSearchServiceInterface
             all();
         $response['aggregations'] = $sortedAggsFromSettings;
 
+        return new Collection($response);
+    }
+
+    public function getDocumentById(string $documentId, array $settings): Collection
+    {
+        $this->init();
+        $params = [
+            'index' => $this->bibIndex,
+            'id'    => $documentId,
+        ];
+        // exceptions handled in controller
+        $response = $this->client->get($params)->asArray();
         return new Collection($response);
     }
 }
