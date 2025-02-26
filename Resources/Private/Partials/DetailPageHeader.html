@@ -1,0 +1,15 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<header id="page-header" class="page-header navbar">
+    <div class="container-xl page-header-container">
+
+        <f:render partial="Logo" arguments="{rootPage: rootPage}"/>
+
+        <f:cObject typoscriptObjectPath="tt_content.list.20.lisztcommon_searchdetailsheader" />
+
+        <f:render partial="NavbarToggler"/>
+
+        <f:render partial="MainNav" arguments="{_all}"/>
+
+    </div>
+</header>

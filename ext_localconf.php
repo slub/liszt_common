@@ -36,6 +36,14 @@ ExtensionUtility::configurePlugin(
     [ ],
 );
 
+// cache Detail Pages?
+ExtensionUtility::configurePlugin(
+    'LisztCommon',
+    'SearchDetailsHeader',
+    [ SearchController::class => 'detailsHeader' ],
+    [ ],
+);
+
 
 ExtensionManagementUtility::addPageTSConfig(
     '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:liszt_common/Configuration/TsConfig/page.tsconfig">'

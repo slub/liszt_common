@@ -9,12 +9,4 @@
 }*/
 
 
-/*
-plugin.tx_liszt_common {
-view {
-templateRootPath = EXT:liszt_common/Resources/Private/Templates/
-partialRootPath = EXT:liszt_common/Resources/Private/Partials/
-layoutRootPath = EXT:liszt_common/Resources/Private/Layouts/
 
-}
-}*/

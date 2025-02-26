@@ -26,6 +26,13 @@ ExtensionUtility::registerPlugin(
     'Liszt Search Details'
 );
 
+
+ExtensionUtility::registerPlugin(
+    'liszt_common',
+    'SearchDetailsHeader',
+    'Liszt Search Details Header'
+);
+
 // Adds the content element to the "Type" dropdown
 ExtensionManagementUtility::addTcaSelectItem(
     'tt_content',
