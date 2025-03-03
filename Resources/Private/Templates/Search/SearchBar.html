@@ -1,5 +1,7 @@
 {namespace lw=Slub\LisztCommon\ViewHelpers}
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:i="http://typo3.org/ns/Quellenform/Iconpack/ViewHelpers"
+      data-namespace-typo3-fluid="true">
 
 <f:comment>ToDo: viewHelper for SearchParams</f:comment>
 <section id="searchBar" class="searchbar">
@@ -7,8 +9,11 @@
 
         <f:form name="searchBar" controller="Search" action="index" method="get" extensionName="liszt_common" pluginName="SearchListing" class="form-inline" pageUid="18">
             <div class="input-group">
-                <f:form.textfield type="text" name="searchParams[searchText]" value="{searchParams.searchText}" class="" aria="{label:'Text input with dropdown button'}" placeholder="{f:translate(key: 'searchbar_placeholder', extensionName: 'liszt_common')}" />
-                <f:form.button class="btn btn-black" id="button-searchBar">{f:translate(key: 'searchButtonLabel', extensionName: 'liszt_common')}</f:form.button>
+                <f:form.textfield type="text" id="searchbar-input" name="searchParams[searchText]" value="{searchParams.searchText}" class="" aria="{label:'Text input with dropdown button'}" placeholder="{f:translate(key: 'searchbar_placeholder', extensionName: 'liszt_common')}" />
+                <button type="button" id="searchbar-clearButton" class="searchbar-clearButton no-ml" aria-label="{f:translate(key: 'searchbar_clearButton_label', extensionName: 'liszt_common')}">
+                    <i:icon iconfig="lzicon,close" preferredRenderTypes="svgSprite" additionalAttributes="{aria-hidden:'true'}" />
+                </button>
+                <f:form.button class="btn btn-black" id="searchbar-searchButton">{f:translate(key: 'searchbar_searchButton_label', extensionName: 'liszt_common')}</f:form.button>
             </div>
         </f:form>
 

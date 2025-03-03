@@ -27,7 +27,10 @@
 			<trans-unit id="searchbar_placeholder" >
 				<source>Suche in der Bibliografie</source>
 			</trans-unit>
-			<trans-unit id="searchButtonLabel">
+			<trans-unit id="searchbar_clearButton_label" >
+				<source>Eingabe löschen</source>
+			</trans-unit>
+			<trans-unit id="searchbar_searchButton_label">
 				<source>Suchen</source>
 			</trans-unit>
 			<trans-unit id="filter_container_label">
