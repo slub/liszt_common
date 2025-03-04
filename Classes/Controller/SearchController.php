@@ -156,7 +156,9 @@ final class SearchController extends ClientEnabledController
     {
         $this->assetCollector->addInlineStyleSheet(
             'view-transitions-root',
-            '@media screen and (prefers-reduced-motion: no-preference) { @view-transition { navigation: auto; } }'
+            '@media screen and (prefers-reduced-motion: no-preference) { @view-transition { navigation: auto; } }',
+            [],
+            ['priority' => true, 'media' => 'screen']
         );
     }
 
