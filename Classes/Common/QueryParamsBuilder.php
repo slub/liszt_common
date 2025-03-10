@@ -2,7 +2,6 @@
 
 namespace Slub\LisztCommon\Common;
 
-use Slub\LisztCommon\Common\Collection;
 use Slub\LisztCommon\Processing\IndexProcessor;
 use Illuminate\Support\Str;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
@@ -85,7 +84,7 @@ class QueryParamsBuilder
         ];
 
         if ($this->searchAll == false) {
-            $this->query['body']['aggs'] = $this->getAggs();
+            $this->query['body']['aggs'] = $this->getAggregations();
         }
 
         $this->setCommonParams();
@@ -107,7 +106,7 @@ class QueryParamsBuilder
             join(',');
     }
 
-    private function getAggs(): array
+    private function getAggregations(): array
     {
         $settings = $this->settings;
         $index = $this->indexName;
@@ -239,6 +238,31 @@ class QueryParamsBuilder
         return ['terms' => [$key . '.keyword' => array_keys($values)]];
     }
 
+
+/*    get sort field from search params or from entity */
+    private function setSortField(): void {
+        $sortField = $this->params['sortBy'] ?? null;
+        if (!$sortField) {
+            $entityTypeDefaultSortBy = Collection::wrap($this->settings)
+                ->recursive()
+                ->get('entityTypes')
+                ->first(function ($entityType) {
+                    return isset($entityType['indexName']) && $entityType['indexName'] === $this->indexName;
+                });
+            $sortField = $entityTypeDefaultSortBy['defaultSortBy'] ?? null;
+        }
+        if ($sortField) {
+            $this->query['body']['sort'] = [
+                [
+                    $sortField => [
+                        'order' => 'asc' // ToDo: handle order direction from search params
+                    ]
+                ]
+            ];
+        }
+    }
+
+
     /**
      * sets parameters needed for both search and count queries
      */
@@ -250,6 +274,8 @@ class QueryParamsBuilder
 
         // set body
         if (empty($this->params['searchText'])) {
+            // set default sort if no fulltext Search
+            $this->setSortField();
             $this->query['body']['query'] = [
                 'bool' => [
                     'must' => [[
@@ -303,7 +329,7 @@ class QueryParamsBuilder
 
                 } else  {
 
-                    // post_filter, runs the search without considering the aggregations, for muliple select aggregations we run the filters again on each agg in getAggs()
+                    // post_filter, runs the search without considering the aggregations, for muliple select aggregations we run the filters again on each agg in getAggregations()
                     $query['body']['post_filter']['bool']['filter'][] = [
                         'terms' => [
                             $key . '.keyword' => $value
