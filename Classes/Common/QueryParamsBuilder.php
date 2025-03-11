@@ -21,8 +21,6 @@ class QueryParamsBuilder
     protected string $indexName = '';
     protected bool $searchAll = false;
 
-    // ToDo: @Matthias: check searchAll condition
-
     public static function createQueryParamsBuilder(array $searchParams, array $settings): self
     {
         $queryParamsBuilder = new self();
@@ -135,7 +133,7 @@ class QueryParamsBuilder
     {
         $entityField = $entityType['field'];
         $entityTypeKey = $entityType['key'] ?? null;
-        $entityTypeMultiselect = $entityType['multiselect'] ?? null;
+        $entityTypeMultiselect = ($entityType['select'] == 'multi') ?? null; // Todo: remove this an use $filterTypes?
         $entityTypeSize = $entityType['maxSize'] ?? 10;
 
         // create filter in aggs for filtering aggs (without filtering the current key for multiple selections if multiselect is set)
@@ -153,6 +151,35 @@ class QueryParamsBuilder
                 ['match_all' => (object) []]
             ];
         }
+
+
+        // first version of range filter (date)
+        if ($entityType['select'] === 'range') {
+            return [
+                $entityField => [
+                    'aggs' => [
+                        $entityField. '_stats' => [
+                            'stats' => [
+                                'field' => $entityField,
+                            ]
+                        ],
+                        $entityField => [
+                            'terms' => [
+                                'field' => $entityField,
+                                'size' => 300,
+                                'order' => ['_key' => 'asc'],
+                            ]
+                        ]
+                    ],
+                    'filter' => [
+                        'bool' => [
+                            'filter' => $filters
+                        ]
+                    ]
+                ]
+            ];
+        }
+
 
         // special aggs for nested fields
         if ($entityType['type'] === 'nested') {
@@ -241,7 +268,8 @@ class QueryParamsBuilder
 
 /*    get sort field from search params or from entity */
     private function setSortField(): void {
-        $sortField = $this->params['sortBy'] ?? null;
+        $sortField = $this->params['sort'] ?? null; // Todo: the url parameters still have to be adapted to the final params
+        $sortDirection = $this->params['order'] ?? 'asc';
         if (!$sortField) {
             $entityTypeDefaultSortBy = Collection::wrap($this->settings)
                 ->recursive()
@@ -250,12 +278,13 @@ class QueryParamsBuilder
                     return isset($entityType['indexName']) && $entityType['indexName'] === $this->indexName;
                 });
             $sortField = $entityTypeDefaultSortBy['defaultSortBy'] ?? null;
+            $sortDirection = $entityTypeDefaultSortBy['defaultSortDirection'] ?? 'asc';
         }
         if ($sortField) {
             $this->query['body']['sort'] = [
                 [
                     $sortField => [
-                        'order' => 'asc' // ToDo: handle order direction from search params
+                        'order' => $sortDirection
                     ]
                 ]
             ];
@@ -366,7 +395,7 @@ class QueryParamsBuilder
                     $filter['field'] => [
                         'type' => $filter['type'],
                         'key' => $filter['key'] ?? '',
-                        'multiselect' => $filter['multiselect'] ?? null
+                        'multiselect' => ($filter['select'] == 'multi') ?? null
                     ]
                 ];
             })
