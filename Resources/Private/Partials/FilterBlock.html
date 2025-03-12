@@ -1,23 +1,61 @@
 {namespace lc=Slub\LisztCommon\ViewHelpers}
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
-    <f:variable name="paramsRemovePage">{lc:searchParams(action: 'remove', searchParamsArray: searchParams, key: 'page')}</f:variable>
-    <f:variable name="searchParamsFromFirstPage">{paramsRemovePage.searchParams}</f:variable>
-    <f:variable name="filterEntities">{lc:getFilterEntities(filterKey: key, entityTypes: settings.entityTypes)}</f:variable>
-    <f:variable name="filterEntitySize">{f:if(condition: filterEntities.size, then: filterEntities.size, else: filterEntities.defaultFilterSize)}</f:variable>
-    <f:variable name="buckets">{lc:processFacets(filterGroup: filterGroup, key: key, searchParams: searchParams, filterEntities: filterEntities)}</f:variable>
+<f:variable name="paramsRemovePage">{lc:searchParams(action: 'remove', searchParamsArray: searchParams, key: 'page')}</f:variable>
+<f:variable name="searchParamsFromFirstPage">{paramsRemovePage.searchParams}</f:variable>
+<f:variable name="filterEntities">{lc:getFilterEntities(filterKey: key, entityTypes: settings.entityTypes)}</f:variable>
+<f:variable name="filterEntitySize">{f:if(condition: filterEntities.size, then: filterEntities.size, else: filterEntities.defaultFilterSize)}</f:variable>
+<f:variable name="buckets">{lc:processFacets(filterGroup: filterGroup, key: key, searchParams: searchParams, filterEntities: filterEntities)}</f:variable>
     <f:if condition="{buckets -> f:count()} > 0">
         <div class="filter-block frame">
         <h4 class="">{f:translate(key: '{languageFilePath}:{key}', default: '{key}')}</h4>
-            <ul style="view-transition-name:filterblock-{key};">
-            <f:for each="{buckets}" as="filter">
-                <f:render partial="FilterBlockItem" arguments="{key: key, filter: filter, searchParams: searchParams, searchParamsFromFirstPage: searchParamsFromFirstPage, languageFilePath: languageFilePath}" />
-            </f:for>
-            </ul>
-            <f:if condition="{buckets -> f:count()} > {filterEntitySize}">
-                <button class="btn filter-block-toggler" aria-expanded="false">
-                    {f:translate(key: 'filter_show_more_button', extensionName: 'liszt_common')}
-                </button>
+            <f:if condition="{filterEntities.select} == 'range'">
+                <f:then>
+                    <f:comment>ToDo: adjust start and end pages from searchParams.year.start etc. to real values if exist </f:comment>
+
+                    <!-- Optional: Chart that references slider data -->
+                    <div class="filter-chart" aria-hidden="true" data-filter-key="{key}"></div>
+
+                    <div class="filter-slider" data-filter-key="{key}"
+                         data-range-start="{f:if(condition: searchParams.year.start, then: searchFilter.year.start, else: 'auto')}"
+                         data-range-end="{f:if(condition: searchParams.year.end, then: searchFilter.year.end, else: 'auto')}">
+                        <!-- Data container -->
+                        <script type="application/json" class="slider-data">
+                            {buckets -> f:format.json() -> f:format.raw()}
+                        </script>
+
+                        <div class="filter-slider-container">
+                            <div class="slider-track"></div>
+                            <div class="slider-range"></div>
+                            <div class="slider-handle handle-min" data-type="min"></div>
+                            <div class="slider-handle handle-max" data-type="max"></div>
+                        </div>
+
+                        <f:form class="filter-slider-input" method="get" action="index" controller="Search" pluginName="SearchListing" arguments="{searchParams: searchParamsFromFirstPage}">
+                            <div class="input-group">
+                                <input type="number" id="min-range-{key}" aria-label="Minimum {f:translate(key: '{languageFilePath}:{key}', default: '{key}')}" name="min-range-{key}" class="min-range-input">
+                                <input type="number" id="max-range-{key}"  aria-label="Maximum {f:translate(key: '{languageFilePath}:{key}', default: '{key}')}" name="max-range-{key}" class="max-range-input">
+                            </div>
+                            <input type="submit" class="btn btn-black filter-slider-submit" value="{f:translate(key: 'filter_submit', extensionName: 'liszt_common')}" >
+                            <f:comment>ToDo: Button to reset selection after search + show range query not in filter (chart like slub)?</f:comment>
+                        </f:form>
+                    </div>
+
+
+
+                </f:then>
+                <f:else>
+                    <ul style="view-transition-name:filterblock-{key};">
+                    <f:for each="{buckets}" as="filter">
+                        <f:render partial="FilterBlockItem" arguments="{key: key, filter: filter, searchParams: searchParams, searchParamsFromFirstPage: searchParamsFromFirstPage, languageFilePath: languageFilePath}" />
+                    </f:for>
+                    </ul>
+                    <f:if condition="{buckets -> f:count()} > {filterEntitySize}">
+                        <button class="btn filter-block-toggler" aria-expanded="false">
+                            {f:translate(key: 'filter_show_more_button', extensionName: 'liszt_common')}
+                        </button>
+                    </f:if>
+                </f:else>
             </f:if>
         </div>
-        </f:if>
+    </f:if>
 </html>

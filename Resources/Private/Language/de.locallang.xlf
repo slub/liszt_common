@@ -45,6 +45,9 @@
 			<trans-unit id="filter_add_item">
 				<source>Filter auswählen</source>
 			</trans-unit>
+			<trans-unit id="filter_submit">
+				<source>Filter anwenden</source>
+			</trans-unit>
 			<trans-unit id="filter_show_more_button">
 				<source>Mehr anzeigen</source>
 			</trans-unit>
