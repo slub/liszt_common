@@ -5,7 +5,6 @@
     xmlns:i="http://typo3.org/ns/Quellenform/Iconpack/ViewHelpers"
     data-namespace-typo3-fluid="true">
 <f:variable name="languageFilePath">LLL:EXT:{settings.entityTypes.1.extensionName}/Resources/Private/Language/{settings.entityTypes.1.languageFile}.xlf</f:variable>
-
 <div class="searchresults-info frame">
     <div class="searchresults-info-total">
     <output class="searchresults-total-items">{totalItems} {f:translate(key: 'searchResults_hits_label', extensionName: 'liszt_common')}</output>
@@ -18,8 +17,19 @@
         <div class="searchresults-filtertags" aria-label="{f:translate(key: 'searchResults_params_label', extensionName: 'liszt_common')}" role="navigation">
             <f:for each="{searchParams.filter}" key="key" as="filterParam">
                 <f:for each="{filterParam}" key="innerKey" as="value">
-                <span class="searchresults-filtertags-tag {key} filter-tag-value-{value}">
-                    <span>{f:translate(key: '{languageFilePath}:{key}_{innerKey}', default: '{innerKey}')}</span>
+                    <span class="searchresults-filtertags-tag {key} filter-tag-value-{value}">
+                      <f:if condition="{innerKey} == 'gte' || {innerKey} == 'lte'">
+                          <f:then>
+                             <span>
+                            <f:if condition="{innerKey} == 'gte'">&gt;</f:if>
+                            <f:if condition="{innerKey} == 'lte'">&lt;</f:if>
+                            {value}
+                            </span>
+                          </f:then>
+                          <f:else>
+                            <span>{f:translate(key: '{languageFilePath}:{key}_{innerKey}', default: '{innerKey}')}</span>
+                          </f:else>
+                      </f:if>
                     <f:link.action action="index" controller="Search" pluginName="SearchListing"
                                    arguments="{lc:searchParams(action: 'removeFilter', searchParamsArray: searchParams, key: key, value: innerKey)}"
                                    additionalAttributes="{type:'button'}"
@@ -29,7 +39,7 @@
                             <path stroke-linecap="round" stroke-width="1" d="M1 1l6 6m0-6L1 7"></path>
                         </svg>
                     </f:link.action>
-                </span>
+                    </span>
                 </f:for>
             </f:for>
         </div>

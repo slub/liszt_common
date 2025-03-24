@@ -43,6 +43,7 @@ class ElasticSearchService implements ElasticSearchServiceInterface
         $this->init();
         $this->params = QueryParamsBuilder::createQueryParamsBuilder($searchParams, $settings)->getQueryParams();
         // ToDo: handle exceptions!
+      //  print_r($this->params);
         $response = $this->client->search($this->params)->asArray();
         $aggs = $response['aggregations'];
 

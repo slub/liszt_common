@@ -158,11 +158,11 @@ class QueryParamsBuilder
             return [
                 $entityField => [
                     'aggs' => [
-                        $entityField. '_stats' => [
+/*                        $entityField. '_stats' => [  // disable year stats because we get min and max year from  buckets
                             'stats' => [
                                 'field' => $entityField,
                             ]
-                        ],
+                        ],*/
                         $entityField => [
                             'terms' => [
                                 'field' => $entityField,
@@ -261,6 +261,10 @@ class QueryParamsBuilder
                 ]
             ];
         }
+        // handle range query fields
+        if (isset($filterTypes[$key]['range'])) {
+            return ['range' => [$key => $values]];
+        }
         // handle all other fields (not nested fields)
         return ['terms' => [$key . '.keyword' => array_keys($values)]];
     }
@@ -341,8 +345,8 @@ class QueryParamsBuilder
         $query = $this->query;
         Collection::wrap($this->params['filter'] ?? [])
             ->each(function($value, $key) use (&$query, $filterTypes) {
-                $value = array_keys($value);
                 if (($filterTypes[$key]['type'] == 'nested') && (isset($filterTypes[$key]['key'])))  {
+                    $value = array_keys($value);
 
                 // nested filter query (for multiple Names)
                     $query['body']['post_filter']['bool']['filter'][] = [
@@ -356,8 +360,17 @@ class QueryParamsBuilder
                         ]
                     ];
 
-                } else  {
+                } else if (isset($filterTypes[$key]['range'])) {
+                   $query['body']['post_filter']['bool']['filter'][] = [
+                        'range' => [
+                            $key => [
+                                $value
+                            ]
+                        ]
+                    ];
 
+                } else  {
+                    $value = array_keys($value);
                     // post_filter, runs the search without considering the aggregations, for muliple select aggregations we run the filters again on each agg in getAggregations()
                     $query['body']['post_filter']['bool']['filter'][] = [
                         'terms' => [
@@ -391,15 +404,22 @@ class QueryParamsBuilder
         return $filters->get(0)
             ->get('filters')
             ->mapWithKeys(function ($filter) {
-                return [
+                $result = [
                     $filter['field'] => [
                         'type' => $filter['type'],
                         'key' => $filter['key'] ?? '',
-                        'multiselect' => ($filter['select'] == 'multi') ?? null
+                        'multiselect' => in_array($filter['select'], ['multi', 'range']) ? true : null,
                     ]
                 ];
+
+                if ($filter['select'] == 'range') {
+                    $result[$filter['field']]['range'] = 1;
+                }
+
+                return $result;
             })
             ->all();
+
     }
 
 }
