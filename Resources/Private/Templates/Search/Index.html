@@ -5,6 +5,8 @@
     xmlns:i="http://typo3.org/ns/Quellenform/Iconpack/ViewHelpers"
     data-namespace-typo3-fluid="true">
 <f:variable name="languageFilePath">LLL:EXT:{settings.entityTypes.1.extensionName}/Resources/Private/Language/{settings.entityTypes.1.languageFile}.xlf</f:variable>
+<f:variable name="paramsRemovePage">{lc:searchParams(action: 'remove', searchParamsArray: searchParams, key: 'page')}</f:variable>
+<f:variable name="searchParamsFromFirstPage">{paramsRemovePage.searchParams}</f:variable>
 <div class="searchresults-info frame">
     <div class="searchresults-info-total">
     <output class="searchresults-total-items">{totalItems} {f:translate(key: 'searchResults_hits_label', extensionName: 'liszt_common')}</output>
@@ -31,7 +33,7 @@
                           </f:else>
                       </f:if>
                     <f:link.action action="index" controller="Search" pluginName="SearchListing"
-                                   arguments="{lc:searchParams(action: 'removeFilter', searchParamsArray: searchParams, key: key, value: innerKey)}"
+                                   arguments="{lc:searchParams(action: 'removeFilter', searchParamsArray: searchParamsFromFirstPage, key: key, value: innerKey)}"
                                    additionalAttributes="{type:'button'}"
                                    class="tag-cross">
                         <span class="visually-hidden">{f:translate(key: 'searchResults_params_remove_label', arguments: {0: innerKey}, extensionName: 'liszt_common')}</span>
