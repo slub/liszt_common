@@ -133,7 +133,7 @@ class QueryParamsBuilder
     {
         $entityField = $entityType['field'];
         $entityTypeKey = $entityType['key'] ?? null;
-        $entityTypeMultiselect = ($entityType['select'] == 'multi') ?? null; // Todo: remove this an use $filterTypes?
+        $entityTypeMultiselect = isset($entityType['select']) && ($entityType['select'] == 'multi') ?? null; // Todo: remove this an use $filterTypes?
         $entityTypeSize = $entityType['maxSize'] ?? 10;
 
         // create filter in aggs for filtering aggs (without filtering the current key for multiple selections if multiselect is set)
@@ -154,7 +154,7 @@ class QueryParamsBuilder
 
 
         // first version of range filter (date)
-        if ($entityType['select'] === 'range') {
+        if (isset($entityType['select']) && $entityType['select'] === 'range') {
             return [
                 $entityField => [
                     'aggs' => [
@@ -408,11 +408,11 @@ class QueryParamsBuilder
                     $filter['field'] => [
                         'type' => $filter['type'],
                         'key' => $filter['key'] ?? '',
-                        'multiselect' => in_array($filter['select'], ['multi', 'range']) ? true : null,
+                        'multiselect' => isset($filter['select']) && in_array($filter['select'], ['multi', 'range']) ? true : null,
                     ]
                 ];
 
-                if ($filter['select'] == 'range') {
+                if (isset($filter['select']) && $filter['select'] == 'range') {
                     $result[$filter['field']]['range'] = 1;
                 }
 
