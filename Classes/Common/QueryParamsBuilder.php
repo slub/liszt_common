@@ -2,7 +2,6 @@
 
 namespace Slub\LisztCommon\Common;
 
-use Slub\LisztCommon\Common\Collection;
 use Slub\LisztCommon\Processing\IndexProcessor;
 use Illuminate\Support\Str;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
@@ -21,8 +20,6 @@ class QueryParamsBuilder
     protected array $query = [];
     protected string $indexName = '';
     protected bool $searchAll = false;
-
-    // ToDo: @Matthias: check searchAll condition
 
     public static function createQueryParamsBuilder(array $searchParams, array $settings): self
     {
@@ -85,7 +82,7 @@ class QueryParamsBuilder
         ];
 
         if ($this->searchAll == false) {
-            $this->query['body']['aggs'] = $this->getAggs();
+            $this->query['body']['aggs'] = $this->getAggregations();
         }
 
         $this->setCommonParams();
@@ -107,7 +104,7 @@ class QueryParamsBuilder
             join(',');
     }
 
-    private function getAggs(): array
+    private function getAggregations(): array
     {
         $settings = $this->settings;
         $index = $this->indexName;
@@ -136,7 +133,7 @@ class QueryParamsBuilder
     {
         $entityField = $entityType['field'];
         $entityTypeKey = $entityType['key'] ?? null;
-        $entityTypeMultiselect = $entityType['multiselect'] ?? null;
+        $entityTypeMultiselect = isset($entityType['select']) && ($entityType['select'] == 'multi') ?? null; // Todo: remove this an use $filterTypes?
         $entityTypeSize = $entityType['maxSize'] ?? 10;
 
         // create filter in aggs for filtering aggs (without filtering the current key for multiple selections if multiselect is set)
@@ -154,6 +151,35 @@ class QueryParamsBuilder
                 ['match_all' => (object) []]
             ];
         }
+
+
+        // first version of range filter (date)
+        if (isset($entityType['select']) && $entityType['select'] === 'range') {
+            return [
+                $entityField => [
+                    'aggs' => [
+/*                        $entityField. '_stats' => [  // disable year stats because we get min and max year from  buckets
+                            'stats' => [
+                                'field' => $entityField,
+                            ]
+                        ],*/
+                        $entityField => [
+                            'terms' => [
+                                'field' => $entityField,
+                                'size' => 300,
+                                'order' => ['_key' => 'asc'],
+                            ]
+                        ]
+                    ],
+                    'filter' => [
+                        'bool' => [
+                            'filter' => $filters
+                        ]
+                    ]
+                ]
+            ];
+        }
+
 
         // special aggs for nested fields
         if ($entityType['type'] === 'nested') {
@@ -235,9 +261,40 @@ class QueryParamsBuilder
                 ]
             ];
         }
+        // handle range query fields
+        if (isset($filterTypes[$key]['range'])) {
+            return ['range' => [$key => $values]];
+        }
         // handle all other fields (not nested fields)
         return ['terms' => [$key . '.keyword' => array_keys($values)]];
     }
+
+
+/*    get sort field from search params or from entity */
+    private function setSortField(): void {
+        $sortField = $this->params['sort'] ?? null; // Todo: the url parameters still have to be adapted to the final params
+        $sortDirection = $this->params['order'] ?? 'asc';
+        if (!$sortField) {
+            $entityTypeDefaultSortBy = Collection::wrap($this->settings)
+                ->recursive()
+                ->get('entityTypes')
+                ->first(function ($entityType) {
+                    return isset($entityType['indexName']) && $entityType['indexName'] === $this->indexName;
+                });
+            $sortField = $entityTypeDefaultSortBy['defaultSortBy'] ?? null;
+            $sortDirection = $entityTypeDefaultSortBy['defaultSortDirection'] ?? 'asc';
+        }
+        if ($sortField) {
+            $this->query['body']['sort'] = [
+                [
+                    $sortField => [
+                        'order' => $sortDirection
+                    ]
+                ]
+            ];
+        }
+    }
+
 
     /**
      * sets parameters needed for both search and count queries
@@ -250,6 +307,8 @@ class QueryParamsBuilder
 
         // set body
         if (empty($this->params['searchText'])) {
+            // set default sort if no fulltext Search
+            $this->setSortField();
             $this->query['body']['query'] = [
                 'bool' => [
                     'must' => [[
@@ -286,8 +345,8 @@ class QueryParamsBuilder
         $query = $this->query;
         Collection::wrap($this->params['filter'] ?? [])
             ->each(function($value, $key) use (&$query, $filterTypes) {
-                $value = array_keys($value);
                 if (($filterTypes[$key]['type'] == 'nested') && (isset($filterTypes[$key]['key'])))  {
+                    $value = array_keys($value);
 
                 // nested filter query (for multiple Names)
                     $query['body']['post_filter']['bool']['filter'][] = [
@@ -301,9 +360,18 @@ class QueryParamsBuilder
                         ]
                     ];
 
-                } else  {
+                } else if (isset($filterTypes[$key]['range'])) {
+                   $query['body']['post_filter']['bool']['filter'][] = [
+                        'range' => [
+                            $key => [
+                                $value
+                            ]
+                        ]
+                    ];
 
-                    // post_filter, runs the search without considering the aggregations, for muliple select aggregations we run the filters again on each agg in getAggs()
+                } else  {
+                    $value = array_keys($value);
+                    // post_filter, runs the search without considering the aggregations, for muliple select aggregations we run the filters again on each agg in getAggregations()
                     $query['body']['post_filter']['bool']['filter'][] = [
                         'terms' => [
                             $key . '.keyword' => $value
@@ -336,15 +404,22 @@ class QueryParamsBuilder
         return $filters->get(0)
             ->get('filters')
             ->mapWithKeys(function ($filter) {
-                return [
+                $result = [
                     $filter['field'] => [
                         'type' => $filter['type'],
                         'key' => $filter['key'] ?? '',
-                        'multiselect' => $filter['multiselect'] ?? null
+                        'multiselect' => isset($filter['select']) && in_array($filter['select'], ['multi', 'range']) ? true : null,
                     ]
                 ];
+
+                if (isset($filter['select']) && $filter['select'] == 'range') {
+                    $result[$filter['field']]['range'] = 1;
+                }
+
+                return $result;
             })
             ->all();
+
     }
 
 }

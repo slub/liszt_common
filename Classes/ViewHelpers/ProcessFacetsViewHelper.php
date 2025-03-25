@@ -38,6 +38,17 @@ final class ProcessFacetsViewHelper extends AbstractViewHelper
             $returnBucket = $filterGroup['filtered_params'][$key]['buckets'];
         }
 
+        // if this is an range filter return a simple assoziative array
+        if ($filterEntities['select'] === 'range') {
+            $rangeBucket = [];
+            foreach ($returnBucket as $item) {
+                if (isset($item['key']) && isset($item['doc_count'])) {
+                    $rangeBucket[$item['key']] = $item['doc_count'];
+                }
+            }
+            return $rangeBucket;
+        }
+
         // set size from entity settings in setup.typoscript or use 10 as default
         $size = $filterEntities['size'] ?? $filterEntities['defaultFilterSize'] ?? 10;
 
