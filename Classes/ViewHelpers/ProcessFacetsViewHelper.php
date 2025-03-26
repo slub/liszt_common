@@ -64,6 +64,8 @@ final class ProcessFacetsViewHelper extends AbstractViewHelper
                 $item['hidden'] = true;
             }
         }
+        unset($item);
+
 
         // Remove items that are not selected and have a doc_count of 0
         $returnBucket = array_filter($returnBucket, function ($item) {
@@ -74,6 +76,28 @@ final class ProcessFacetsViewHelper extends AbstractViewHelper
         usort($returnBucket, function ($a, $b) {
             return ($b['selected'] ?? false) <=> ($a['selected'] ?? false);
         });
+
+
+        // special sort in "slub-style" if sortByKey = 'slub': sort all hidden items alphabetical
+        if (isset($filterEntities['sortByKey']) && $filterEntities['sortByKey'] === 'slub') {
+            $hiddenItems = [];
+            $visibleItems = [];
+
+            foreach ($returnBucket as $item) {
+                if (isset($item['hidden']) && $item['hidden'] === true) {
+                    $hiddenItems[] = $item;
+                } else {
+                    $visibleItems[] = $item;
+                }
+            }
+
+            usort($hiddenItems, function ($a, $b) {
+                return strnatcasecmp($a['key'] ?? '', $b['key'] ?? '');
+            });
+
+            $returnBucket = array_merge($visibleItems, $hiddenItems);
+        }
+
 
         return $returnBucket;
 
