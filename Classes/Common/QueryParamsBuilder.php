@@ -184,6 +184,18 @@ class QueryParamsBuilder
         // special aggs for nested fields
         if ($entityType['type'] === 'nested') {
 
+            // basic term options:
+            $termsOptions = [
+                'field' => $entityField . '.' . $entityTypeKey . '.keyword',
+                'size' => $entityTypeSize
+            ];
+
+            // sort if sortByKey = 'elastic'
+            if (isset($entityType['sortByKey']) && $entityType['sortByKey'] === 'elastic') {
+                $termsOptions['order'] = ['_key' => 'asc'];
+            }
+
+
             return [
                 $entityType['field'] => [
                     'filter' => [
@@ -198,11 +210,9 @@ class QueryParamsBuilder
                             ],
                             'aggs' => [
                                 $entityField => [
-                                    'terms' => [
-                                        'field' => $entityField . '.' . $entityTypeKey . '.keyword',
-                                        'size' => $entityTypeSize,
-                                    ]
+                                    'terms' => $termsOptions
                                 ]
+
                             ]
                         ]
                     ]
@@ -212,18 +222,29 @@ class QueryParamsBuilder
         }
 
         // all other (not nested fields)
+
+        // basic term options:
+        $termsOptions = [
+            'field' => $entityField . '.keyword',
+            // show docs with count 0 only for multiple select fields
+            'min_doc_count' => $entityTypeMultiselect ? 0 : 1,
+            'size' => $entityTypeSize,
+            //   'include' => 'Slowakisch|.*',
+
+        ];
+
+        // sort if sortByKey = 'elastic'
+        if (isset($entityType['sortByKey']) && $entityType['sortByKey'] === 'elastic') {
+            $termsOptions['order'] = ['_key' => 'asc'];
+        }
+
+
+
         return [
             $entityField => [
                 'aggs' => [
                     $entityField => [
-                        'terms' => [
-                            'field' => $entityField . '.keyword',
-                            // show docs with count 0 only for multiple select fields
-                            'min_doc_count' => $entityTypeMultiselect ? 0 : 1,
-                            'size' => $entityTypeSize,
-                         //   'include' => 'Slowakisch|.*',
-
-                        ]
+                        'terms' => $termsOptions
                     ]
                 ],
                 'filter' => [

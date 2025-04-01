@@ -54,10 +54,9 @@
                         </lc:cleanUrlForm>
                     </div>
 
-
                 </f:then>
                 <f:else>
-                    <ul style="view-transition-name:filterblock-{key};">
+                    <ul style="view-transition-name:filterblock-{key};" class="{f:if(condition: '{filterEntities.sortByKey} == slub', then: 'sortByKeySlub', else: '')}">
                     <f:for each="{buckets}" as="filter">
                         <f:render partial="FilterBlockItem" arguments="{key: key, filter: filter, searchParams: searchParams, searchParamsFromFirstPage: searchParamsFromFirstPage, languageFilePath: languageFilePath}" />
                     </f:for>
