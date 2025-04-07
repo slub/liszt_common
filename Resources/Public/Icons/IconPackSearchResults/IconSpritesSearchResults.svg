@@ -34,7 +34,7 @@
         </g>
     </symbol>
 
-    <symbol id="musicSheet" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25.09 33.96">
+    <symbol id="printedMusic" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25.09 33.96">
         <g id="music-sheet-Ebene_1-2">
             <path
                 d="M18,0H0v33.96h25.09V7.3L18,0ZM18.15,1.23l5.64,5.8h-5.64V1.23ZM.75,33.21V.75h16.65v7.04h6.94v25.42H.75Z"/>
