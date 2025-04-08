@@ -27,7 +27,10 @@
 			<trans-unit id="searchbar_placeholder" >
 				<source>Suche in der Bibliografie</source>
 			</trans-unit>
-			<trans-unit id="searchButtonLabel">
+			<trans-unit id="searchbar_clearButton_label" >
+				<source>Eingabe löschen</source>
+			</trans-unit>
+			<trans-unit id="searchbar_searchButton_label">
 				<source>Suchen</source>
 			</trans-unit>
 			<trans-unit id="filter_container_label">
@@ -41,6 +44,12 @@
 			</trans-unit>
 			<trans-unit id="filter_add_item">
 				<source>Filter auswählen</source>
+			</trans-unit>
+			<trans-unit id="filter_submit">
+				<source>Filter anwenden</source>
+			</trans-unit>
+			<trans-unit id="filter_reset">
+				<source>Filter zurücksetzen</source>
 			</trans-unit>
 			<trans-unit id="filter_show_more_button">
 				<source>Mehr anzeigen</source>

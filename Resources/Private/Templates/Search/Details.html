@@ -118,12 +118,26 @@
         <f:if condition="{searchResult._source.relations}">
             <f:then>
                 <ul>
-                    <f:for each="{searchResult._source.relations}" as="relation" key="index" >
+                    <f:for each="{searchResult._source.relations}" as="relation" key="index">
                         <li>
-                            {index}: {relation}
+                            {index}:
+                            <f:if condition="{relation.0}">
+                                <f:then>
+                                    <ul>
+                                        <f:for each="{relation}" as="subRelation">
+                                            <li>{subRelation}</li>
+                                        </f:for>
+                                    </ul>
+                                </f:then>
+                                <f:else>
+                                    {relation}
+                                </f:else>
+                            </f:if>
                         </li>
                     </f:for>
                 </ul>
+
+
             </f:then>
             <f:else>
                 <p>Keine relations vorhanden.</p>

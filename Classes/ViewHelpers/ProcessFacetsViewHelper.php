@@ -38,6 +38,17 @@ final class ProcessFacetsViewHelper extends AbstractViewHelper
             $returnBucket = $filterGroup['filtered_params'][$key]['buckets'];
         }
 
+        // if this is an range filter return a simple assoziative array
+        if ($filterEntities['select'] === 'range') {
+            $rangeBucket = [];
+            foreach ($returnBucket as $item) {
+                if (isset($item['key']) && isset($item['doc_count'])) {
+                    $rangeBucket[$item['key']] = $item['doc_count'];
+                }
+            }
+            return $rangeBucket;
+        }
+
         // set size from entity settings in setup.typoscript or use 10 as default
         $size = $filterEntities['size'] ?? $filterEntities['defaultFilterSize'] ?? 10;
 
@@ -53,6 +64,8 @@ final class ProcessFacetsViewHelper extends AbstractViewHelper
                 $item['hidden'] = true;
             }
         }
+        unset($item);
+
 
         // Remove items that are not selected and have a doc_count of 0
         $returnBucket = array_filter($returnBucket, function ($item) {
@@ -63,6 +76,28 @@ final class ProcessFacetsViewHelper extends AbstractViewHelper
         usort($returnBucket, function ($a, $b) {
             return ($b['selected'] ?? false) <=> ($a['selected'] ?? false);
         });
+
+
+        // special sort in "slub-style" if sortByKey = 'slub': sort all hidden items alphabetical
+        if (isset($filterEntities['sortByKey']) && $filterEntities['sortByKey'] === 'slub') {
+            $hiddenItems = [];
+            $visibleItems = [];
+
+            foreach ($returnBucket as $item) {
+                if (isset($item['hidden']) && $item['hidden'] === true) {
+                    $hiddenItems[] = $item;
+                } else {
+                    $visibleItems[] = $item;
+                }
+            }
+
+            usort($hiddenItems, function ($a, $b) {
+                return strnatcasecmp($a['key'] ?? '', $b['key'] ?? '');
+            });
+
+            $returnBucket = array_merge($visibleItems, $hiddenItems);
+        }
+
 
         return $returnBucket;
 
