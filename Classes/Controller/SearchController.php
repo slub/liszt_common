@@ -119,6 +119,11 @@ final class SearchController extends ClientEnabledController
 
         }
 
+        // manage template file for detail view from extension (set in setup.typoscript of the extension)
+        if (isset($this->settings['detailTemplatePath'])) {
+            $this->view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($this->settings['detailTemplatePath']));
+        }
+
         // set page title
         $pageTitle = $this->formatPageTitle($elasticResponse['_source']['title'] ?? 'Details');
         $this->titleProvider->setTitle($pageTitle);

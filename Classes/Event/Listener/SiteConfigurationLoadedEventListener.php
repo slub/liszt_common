@@ -8,7 +8,6 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 
-
 /**
  * Event to modify the site configuration array before loading the configuration
  */
