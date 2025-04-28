@@ -8,12 +8,28 @@
 <f:variable name="paramsRemovePage">{lc:searchParams(action: 'remove', searchParamsArray: searchParams, key: 'page')}</f:variable>
 <f:variable name="searchParamsFromFirstPage">{paramsRemovePage.searchParams}</f:variable>
 <div class="searchresults-info frame">
-    <div class="searchresults-info-total">
     <output class="searchresults-total-items">{totalItems} {f:translate(key: 'searchResults_hits_label', extensionName: 'liszt_common')}</output>
+
+    <div class="searchresults-info-buttons">
+
+<f:comment>ToDo: selected also ausgewählte Sortierung hervorheben und disablen, Unterscheidung bei Textsuche mit Relevanz</f:comment>
+        <div class="dropdown-button searchresults-dopdown-sort">
+            <button class="btn dropdown-button-toggle " type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Sortierung
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-button-item" href="#">Datum absteigend</a></li>
+                <li><a class="dropdown-button-item" href="#">Datum aufsteigend</a></li>
+                <li><a class="dropdown-button-item" href="#">Relevanz</a></li>
+            </ul>
+        </div>
+
+
     <button class="filter-toggler btn btn-black" type="button" data-bs-toggle="offcanvas" data-bs-target="#filter-container" aria-controls="filter-container">
         <i:icon iconfig="lzicon,filter" preferredRenderTypes="svgSprite" additionalAttributes="{aria-hidden:'true'}" />  {f:translate(key: 'filter_container_label', extensionName: 'liszt_common')}
     </button>
     </div>
+
 
     <f:if condition="{searchParams.filter}">
         <div class="searchresults-filtertags" aria-label="{f:translate(key: 'searchResults_params_label', extensionName: 'liszt_common')}" role="navigation">
