@@ -291,29 +291,60 @@ class QueryParamsBuilder
     }
 
 
-/*    get sort field from search params or from entity */
+/*    get sort label from search params and settings from entity array in setup.typoscript for index name */
     private function setSortField(): void {
-        $sortField = $this->params['sort'] ?? null; // Todo: the url parameters still have to be adapted to the final params
-        $sortDirection = $this->params['order'] ?? 'asc';
-        if (!$sortField) {
-            $entityTypeDefaultSortBy = Collection::wrap($this->settings)
-                ->recursive()
-                ->get('entityTypes')
-                ->first(function ($entityType) {
-                    return isset($entityType['indexName']) && $entityType['indexName'] === $this->indexName;
-                });
-            $sortField = $entityTypeDefaultSortBy['defaultSortBy'] ?? null;
-            $sortDirection = $entityTypeDefaultSortBy['defaultSortDirection'] ?? 'asc';
+        $sortLabel = $this->params['sort'] ?? null;
+        $isFulltext = !empty($this->params['searchText']);
+        $sortEntities = $this->getSortEntities();
+
+        // return if no $sortEntities in setup.typoscript
+        if ($sortEntities->isEmpty()) {
+            return;
         }
-        if ($sortField) {
-            $this->query['body']['sort'] = [
-                [
-                    $sortField => [
-                        'order' => $sortDirection
-                    ]
-                ]
-            ];
+
+        // if sort label in url params
+        if ($sortLabel) {
+            $selectedSort = $sortEntities->firstWhere('label', $sortLabel);
+            if ($selectedSort && $selectedSort->has('fields')) {
+                $sortFields = Collection::wrap($selectedSort->get('fields'));
+                $this->query['body']['sort'] = $sortFields->map(function ($direction, $field) {
+                    return [
+                        $field => [
+                            'order' => $direction
+                        ]
+                    ];
+                })->values()->toArray();
+            }
+        }  else {
+            // search for default sorting
+            if ($isFulltext) {
+                $defaultSort = $sortEntities->firstWhere('defaultFulltext', true);
+            } else {
+                $defaultSort = $sortEntities->firstWhere('default', true);
+            }
+            if ($defaultSort) {
+                $sortFields = Collection::wrap($defaultSort->get('fields'));
+                $this->query['body']['sort'] = $sortFields->map(function ($direction, $field) {
+                    return [
+                        $field => [
+                            'order' => $direction
+                        ]
+                    ];
+                })->values()->toArray();
+            }
         }
+        // skip sorting if no default value and no label found
+        return;
+    }
+
+
+    private function getSortEntities():collection {
+        return Collection::wrap($this->settings)
+            ->recursive()
+            ->get('entityTypes')
+            ->first(function ($entityType) {
+                return isset($entityType['indexName']) && $entityType['indexName'] === $this->indexName;})
+            ->get('sortings');
     }
 
 
@@ -328,7 +359,7 @@ class QueryParamsBuilder
 
         // set body
         if (empty($this->params['searchText'])) {
-            // set default sort if no fulltext Search
+            // set sorting
             $this->setSortField();
             $this->query['body']['query'] = [
                 'bool' => [
@@ -338,6 +369,8 @@ class QueryParamsBuilder
                 ]
             ];
         } else {
+            // set sorting
+            $this->setSortField();
             // search in field "fulltext" exakt phrase match boost over all words must contain
             $this->query['body']['query'] = [
                 'bool' => [

@@ -12,18 +12,51 @@
 
     <div class="searchresults-info-buttons">
 
-<f:comment>ToDo: selected also ausgewählte Sortierung hervorheben und disablen, Unterscheidung bei Textsuche mit Relevanz</f:comment>
         <div class="dropdown-button searchresults-dopdown-sort">
             <button class="btn dropdown-button-toggle " type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Sortierung
+                {f:translate(key: 'searchResults_sort', extensionName: 'liszt_common')}
             </button>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-button-item" href="#">Datum absteigend</a></li>
-                <li><a class="dropdown-button-item" href="#">Datum aufsteigend</a></li>
-                <li><a class="dropdown-button-item" href="#">Relevanz</a></li>
+                <f:variable name="isFulltext" value="{f:if(condition: searchParams.searchText, then: 1, else: 0)}" />
+                <f:variable name="hasSelectedSort" value="{f:if(condition: searchParams.sort, then: 1, else: 0)}" />
+                <f:for each="{settings.entityTypes.1.sortings}" as="sorting" key="key">
+                    <f:if condition="{sorting.fulltext}">
+                        <f:then>
+                            <f:if condition="{isFulltext}">
+                                <li>
+                                    <f:variable name="isActive" value="{f:if(condition: '{searchParams.sort} == {sorting.label}', then: 1, else: '{f:if(condition: \'{hasSelectedSort} == 0 && {sorting.defaultFulltext}\', then: 1, else: 0)}')}"/>
+                                    <f:link.action
+                                        action="index"
+                                        controller="Search"
+                                        pluginName="SearchListing"
+                                        additionalAttributes="{f:if(condition:'{isActive}',then:{aria-current:'true'})}"
+                                        arguments="{lc:searchParams(action: 'add', searchParamsArray: searchParamsFromFirstPage, key: 'sort', value: sorting.label)}"
+                                        class="dropdown-button-item {f:if(condition: isActive, then: 'active')}"
+                                    >
+                                        {f:translate(key: '{languageFilePath}:{sorting.label}', default: '{sorting.label}')}
+                                    </f:link.action>
+                                </li>
+                            </f:if>
+                        </f:then>
+                        <f:else>
+                            <li>
+                                <f:variable name="isActive" value="{f:if(condition: '{searchParams.sort} == {sorting.label}', then: 1, else: '{f:if(condition: \'{hasSelectedSort} == 0 && {sorting.default} && {isFulltext} == 0\', then: 1, else: 0)}')}"/>
+                                <f:link.action
+                                    action="index"
+                                    controller="Search"
+                                    pluginName="SearchListing"
+                                    additionalAttributes="{f:if(condition:'{isActive}',then:{aria-current:'true'})}"
+                                    arguments="{lc:searchParams(action: 'add', searchParamsArray: searchParamsFromFirstPage, key: 'sort', value: sorting.label)}"
+                                    class="dropdown-button-item {f:if(condition: isActive, then: 'active')}"
+                                >
+                                    {f:translate(key: '{languageFilePath}:{sorting.label}', default: '{sorting.label}')}
+                                </f:link.action>
+                            </li>
+                        </f:else>
+                    </f:if>
+                </f:for>
             </ul>
         </div>
-
 
     <button class="filter-toggler btn btn-black" type="button" data-bs-toggle="offcanvas" data-bs-target="#filter-container" aria-controls="filter-container">
         <i:icon iconfig="lzicon,filter" preferredRenderTypes="svgSprite" additionalAttributes="{aria-hidden:'true'}" />  {f:translate(key: 'filter_container_label', extensionName: 'liszt_common')}

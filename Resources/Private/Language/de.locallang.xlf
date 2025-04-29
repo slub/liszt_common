@@ -63,6 +63,9 @@
 			<trans-unit id="searchResults_params_remove_label">
 				<source>Suchparameter "%s" entfernen</source>
 			</trans-unit>
+			<trans-unit id="searchResults_sort">
+				<source>Sortierung</source>
+			</trans-unit>
 			<trans-unit resname="config.elasticHostName" id="config.elasticHostName" >
 				<source>Hostname des Elasticsearch-Servers</source>
 			</trans-unit>
