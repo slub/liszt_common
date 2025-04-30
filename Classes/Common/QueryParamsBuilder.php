@@ -341,18 +341,18 @@ class QueryParamsBuilder
     private function getSortEntities(): Collection {
         $filteredEntities = Collection::wrap($this->settings)
             ->recursive()
-            ->get('entityTypes', collect())
+            ->get('entityTypes', Collection::make())
             ->filter(function ($entityType) {
                 return $entityType->get('indexName') === $this->indexName;
             });
 
         // check if there are any entities
         if ($filteredEntities->isEmpty()) {
-            return collect();
+            return Collection::make();
         }
 
         // now we can check if there are sortings
-        return $filteredEntities->first()->get('sortings', collect());
+        return Collection::make($filteredEntities->first()->get('sortings', Collection::make()));
     }
 
 
