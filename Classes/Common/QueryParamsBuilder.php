@@ -338,14 +338,23 @@ class QueryParamsBuilder
     }
 
 
-    private function getSortEntities():collection {
-        return Collection::wrap($this->settings)
+    private function getSortEntities(): Collection {
+        $filteredEntities = Collection::wrap($this->settings)
             ->recursive()
-            ->get('entityTypes')
-            ->first(function ($entityType) {
-                return isset($entityType['indexName']) && $entityType['indexName'] === $this->indexName;})
-            ->get('sortings');
+            ->get('entityTypes', collect())
+            ->filter(function ($entityType) {
+                return $entityType->get('indexName') === $this->indexName;
+            });
+
+        // check if there are any entities
+        if ($filteredEntities->isEmpty()) {
+            return collect();
+        }
+
+        // now we can check if there are sortings
+        return $filteredEntities->first()->get('sortings', collect());
     }
+
 
 
     /**
@@ -446,18 +455,30 @@ class QueryParamsBuilder
     {
         $filters = Collection::wrap($this->settings)
             ->recursive()
-            ->get('entityTypes')
+            ->get('entityTypes', collect())
             ->filter(function ($entityType) {
                 return $entityType->get('indexName') === $this->indexName;
             })
             ->values();
-        if ($filters->count() === 0) {
+
+        if ($filters->isEmpty()) {
             return [];
         }
 
-        return $filters->get(0)
-            ->get('filters')
+        $firstFilter = $filters->first();
+
+        // check if there are filters
+        if (!$firstFilter || !$firstFilter->has('filters')) {
+            return [];
+        }
+
+        return $firstFilter
+            ->get('filters', collect())
             ->mapWithKeys(function ($filter) {
+                if (!isset($filter['field']) || !isset($filter['type'])) {
+                    return [];
+                }
+
                 $result = [
                     $filter['field'] => [
                         'type' => $filter['type'],
@@ -473,7 +494,6 @@ class QueryParamsBuilder
                 return $result;
             })
             ->all();
-
     }
 
 }
