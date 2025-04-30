@@ -8,12 +8,61 @@
 <f:variable name="paramsRemovePage">{lc:searchParams(action: 'remove', searchParamsArray: searchParams, key: 'page')}</f:variable>
 <f:variable name="searchParamsFromFirstPage">{paramsRemovePage.searchParams}</f:variable>
 <div class="searchresults-info frame">
-    <div class="searchresults-info-total">
     <output class="searchresults-total-items">{totalItems} {f:translate(key: 'searchResults_hits_label', extensionName: 'liszt_common')}</output>
+
+    <div class="searchresults-info-buttons">
+
+        <div class="dropdown-button searchresults-dopdown-sort">
+            <button class="btn dropdown-button-toggle " type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {f:translate(key: 'searchResults_sort', extensionName: 'liszt_common')}
+            </button>
+            <ul class="dropdown-menu">
+                <f:variable name="isFulltext" value="{f:if(condition: searchParams.searchText, then: 1, else: 0)}" />
+                <f:variable name="hasSelectedSort" value="{f:if(condition: searchParams.sort, then: 1, else: 0)}" />
+                <f:for each="{settings.entityTypes.1.sortings}" as="sorting" key="key">
+                    <f:if condition="{sorting.fulltext}">
+                        <f:then>
+                            <f:if condition="{isFulltext}">
+                                <li>
+                                    <f:variable name="isActive" value="{f:if(condition: '{searchParams.sort} == {sorting.label}', then: 1, else: '{f:if(condition: \'{hasSelectedSort} == 0 && {sorting.defaultFulltext}\', then: 1, else: 0)}')}"/>
+                                    <f:link.action
+                                        action="index"
+                                        controller="Search"
+                                        pluginName="SearchListing"
+                                        additionalAttributes="{f:if(condition:'{isActive}',then:{aria-current:'true'})}"
+                                        arguments="{lc:searchParams(action: 'add', searchParamsArray: searchParamsFromFirstPage, key: 'sort', value: sorting.label)}"
+                                        class="dropdown-button-item {f:if(condition: isActive, then: 'active')}"
+                                    >
+                                        {f:translate(key: '{languageFilePath}:{sorting.label}', default: '{sorting.label}')}
+                                    </f:link.action>
+                                </li>
+                            </f:if>
+                        </f:then>
+                        <f:else>
+                            <li>
+                                <f:variable name="isActive" value="{f:if(condition: '{searchParams.sort} == {sorting.label}', then: 1, else: '{f:if(condition: \'{hasSelectedSort} == 0 && {sorting.default} && {isFulltext} == 0\', then: 1, else: 0)}')}"/>
+                                <f:link.action
+                                    action="index"
+                                    controller="Search"
+                                    pluginName="SearchListing"
+                                    additionalAttributes="{f:if(condition:'{isActive}',then:{aria-current:'true'})}"
+                                    arguments="{lc:searchParams(action: 'add', searchParamsArray: searchParamsFromFirstPage, key: 'sort', value: sorting.label)}"
+                                    class="dropdown-button-item {f:if(condition: isActive, then: 'active')}"
+                                >
+                                    {f:translate(key: '{languageFilePath}:{sorting.label}', default: '{sorting.label}')}
+                                </f:link.action>
+                            </li>
+                        </f:else>
+                    </f:if>
+                </f:for>
+            </ul>
+        </div>
+
     <button class="filter-toggler btn btn-black" type="button" data-bs-toggle="offcanvas" data-bs-target="#filter-container" aria-controls="filter-container">
         <i:icon iconfig="lzicon,filter" preferredRenderTypes="svgSprite" additionalAttributes="{aria-hidden:'true'}" />  {f:translate(key: 'filter_container_label', extensionName: 'liszt_common')}
     </button>
     </div>
+
 
     <f:if condition="{searchParams.filter}">
         <div class="searchresults-filtertags" aria-label="{f:translate(key: 'searchResults_params_label', extensionName: 'liszt_common')}" role="navigation">

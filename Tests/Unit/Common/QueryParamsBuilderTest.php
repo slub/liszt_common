@@ -26,6 +26,8 @@ final class QueryParamsBuilderTest extends UnitTestCase
     const EX_PAGE = 3;
     const EX_SCRIPT = 'ex-script';
     const EX_PATH = 'ex-path';
+    const EX_LANG_FILE = 'ex-lang-file';
+    const EX_DIRECTION = 'asc';
 
     private QueryParamsBuilder $subject;
     private array $settings = [];
@@ -56,6 +58,19 @@ final class QueryParamsBuilderTest extends UnitTestCase
                     'labelKey' => self::EX_LABEL_KEY,
                     'extensionName' => self::EX_EXTENSION,
                     'indexName' => self::EX_INDEX,
+                    'languageFile' => self::EX_LANG_FILE,
+                    'defaultFilterSize' => 10,
+                    'defaultSortBy' => self::EX_FIELD1,
+                    'defaultSortDirection' => self::EX_DIRECTION,
+                    'sortings' => [
+                        0 => [
+                            'label' => self::EX_FIELD1,
+                            'fields' => [
+                                self::EX_FIELD1 => self::EX_DIRECTION
+                            ],
+                            'default' => true
+                        ]
+                    ],
                     'filters' => [
                         0 => [
                             'field' => self::EX_FIELD1,
@@ -77,6 +92,15 @@ final class QueryParamsBuilderTest extends UnitTestCase
                     'labelKey' => self::EX_LABEL_KEY2,
                     'extensionName' => self::EX_EXTENSION2,
                     'indexName' => self::EX_INDEX2,
+                    'sortings' => [
+                        0 => [
+                            'label' => self::EX_FIELD1,
+                            'fields' => [
+                                self::EX_FIELD1 => 'desc'
+                            ],
+                            'default' => true
+                        ]
+                    ],
                     'filters' => [
                         0 => [
                             'field' => self::EX_FIELD1,
@@ -217,6 +241,13 @@ final class QueryParamsBuilderTest extends UnitTestCase
                     'bool' => [
                         'must' => [
                             [ 'match_all' => new \StdClass() ]
+                        ]
+                    ]
+                ],
+                'sort' => [
+                    0 => [
+                        self::EX_FIELD1 => [
+                            'order' => self::EX_DIRECTION
                         ]
                     ]
                 ]
@@ -377,6 +408,13 @@ final class QueryParamsBuilderTest extends UnitTestCase
                             ]
                         ] ]
                     ]
+                ],
+                'sort' => [
+                    0 => [
+                        self::EX_FIELD1 => [
+                            'order' => self::EX_DIRECTION
+                        ]
+                    ]
                 ]
             ]
         ];
@@ -527,6 +565,13 @@ final class QueryParamsBuilderTest extends UnitTestCase
                                 ]
                             ]
                         ] ]
+                    ]
+                ],
+                'sort' => [
+                    0 => [
+                        self::EX_FIELD1 => [
+                            'order' => self::EX_DIRECTION
+                        ]
                     ]
                 ]
             ]
