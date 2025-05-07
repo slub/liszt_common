@@ -44,6 +44,20 @@ ExtensionUtility::configurePlugin(
     [ ],
 );
 
+ExtensionUtility::configurePlugin(
+    'LisztCommon',
+    'SearchDetailsHeader',
+    [ SearchController::class => 'detailsHeader' ],
+    [ ],
+);
+
+
+ExtensionUtility::configurePlugin(
+    'LisztCommon',
+    'HtmxFilters',
+    [SearchController::class => 'loadAllFilterItems'],
+    []
+);
 
 ExtensionManagementUtility::addPageTSConfig(
     '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:liszt_common/Configuration/TsConfig/page.tsconfig">'

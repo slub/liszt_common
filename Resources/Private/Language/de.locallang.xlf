@@ -54,6 +54,9 @@
 			<trans-unit id="filter_show_more_button">
 				<source>Mehr anzeigen</source>
 			</trans-unit>
+			<trans-unit id="filter_show_all_button">
+				<source>Alle anzeigen</source>
+			</trans-unit>
 			<trans-unit id="searchResults_hits_label">
 				<source>Treffer</source>
 			</trans-unit>

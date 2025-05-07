@@ -1,0 +1,20 @@
+{namespace lc=Slub\LisztCommon\ViewHelpers}
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:lc="http://typo3.org/ns/Slub/LisztCommon/ViewHelpers"
+    data-namespace-typo3-fluid="true">
+<f:variable name="paramsRemovePage">{lc:searchParams(action: 'remove', searchParamsArray: searchParams, key: 'page')}</f:variable>
+<f:variable name="searchParamsFromFirstPage">{paramsRemovePage.searchParams}</f:variable>
+<f:variable name="key">{searchParams.filterShowAll}</f:variable>
+<f:variable name="filterGroup">{lc:getValueByKeyPath(data: searchResults.aggregations, keys: {0: key})}</f:variable>
+<f:variable name="filterEntities">{lc:getFilterEntities(filterKey: key, entityTypes: settings.entityTypes)}</f:variable>
+<f:variable name="buckets">{lc:processFacets(filterGroup: searchResults.aggregations.tx_lisztbibliography_authors, key: key, searchParams: searchParams, filterEntities: filterEntities)}</f:variable>
+<f:variable name="paramsRemoveFilterShowAll">{lc:searchParams(action: 'remove', searchParamsArray: searchParamsFromFirstPage, key: 'filterShowAll')}</f:variable>
+<f:variable name="searchParamsWhithoutfilterShowAll">{paramsRemoveFilterShowAll.searchParams}</f:variable>
+<ul class="{f:if(condition: '{filterEntities.sortByKey} == slub', then: 'sortByKeySlub', else: '')}">
+    <f:for each="{buckets}" as="filter">
+        <f:render partial="FilterBlockItem" arguments="{key: key, filter: filter, searchParams: searchParams, searchParamsFromFirstPage: searchParamsWhithoutfilterShowAll, languageFilePath: languageFilePath}" />
+    </f:for>
+</ul>
+
+</html>

@@ -41,9 +41,15 @@ class ElasticSearchService implements ElasticSearchServiceInterface
     public function search(array $searchParams, array $settings): Collection
     {
         $this->init();
-        $this->params = QueryParamsBuilder::createQueryParamsBuilder($searchParams, $settings)->getQueryParams();
-        // ToDo: handle exceptions!
-      //  print_r($this->params);
+        // special query params for single filter with all items (htmx)
+        if (!empty($searchParams['filterShowAll'])) {
+            $this->params = QueryParamsBuilder::createQueryParamsBuilder($searchParams, $settings)->getSingleFilterQueryParams();
+        } else {
+            $this->params = QueryParamsBuilder::createQueryParamsBuilder($searchParams, $settings)->getQueryParams();
+        }
+
+         print_r($this->params);
+
         $response = $this->client->search($this->params)->asArray();
         $aggs = $response['aggregations'];
 

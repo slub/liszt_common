@@ -54,6 +54,7 @@ tt_content {
 plugin.tx_lisztcommon_searchbar.view.pluginNamespace = tx_liszt_common_searchlisting
 plugin.tx_lisztcommon_searchlisting.view.pluginNamespace = tx_liszt_common_searchlisting
 
+
 // plugin.tx_lisztcommon_searchdetails.view.pluginNamespace = tx_liszt_common_searchlisting
 
 
@@ -71,6 +72,35 @@ config {
     }
   }
 }
+
+# HTMX loadAllFilterItems Endpoint
+tx_lisztcommon_htmxfilters = PAGE
+tx_lisztcommon_htmxfilters {
+  typeNum = 88888
+  config {
+    disableAllHeaderCode = 1
+    additionalHeaders {
+      10.header = Content-type:text/html
+      20.header = X-Robots-Tag:noindex,nofollow
+    }
+    xhtml_cleaning = 0
+    admPanel = 0
+    debug = 0
+  //  no_cache = 1
+ //   absRefPrefix = /
+  }
+
+  10 = USER
+  10 {
+    userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+    extensionName = LisztCommon
+    pluginName = HtmxFilters
+    vendorName = Slub
+    controller = Search
+    action = loadAllFilterItems
+  }
+}
+
 
 # get the selected frontend layout from page table for show/hide SearchBar, because bootstrap package not use this param
 #lib.selectedFrontendLayout = TEXT
