@@ -37,7 +37,12 @@ class CommaSeparatedListElementViewHelper extends AbstractViewHelper
             // Check if key starts with '#' - if so, output the key (without #) followed by value
             if (is_string($key) && str_starts_with($key, '#')) {
                 $formattedKey = substr($key, 1); // Remove '#' from the beginning
-                $formattedValues[] = ', ' .$formattedKey . ' ' . $value;
+                if (!empty($formattedValues)) {
+                    $formattedValues[] = ', ' . $formattedKey . ' ' . $value;
+                } else {
+                    $formattedValues[] = $formattedKey . ' ' . $value;
+                }
+
             }
             // Original logic for handling normal values
             else if (!empty($formattedValues) && !($key === 'date' && $previousKey === 'place')) {
