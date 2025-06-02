@@ -31,17 +31,38 @@ class CommaSeparatedListElementViewHelper extends AbstractViewHelper
         if (empty($nonEmptyValues)) return $html;
 
         $formattedValues = [];
+        $previousKey = null;
+
         foreach ($nonEmptyValues as $key => $value) {
-            if (is_string($key) && !is_numeric($key)) {
-                $formattedValues[] = $key . ' ' . $value;
-            } else {
-                $formattedValues[] = $value;
+            // Check if key starts with '#' - if so, output the key (without #) followed by value
+            if (is_string($key) && str_starts_with($key, '#')) {
+                $formattedKey = substr($key, 1); // Remove '#' from the beginning
+                if (!empty($formattedValues)) {
+                    $formattedValues[] = ', ' . $formattedKey . ' ' . $value;
+                } else {
+                    $formattedValues[] = $formattedKey . ' ' . $value;
+                }
+
             }
+            // Original logic for handling normal values
+            else if (!empty($formattedValues) && !($key === 'date' && $previousKey === 'place')) {
+                $formattedValues[] = ', ' . $value;
+            } else {
+                if (!empty($formattedValues) && $key === 'date' && $previousKey === 'place') {
+                    $formattedValues[] = ' ' . $value; // Space instead of comma
+                } else {
+                    $formattedValues[] = $value;
+                }
+            }
+
+            $previousKey = $key;
         }
+
+
 
         $html .= '<div>';
         $html .= '<dt>'.$label.'</dt>';
-        $html .= '<dd>'.implode(', ', $formattedValues).'</dd>';
+        $html .= '<dd>'.implode('', $formattedValues).'</dd>';
         $html .= '</div>';
 
         return $html;
