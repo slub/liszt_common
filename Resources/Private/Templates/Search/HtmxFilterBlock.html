@@ -8,10 +8,29 @@
 <f:variable name="key">{searchParams.filterShowAll}</f:variable>
 <f:variable name="filterGroup">{lc:getValueByKeyPath(data: searchResults.aggregations, keys: {0: key})}</f:variable>
 <f:variable name="filterEntities">{lc:getFilterEntities(filterKey: key, entityTypes: settings.entityTypes)}</f:variable>
-<f:variable name="buckets">{lc:processFacets(filterGroup: searchResults.aggregations.tx_lisztbibliography_authors, key: key, searchParams: searchParams, filterEntities: filterEntities)}</f:variable>
+<f:variable name="buckets">{lc:processFacets(filterGroup: filterGroup, key: key, searchParams: searchParams, filterEntities: filterEntities)}</f:variable>
 <f:variable name="paramsRemoveFilterShowAll">{lc:searchParams(action: 'remove', searchParamsArray: searchParamsFromFirstPage, key: 'filterShowAll')}</f:variable>
 <f:variable name="searchParamsWhithoutfilterShowAll">{paramsRemoveFilterShowAll.searchParams}</f:variable>
-<ul class="{f:if(condition: '{filterEntities.sortByKey} == slub', then: 'sortByKeySlub', else: '')}">
+<f:variable name="languageFilePath">LLL:EXT:{settings.entityTypes.1.extensionName}/Resources/Private/Language/{settings.entityTypes.1.languageFile}.xlf</f:variable>
+<div class="filter-search-container">
+    <label for="filter-search-{key}" class="visually-hidden">
+        {f:translate(key: 'filter_search_label', extensionName: 'liszt_common', default: 'Search in filter options')}
+    </label>
+    <input type="text"
+           id="filter-search-{key}"
+           class="filter-search-input"
+           placeholder="{f:translate(key: 'filter_search_placeholder', extensionName: 'liszt_common', default: 'Search in')} {f:translate(key: '{languageFilePath}:{key}', default: '{key}')}"
+           aria-describedby="search-info-{key}">
+    <div id="search-info-{key}"
+         class="visually-hidden"
+         aria-live="polite"
+         aria-atomic="true">
+        {f:translate(key: 'filter_search_initial', extensionName: 'liszt_common', default: 'Showing all filter options')}
+    </div>
+</div>
+
+<ul class="{f:if(condition: '{filterEntities.sortByKey} == slub', then: 'sortByKeySlub', else: '')}"
+    data-filter-key="{key}">
     <f:for each="{buckets}" as="filter">
         <f:render partial="FilterBlockItem" arguments="{key: key, filter: filter, searchParams: searchParams, searchParamsFromFirstPage: searchParamsWhithoutfilterShowAll, languageFilePath: languageFilePath}" />
     </f:for>

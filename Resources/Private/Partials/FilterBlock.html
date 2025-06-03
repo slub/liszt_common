@@ -63,6 +63,8 @@
                     </ul>
                     <f:if condition="{filterEntities.maxSize} == 'all'">
                         <f:then>
+                            <f:variable name="sumOtherDocCount">{lc:getSumOtherDocCount(filterGroup: filterGroup, key: key)}</f:variable>
+                            <f:if condition="{sumOtherDocCount} > 0">
                             <f:variable name="filterShowAllParams">{lc:searchParams(action: 'add', searchParamsArray: searchParamsFromFirstPage, key: 'filterShowAll', value: key)}</f:variable>
                             <button hx-get="{f:uri.action(pageType: '88888', action:'loadAllFilterItems', arguments:filterShowAllParams )}"
                                     class="btn filter-block-toggler"
@@ -71,6 +73,7 @@
                                     hx-swap="outerHTML">
                                 {f:translate(key: 'filter_show_all_button', extensionName: 'liszt_common')}
                             </button>
+                            </f:if>
                         </f:then>
                     <f:else if="{buckets -> f:count()} > {filterEntitySize}">
                         <button class="btn filter-block-toggler" aria-expanded="false">

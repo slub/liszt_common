@@ -25,6 +25,12 @@ page {
 
 // 20 < tt_content.list.20.lisztcommon_searchdetails
 
+  #  Include inline labels to be used in JavaScript files:
+  inlineLanguageLabelFiles {
+    siteDistribution = EXT:liszt_common/Resources/Private/Language/locallang.xlf
+    siteDistribution.selectionPrefix = inline-labels
+    siteDistribution.stripFromSelectionName = inline-labels.
+  }
 }
 
 

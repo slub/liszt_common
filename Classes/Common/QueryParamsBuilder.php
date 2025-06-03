@@ -189,12 +189,35 @@ class QueryParamsBuilder
             values()->
             toArray();
 
+        // create filters without current field for _selected aggregation
+        $filtersWithoutCurrentField = Collection::wrap($filterParams)->
+            map(function ($value, $key) use ($entityField, $filterTypes) {
+                // Always exclude current field for _selected aggregation
+                if ($key === $entityField) {
+                    return null;
+                }
+                return self::retrieveFilterParamForEntityField($key, $value, $entityField, $filterTypes);
+            })->
+            filter()->
+            values()->
+            toArray();
+
         // return match_all if filters are empty because elasticsearch throws an error without the filter key
         if (empty($filters)) {
             $filters = [
                 ['match_all' => (object) []]
             ];
         }
+
+        if (empty($filtersWithoutCurrentField)) {
+            $filtersWithoutCurrentField = [
+                ['match_all' => (object) []]
+            ];
+        }
+
+        // Check if this field has selected values in searchParams
+        $hasSelectedValues = isset($searchParams['filter'][$entityField]) && !empty($searchParams['filter'][$entityField]);
+        $selectedValues = $hasSelectedValues ? array_keys($searchParams['filter'][$entityField]) : [];
 
 
         // first version of range filter (date)
@@ -227,7 +250,6 @@ class QueryParamsBuilder
 
         // special aggs for nested fields
         if ($entityType['type'] === 'nested') {
-
             // basic term options:
             $termsOptions = [
                 'field' => $entityField . '.' . $entityTypeKey . '.keyword',
@@ -244,12 +266,28 @@ class QueryParamsBuilder
                 $termsOptions['order'] = ['_key' => 'asc'];
             }*/
 
+            $nestedAggs = [
+                $entityField => [
+                    'terms' => $termsOptions
+                ]
+            ];
+
+            // Add selected aggregation if values are selected
+            if ($hasSelectedValues) {
+                $nestedAggs[$entityField . '_selected'] = [
+                    'terms' => array_merge($termsOptions, [
+                        'include' => $selectedValues,
+                        'min_doc_count' => 0
+                    ])
+                ];
+            }
+
 
             return [
                 $entityType['field'] => [
                     'filter' => [
                         'bool' => [
-                            'filter' => $filters
+                            'filter' => $filtersWithoutCurrentField
                         ]
                     ],
                     'aggs' => [
@@ -257,12 +295,7 @@ class QueryParamsBuilder
                             'nested' => [
                                 'path' => $entityField
                             ],
-                            'aggs' => [
-                                $entityField => [
-                                    'terms' => $termsOptions
-                                ]
-
-                            ]
+                            'aggs' => $nestedAggs
                         ]
                     ]
                 ]
@@ -291,18 +324,29 @@ class QueryParamsBuilder
             $termsOptions['order'] = ['_key' => 'asc'];
         }*/
 
+        $aggs = [
+            $entityField => [
+                'terms' => $termsOptions
+            ]
+        ];
+
+        // Add selected aggregation if values are selected
+        if ($hasSelectedValues) {
+            $aggs[$entityField . '_selected'] = [
+                'terms' => array_merge($termsOptions, [
+                    'include' => $selectedValues,
+                    'min_doc_count' => 0 // Show selected terms even if count is 0
+                ])
+            ];
+        }
 
 
         return [
             $entityField => [
-                'aggs' => [
-                    $entityField => [
-                        'terms' => $termsOptions
-                    ]
-                ],
+                'aggs' => $aggs,
                 'filter' => [
                     'bool' => [
-                        'filter' => $filters
+                        'filter' => $filtersWithoutCurrentField
                     ]
                 ]
             ]
