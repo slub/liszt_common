@@ -209,12 +209,12 @@ final class SearchController extends ClientEnabledController
     public function loadAllFilterItemsAction(array $searchParams = []): ResponseInterface
     {
         // check if this is an  HTMX Request
-/*        if (!$this->request->getHeader('HX-Request')) {
-    return $this->responseFactory->createResponse(403)
+        if (!$this->request->getHeader('HX-Request')) {
+        return $this->responseFactory->createResponse(403)
         ->withHeader('Content-Type', 'text/html')
         ->withBody($this->streamFactory->createStream('Missing Header in Request'));
-}
-*/
+        }
+
 
         $locale = $this->request->getAttribute('language')->getLocale();
 

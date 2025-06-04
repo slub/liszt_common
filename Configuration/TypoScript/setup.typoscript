@@ -92,8 +92,6 @@ tx_lisztcommon_htmxfilters {
     xhtml_cleaning = 0
     admPanel = 0
     debug = 0
-  //  no_cache = 1
- //   absRefPrefix = /
   }
 
   10 = USER

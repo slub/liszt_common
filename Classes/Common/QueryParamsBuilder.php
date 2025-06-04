@@ -254,7 +254,6 @@ class QueryParamsBuilder
             $termsOptions = [
                 'field' => $entityField . '.' . $entityTypeKey . '.keyword',
                 'size' => $entityTypeSize,
-             //   'include' => ['Ackermann, Peter'],
             ];
 
             // sort if sortByKey = 'elastic'
@@ -262,7 +261,7 @@ class QueryParamsBuilder
                 $termsOptions['order'] = ['_key' => 'asc'];
             }
             // sort order for single Filter blocks with all items (htmx)
-/*            if (!empty($searchParams['filterShowAll'])) {
+            /* if (!empty($searchParams['filterShowAll'])) {
                 $termsOptions['order'] = ['_key' => 'asc'];
             }*/
 
@@ -319,10 +318,7 @@ class QueryParamsBuilder
         if (isset($entityType['sortByKey']) && $entityType['sortByKey'] === 'elastic') {
             $termsOptions['order'] = ['_key' => 'asc'];
         }
-        // sort order for single Filter blocks with all items (htmx)
-/*        if (!empty($searchParams['filterShowAll'])) {
-            $termsOptions['order'] = ['_key' => 'asc'];
-        }*/
+
 
         $aggs = [
             $entityField => [
