@@ -132,6 +132,9 @@
 				<source>Kein Filtereintrag gefunden für "{0}"</source>
 			</trans-unit>
 
+			<trans-unit id="inline-labels.liszt_common.htmx_loading">
+				<source>Lade...</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
