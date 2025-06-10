@@ -354,14 +354,22 @@ final class QueryParamsBuilderTest extends UnitTestCase
                                     'min_doc_count' => 1,
                                     'size' => 10
                                 ]
+                            ],
+                            self::EX_FIELD2 . '_selected' => [
+                                'terms' => [
+                                    'field' => self::EX_FIELD2 . '.keyword',
+                                    'size' => 10,
+                                    'include' => [
+                                        self::EX_VAL
+                                    ],
+                                    'min_doc_count' => 0
+                                ]
                             ]
                         ],
                         'filter' => [
                             'bool' => [
                                 'filter' => [
-                                    [ 'terms' => [
-                                        self::EX_FIELD2 . '.keyword' => [ self::EX_VAL ]
-                                    ] ]
+                                    [ 'match_all' => new \StdClass() ]
                                 ]
                             ]
                         ]
@@ -519,6 +527,16 @@ final class QueryParamsBuilderTest extends UnitTestCase
                                             'field' => self::EX_FIELD3 . '..keyword',
                                             'size' => 10
                                         ]
+                                    ],
+                                    self::EX_FIELD3 . '_selected' => [
+                                        'terms' => [
+                                            'field' => self::EX_FIELD3 . '..keyword',
+                                            'size' => 10,
+                                            'include' => [
+                                                self::EX_VAL
+                                            ],
+                                            'min_doc_count' => 0
+                                        ]
                                     ]
                                 ],
                                 'nested' => [
@@ -529,18 +547,7 @@ final class QueryParamsBuilderTest extends UnitTestCase
                         'filter' => [
                             'bool' => [
                                 'filter' => [
-                                    [ 'nested' => [
-                                        'path' => self::EX_FIELD3,
-                                        'query' => [
-                                            'bool' => [
-                                                'filter' => [
-                                                    'terms' => [
-                                                        self::EX_FIELD3 . '..keyword' => [ self::EX_VAL ]
-                                                    ]
-                                                ]
-                                            ]
-                                        ]
-                                    ] ]
+                                    [ 'match_all' => new \StdClass() ]
                                 ]
                             ]
                         ]
