@@ -50,6 +50,7 @@ final class SearchController extends ClientEnabledController
             $totalItems = (int)$elasticResponse['hits']['total']['value'];
         }
 
+
         $paginator = (new Paginator())
             ->setPage($currentPage)
             ->setTotalItems($totalItems)
@@ -204,4 +205,47 @@ final class SearchController extends ClientEnabledController
         return $this->responseFactory->createResponse(301)
             ->withHeader('Location', '/404/');   // the uri of the 404 page from typo installation
     }
+
+    public function loadAllFilterItemsAction(array $searchParams = []): ResponseInterface
+    {
+        // check if this is an  HTMX Request
+        if (!$this->request->getHeader('HX-Request')) {
+        return $this->responseFactory->createResponse(403)
+        ->withHeader('Content-Type', 'text/html')
+        ->withBody($this->streamFactory->createStream('Missing Header in Request'));
+        }
+
+
+        $locale = $this->request->getAttribute('language')->getLocale();
+
+        // return 400 if filterShowAll is not set (with HX-Trigger for HTMX Requests)
+        if (empty($searchParams['filterShowAll'])) {
+            $response = $this->responseFactory->createResponse(400)
+                ->withHeader('Content-Type', 'text/html')
+                ->withBody($this->streamFactory->createStream('Missing required parameter: filterShowAll'));
+
+            // Add HTMX-specific header for better client-side error handling
+            if ($this->request->getHeader('HX-Request')) {
+                $response = $response->withHeader('HX-Trigger', '{"showError": "Missing required parameter"}');
+            }
+            return $response;
+        }
+
+        $elasticResponse = $this->elasticSearchService->search($searchParams, $this->settings);
+
+        $this->view->assignMultiple([
+            'locale'        => $locale,
+            'searchParams'  => $searchParams,
+            'searchResults' => $elasticResponse,
+        ]);
+
+        // path can be set in an variable like in setup.typoscript of the extension if needed
+        $this->view->setTemplatePathAndFilename('EXT:liszt_common/Resources/Private/Templates/Search/HtmxFilterBlock.html');
+        $this->view->setLayoutRootPaths([]); // deactivate Layout
+
+        return $this->htmlResponse();
+
+    }
+
+
 }

@@ -82,14 +82,52 @@ class QueryParamsBuilder
         ];
 
         if ($this->searchAll == false) {
-            $this->query['body']['aggs'] = $this->getAggregations();
+            $settings = $this->settings;
+            $this->query['body']['aggs'] = $this->getAggregations($settings);
         }
 
         $this->setCommonParams();
-
+        // set sorting
+        $this->setSortField();
         if (isset($this->params['page']) && $this->params['page'] !== "") {
             $this->query['from'] = ($this->params['page'] - 1) * $commonConf['itemsPerPage'];
         }
+        return $this->query;
+    }
+
+    public function getSingleFilterQueryParams(): array
+    {
+        $commonConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('liszt_common');
+
+        // size 0, we dont need search results in htmx Filter modals
+        $this->query = [
+            'size' => 0
+        ];
+
+        $settingsForSingleFilter = $this->settings;
+        // search in settings array 'filters' the filter where field = $searchParams['filterShowAll'] and remove all other filters
+           if (isset($settingsForSingleFilter['entityTypes'])) {
+                foreach ($settingsForSingleFilter['entityTypes'] as $entityTypeKey => $entityType) {
+                    if (isset($entityType['filters']) && is_array($entityType['filters'])) {
+                        $filterFieldName = $this->params['filterShowAll'];
+                        $foundFilter = false;
+                        $filteredFilters = array_filter($entityType['filters'], function($filter) use ($filterFieldName) {
+                            return isset($filter['field']) && $filter['field'] === $filterFieldName;
+                        });
+                        if (!empty($filteredFilters)) {
+                            $settingsForSingleFilter['entityTypes'][$entityTypeKey]['filters'] = array_values($filteredFilters);
+                            $foundFilter = true;
+                        }
+                        // throw exception (Typo3 shows 404 Page) if no filter with field = $searchParams['filterShowAll'] found
+                        if (!$foundFilter) {
+                            throw new \Exception("No Filter '{$filterFieldName}' found in in settings.");
+                        }
+                    }
+                }
+            }
+
+        $this->query['body']['aggs'] = $this->getAggregations($settingsForSingleFilter);
+        $this->setCommonParams();
         return $this->query;
     }
 
@@ -104,12 +142,12 @@ class QueryParamsBuilder
             join(',');
     }
 
-    private function getAggregations(): array
+    private function getAggregations($settings): array
     {
-        $settings = $this->settings;
         $index = $this->indexName;
         $filterParams = $this->params['filter'] ?? [];
         $filterTypes = $this->getFilterTypes();
+        $searchParams = $this->params;
         return  Collection::wrap($settings)->
             recursive()->
             get('entityTypes')->
@@ -119,8 +157,8 @@ class QueryParamsBuilder
             values()->
             get(0)->
             get('filters')->
-            mapWithKeys(function ($entityType) use ($filterParams, $filterTypes) {
-                return self::retrieveFilterParamsForEntityType($entityType, $filterParams, $filterTypes);
+            mapWithKeys(function ($entityType) use ($filterParams, $filterTypes, $searchParams) {
+                return self::retrieveFilterParamsForEntityType($entityType, $filterParams, $filterTypes, $searchParams);
             })->
             toArray();
     }
@@ -128,17 +166,36 @@ class QueryParamsBuilder
     private static function retrieveFilterParamsForEntityType(
         Collection $entityType,
         array $filterParams,
-        array $filterTypes
+        array $filterTypes,
+        array $searchParams
     ): array
     {
         $entityField = $entityType['field'];
         $entityTypeKey = $entityType['key'] ?? null;
-        $entityTypeMultiselect = isset($entityType['select']) && ($entityType['select'] == 'multi') ?? null; // Todo: remove this an use $filterTypes?
-        $entityTypeSize = $entityType['maxSize'] ?? 10;
+        $entityTypeMultiselect = isset($entityType['select']) && ($entityType['select'] == 'multi') ?? null; // Todo: remove this and use $filterTypes?
+        $entityTypeSize = match(true) {
+            isset($entityType['maxSize']) && $entityType['maxSize'] === 'all' && !empty($searchParams['filterShowAll']) => 10000,
+            isset($entityType['maxSize']) && $entityType['maxSize'] === 'all' => $entityType['size'],
+            default => $entityType['maxSize'] ?? 10
+        };
+
 
         // create filter in aggs for filtering aggs (without filtering the current key for multiple selections if multiselect is set)
         $filters = Collection::wrap($filterParams)->
             map(function ($value, $key) use ($entityField, $filterTypes) {
+                return self::retrieveFilterParamForEntityField($key, $value, $entityField, $filterTypes);
+            })->
+            filter()->
+            values()->
+            toArray();
+
+        // create filters without current field for _selected aggregation
+        $filtersWithoutCurrentField = Collection::wrap($filterParams)->
+            map(function ($value, $key) use ($entityField, $filterTypes) {
+                // Always exclude current field for _selected aggregation
+                if ($key === $entityField) {
+                    return null;
+                }
                 return self::retrieveFilterParamForEntityField($key, $value, $entityField, $filterTypes);
             })->
             filter()->
@@ -151,6 +208,16 @@ class QueryParamsBuilder
                 ['match_all' => (object) []]
             ];
         }
+
+        if (empty($filtersWithoutCurrentField)) {
+            $filtersWithoutCurrentField = [
+                ['match_all' => (object) []]
+            ];
+        }
+
+        // Check if this field has selected values in searchParams
+        $hasSelectedValues = isset($searchParams['filter'][$entityField]) && !empty($searchParams['filter'][$entityField]);
+        $selectedValues = $hasSelectedValues ? array_keys($searchParams['filter'][$entityField]) : [];
 
 
         // first version of range filter (date)
@@ -183,16 +250,35 @@ class QueryParamsBuilder
 
         // special aggs for nested fields
         if ($entityType['type'] === 'nested') {
-
             // basic term options:
             $termsOptions = [
                 'field' => $entityField . '.' . $entityTypeKey . '.keyword',
-                'size' => $entityTypeSize
+                'size' => $entityTypeSize,
             ];
 
             // sort if sortByKey = 'elastic'
             if (isset($entityType['sortByKey']) && $entityType['sortByKey'] === 'elastic') {
                 $termsOptions['order'] = ['_key' => 'asc'];
+            }
+            // sort order for single Filter blocks with all items (htmx)
+            /* if (!empty($searchParams['filterShowAll'])) {
+                $termsOptions['order'] = ['_key' => 'asc'];
+            }*/
+
+            $nestedAggs = [
+                $entityField => [
+                    'terms' => $termsOptions
+                ]
+            ];
+
+            // Add selected aggregation if values are selected
+            if ($hasSelectedValues) {
+                $nestedAggs[$entityField . '_selected'] = [
+                    'terms' => array_merge($termsOptions, [
+                        'include' => $selectedValues,
+                        'min_doc_count' => 0
+                    ])
+                ];
             }
 
 
@@ -200,7 +286,7 @@ class QueryParamsBuilder
                 $entityType['field'] => [
                     'filter' => [
                         'bool' => [
-                            'filter' => $filters
+                            'filter' => $filtersWithoutCurrentField
                         ]
                     ],
                     'aggs' => [
@@ -208,12 +294,7 @@ class QueryParamsBuilder
                             'nested' => [
                                 'path' => $entityField
                             ],
-                            'aggs' => [
-                                $entityField => [
-                                    'terms' => $termsOptions
-                                ]
-
-                            ]
+                            'aggs' => $nestedAggs
                         ]
                     ]
                 ]
@@ -239,17 +320,29 @@ class QueryParamsBuilder
         }
 
 
+        $aggs = [
+            $entityField => [
+                'terms' => $termsOptions
+            ]
+        ];
+
+        // Add selected aggregation if values are selected
+        if ($hasSelectedValues) {
+            $aggs[$entityField . '_selected'] = [
+                'terms' => array_merge($termsOptions, [
+                    'include' => $selectedValues,
+                    'min_doc_count' => 0 // Show selected terms even if count is 0
+                ])
+            ];
+        }
+
 
         return [
             $entityField => [
-                'aggs' => [
-                    $entityField => [
-                        'terms' => $termsOptions
-                    ]
-                ],
+                'aggs' => $aggs,
                 'filter' => [
                     'bool' => [
-                        'filter' => $filters
+                        'filter' => $filtersWithoutCurrentField
                     ]
                 ]
             ]
@@ -368,8 +461,6 @@ class QueryParamsBuilder
 
         // set body
         if (empty($this->params['searchText'])) {
-            // set sorting
-            $this->setSortField();
             $this->query['body']['query'] = [
                 'bool' => [
                     'must' => [[
@@ -378,8 +469,6 @@ class QueryParamsBuilder
                 ]
             ];
         } else {
-            // set sorting
-            $this->setSortField();
             // search in field "fulltext" exakt phrase match boost over all words must contain
             $this->query['body']['query'] = [
                 'bool' => [
@@ -422,6 +511,8 @@ class QueryParamsBuilder
                             ]
                         ]
                     ];
+
+
 
                 } else if (isset($filterTypes[$key]['range'])) {
                    $query['body']['post_filter']['bool']['filter'][] = [

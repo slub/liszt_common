@@ -54,6 +54,9 @@
 			<trans-unit id="filter_show_more_button">
 				<source>Mehr anzeigen</source>
 			</trans-unit>
+			<trans-unit id="filter_show_all_button">
+				<source>Alle anzeigen</source>
+			</trans-unit>
 			<trans-unit id="searchResults_hits_label">
 				<source>Treffer</source>
 			</trans-unit>
@@ -102,6 +105,38 @@
 			<trans-unit id="searchResults_pagination_currentPage">
 				<source>Sie befinden sich auf Seite %s</source>
 			</trans-unit>
+
+			<trans-unit id="filter_search_label">
+				<source>Suche in den Filtern</source>
+			</trans-unit>
+
+			<trans-unit id="filter_search_placeholder">
+				<source>Suche in</source>
+			</trans-unit>
+
+			<trans-unit id="filter_search_initial">
+				<source>Alle Filter Einträge werden angezeigt</source>
+			</trans-unit>
+
+			<trans-unit id="inline-labels.liszt_common.show-less">
+				<source>Weniger anzeigen</source>
+			</trans-unit>
+
+			<trans-unit id="inline-labels.liszt_common.filter_search_showing_all">
+				<source>Alle {0} Filter angezeigt</source>
+			</trans-unit>
+			<trans-unit id="inline-labels.liszt_common.filter_search_showing_filtered">
+				<source>Zeigt {0} von {1} Einträgen für die Suche nach "{2}"</source>
+			</trans-unit>
+			<trans-unit id="inline-labels.liszt_common.filter_search_no_results">
+				<source>Kein Filtereintrag gefunden für "{0}"</source>
+			</trans-unit>
+
+			<trans-unit id="inline-labels.liszt_common.htmx_loading">
+				<source>Lade...</source>
+			</trans-unit>
+
+
 		</body>
 	</file>
 </xliff>

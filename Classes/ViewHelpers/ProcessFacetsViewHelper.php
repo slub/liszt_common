@@ -21,7 +21,6 @@ final class ProcessFacetsViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext): array
     {
-
         $filterGroup = $arguments['filterGroup'];
         $key = $arguments['key'];
         $searchParams = $arguments['searchParams'];
@@ -49,23 +48,49 @@ final class ProcessFacetsViewHelper extends AbstractViewHelper
             return $rangeBucket;
         }
 
+        // Get selected items from _selected aggregation and add missing ones to main bucket
+        $selectedItemsBucket = self::getSelectedItemsBucketFromAggregation($filterGroup, $key);
+        $returnBucket = self::addMissingSelectedItems($returnBucket, $selectedItemsBucket);
+
+        // Mark selected items based on URL parameters
+        $returnBucket = self::markSelectedItems($returnBucket, $key, $searchParams);
+
+        // if $searchParams['filterShowAll'] return for a single (htmx) filter with all items, sorted linguistic by alphabet
+        if (isset($searchParams['filterShowAll']) && $searchParams['filterShowAll'] === $key) {
+            // Create a German collator for linguistic sorting
+            $collator = new \Collator('de_DE');
+
+            // First sort by key using the German collator
+            $sortArray = [];
+            foreach ($returnBucket as $index => $item) {
+                $sortArray[$index] = $item['key'] ?? '';
+            }
+
+            // Sort the array keys based on the German collation
+            $collator->asort($sortArray);
+
+            // Create a new sorted array based on the sorted keys
+            $sortedBucket = [];
+            foreach ($sortArray as $index => $value) {
+                $sortedBucket[] = $returnBucket[$index];
+            }
+
+            // Now sort again to bring selected items to the top
+            $sortedBucket = self::bringSelectedItemsToTop($sortedBucket);
+
+            return $sortedBucket;
+        }
+
         // set size from entity settings in setup.typoscript or use 10 as default
         $size = $filterEntities['size'] ?? $filterEntities['defaultFilterSize'] ?? 10;
 
-
-        // find active filter items and set selected and set hidden for items over size
         foreach ($returnBucket as $index => &$item) {
-            $filterKey = $item['key'] ?? null;
-            $item['selected'] = isset($searchParams['filter'][$key][$filterKey])
-                && $searchParams['filter'][$key][$filterKey] == 1;
-
-            // if item is over $size set 'hidden' => true
-            if ($index >= $size && !$item['selected']) {
+            // if item is over $size set 'hidden' => true, but never hide selected items
+            if ($index >= $size && !($item['selected'] ?? false)) {
                 $item['hidden'] = true;
             }
         }
         unset($item);
-
 
         // Remove items that are not selected and have a doc_count of 0
         $returnBucket = array_filter($returnBucket, function ($item) {
@@ -73,10 +98,7 @@ final class ProcessFacetsViewHelper extends AbstractViewHelper
         });
 
         // Sort the array so that selected items come first
-        usort($returnBucket, function ($a, $b) {
-            return ($b['selected'] ?? false) <=> ($a['selected'] ?? false);
-        });
-
+        $returnBucket = self::bringSelectedItemsToTop($returnBucket);
 
         // special sort in "slub-style" if sortByKey = 'slub': sort all hidden items alphabetical
         if (isset($filterEntities['sortByKey']) && $filterEntities['sortByKey'] === 'slub') {
@@ -98,8 +120,77 @@ final class ProcessFacetsViewHelper extends AbstractViewHelper
             $returnBucket = array_merge($visibleItems, $hiddenItems);
         }
 
-
         return $returnBucket;
+    }
 
+    /**
+     * Get selected items bucket from the _selected aggregation
+     */
+    private static function getSelectedItemsBucketFromAggregation(array $filterGroup, string $key): array
+    {
+        $selectedItems = [];
+        $selectedKey = $key . '_selected';
+
+        // Check for selected items on the same level as the main filter aggregation
+        if (isset($filterGroup[$selectedKey]['buckets'])) {
+            $selectedItems = $filterGroup[$selectedKey]['buckets'];
+        }
+
+        // Check for selected items in nested filter aggregation structure
+        if (isset($filterGroup['filtered_params'][$selectedKey]['buckets'])) {
+            $selectedItems = $filterGroup['filtered_params'][$selectedKey]['buckets'];
+        }
+
+        return $selectedItems;
+    }
+
+    /**
+     * Add missing selected items from _selected bucket to main bucket
+     */
+    private static function addMissingSelectedItems(array $mainBucket, array $selectedItemsBucket): array
+    {
+        // Create array of existing keys in main bucket for quick lookup
+        $existingKeys = array_column($mainBucket, 'key');
+
+        // Add missing selected items to main bucket
+        foreach ($selectedItemsBucket as $selectedItem) {
+            $selectedKey = $selectedItem['key'] ?? null;
+            if ($selectedKey !== null && !in_array($selectedKey, $existingKeys, true)) {
+                // Add the missing selected item to the main bucket with correct doc_count from _selected aggregation
+                $mainBucket[] = [
+                    'key' => $selectedKey,
+                    'doc_count' => $selectedItem['doc_count'] ?? 0
+                ];
+            }
+        }
+
+        return $mainBucket;
+    }
+
+    /**
+     * Mark selected items in the bucket based on search parameters
+     */
+    private static function markSelectedItems(array $bucket, string $key, array $searchParams): array
+    {
+        foreach ($bucket as &$item) {
+            $filterKey = $item['key'] ?? null;
+            $item['selected'] = isset($searchParams['filter'][$key][$filterKey])
+                && $searchParams['filter'][$key][$filterKey] == 1;
+        }
+        unset($item);
+
+        return $bucket;
+    }
+
+    /**
+     * Sort array to bring selected items to the top
+     */
+    private static function bringSelectedItemsToTop(array $bucket): array
+    {
+        usort($bucket, function ($a, $b) {
+            return ($b['selected'] ?? false) <=> ($a['selected'] ?? false);
+        });
+
+        return $bucket;
     }
 }
