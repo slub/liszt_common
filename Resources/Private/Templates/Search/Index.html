@@ -1,8 +1,7 @@
-
 {namespace lc=Slub\LisztCommon\ViewHelpers}
 <html
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:i="http://typo3.org/ns/Quellenform/Iconpack/ViewHelpers"
+    xmlns:i="http://typo3.org/ns/Quellenform/Iconpack/ViewHelpers" xmlns:
     data-namespace-typo3-fluid="true">
 <f:variable name="languageFilePath">LLL:EXT:{settings.entityTypes.1.extensionName}/Resources/Private/Language/{settings.entityTypes.1.languageFile}.xlf</f:variable>
 <f:variable name="paramsRemovePage">{lc:searchParams(action: 'remove', searchParamsArray: searchParams, key: 'page')}</f:variable>
@@ -26,32 +25,26 @@
                             <f:if condition="{isFulltext}">
                                 <li>
                                     <f:variable name="isActive" value="{f:if(condition: '{searchParams.sort} == {sorting.label}', then: 1, else: '{f:if(condition: \'{hasSelectedSort} == 0 && {sorting.defaultFulltext}\', then: 1, else: 0)}')}"/>
-                                    <f:link.action
-                                        action="index"
-                                        controller="Search"
-                                        pluginName="SearchListing"
-                                        additionalAttributes="{f:if(condition:'{isActive}',then:{aria-current:'true'})}"
-                                        arguments="{lc:searchParams(action: 'add', searchParamsArray: searchParamsFromFirstPage, key: 'sort', value: sorting.label)}"
-                                        class="dropdown-button-item {f:if(condition: isActive, then: 'active')}"
+                                    <f:variable name="linkArguments">{lc:searchParams(action: 'add', searchParamsArray: searchParamsFromFirstPage, key: 'sort', value: sorting.label)}</f:variable>
+                                    <a href="{lc:searchUri(searchParams: linkArguments.searchParams)}"
+                                       {f:if(condition:'{isActive}',then:'aria-current="true"')}
+                                    class="dropdown-button-item {f:if(condition: isActive, then: 'active')}"
                                     >
-                                        {f:translate(key: '{languageFilePath}:{sorting.label}', default: '{sorting.label}')}
-                                    </f:link.action>
+                                    {f:translate(key: '{languageFilePath}:{sorting.label}', default: '{sorting.label}')}
+                                    </a>
                                 </li>
                             </f:if>
                         </f:then>
                         <f:else>
                             <li>
                                 <f:variable name="isActive" value="{f:if(condition: '{searchParams.sort} == {sorting.label}', then: 1, else: '{f:if(condition: \'{hasSelectedSort} == 0 && {sorting.default} && {isFulltext} == 0\', then: 1, else: 0)}')}"/>
-                                <f:link.action
-                                    action="index"
-                                    controller="Search"
-                                    pluginName="SearchListing"
-                                    additionalAttributes="{f:if(condition:'{isActive}',then:{aria-current:'true'})}"
-                                    arguments="{lc:searchParams(action: 'add', searchParamsArray: searchParamsFromFirstPage, key: 'sort', value: sorting.label)}"
-                                    class="dropdown-button-item {f:if(condition: isActive, then: 'active')}"
+                                <f:variable name="linkArguments">{lc:searchParams(action: 'add', searchParamsArray: searchParamsFromFirstPage, key: 'sort', value: sorting.label)}</f:variable>
+                                <a href="{lc:searchUri(searchParams: linkArguments.searchParams)}"
+                                   {f:if(condition:'{isActive}',then:'aria-current="true"')}
+                                class="dropdown-button-item {f:if(condition: isActive, then: 'active')}"
                                 >
                                     {f:translate(key: '{languageFilePath}:{sorting.label}', default: '{sorting.label}')}
-                                </f:link.action>
+                                </a>
                             </li>
                         </f:else>
                     </f:if>
@@ -82,15 +75,13 @@
                             <span>{f:translate(key: '{languageFilePath}:{key}_{innerKey}', default: '{innerKey}')}</span>
                           </f:else>
                       </f:if>
-                    <f:link.action action="index" controller="Search" pluginName="SearchListing"
-                                   arguments="{lc:searchParams(action: 'removeFilter', searchParamsArray: searchParamsFromFirstPage, key: key, value: innerKey)}"
-                                   additionalAttributes="{type:'button'}"
-                                   class="tag-cross">
+                    <f:variable name="linkArguments">{lc:searchParams(action: 'removeFilter', searchParamsArray: searchParamsFromFirstPage, key: key, value: innerKey)}</f:variable>
+                     <a href="{lc:searchUri(searchParams: linkArguments.searchParams)}" type="button" class="tag-cross">
                         <span class="visually-hidden">{f:translate(key: 'searchResults_params_remove_label', arguments: {0: innerKey}, extensionName: 'liszt_common')}</span>
                         <svg aria-hidden="true" stroke="currentColor" fill="none" viewBox="0 0 8 8">
                             <path stroke-linecap="round" stroke-width="1" d="M1 1l6 6m0-6L1 7"></path>
                         </svg>
-                    </f:link.action>
+                    </a>
                     </span>
                 </f:for>
             </f:for>

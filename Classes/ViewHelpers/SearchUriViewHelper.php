@@ -13,7 +13,7 @@ class SearchUriViewHelper extends AbstractViewHelper
     {
         $this->registerArgument('searchParams', 'array', 'Search parameters', true);
         $this->registerArgument('pageUid', 'int', 'Target page UID', false);
-        $this->registerArgument('addCHash', 'bool', 'Add cHash', false, false);
+     //   $this->registerArgument('removeCHash', 'bool', 'Remove cHash', false, false);
         $this->registerArgument('wrapInSearchParams', 'bool', 'Wrap parameters in searchParams key for backward compatibility', false, true);
     }
 
@@ -21,7 +21,7 @@ class SearchUriViewHelper extends AbstractViewHelper
     {
         $searchParams = $this->arguments['searchParams'];
         $pageUid = $this->arguments['pageUid'];
-        $addCHash = $this->arguments['addCHash'];
+     //   $removeCHash = $this->arguments['removeCHash'];
         $wrapInSearchParams = $this->arguments['wrapInSearchParams'];
 
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
@@ -44,12 +44,14 @@ class SearchUriViewHelper extends AbstractViewHelper
             ->setAddQueryString(false)
             ->build();
 
+        // cHash would be disabled in Settings->Configure Installation-Wide Options->[FE][cacheHash][excludedParameters] -> ^tx_liszt_common_searchlisting[
+
         // Remove cHash if not wanted
-        if (!$addCHash && str_contains($uri, 'cHash=')) {
-            $uri = preg_replace('/&cHash=[^&]*/', '', $uri);
-            $uri = preg_replace('/\?cHash=[^&]*&/', '?', $uri);
-            $uri = preg_replace('/\?cHash=[^&]*$/', '', $uri);
-        }
+//       if ($removeCHash && str_contains($uri, 'cHash=')) {
+//            $uri = preg_replace('/&cHash=[^&]*/', '', $uri);
+//            $uri = preg_replace('/\?cHash=[^&]*&/', '?', $uri);
+//            $uri = preg_replace('/\?cHash=[^&]*$/', '', $uri);
+//        }
 
         return $uri;
     }

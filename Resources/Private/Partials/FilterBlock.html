@@ -31,7 +31,6 @@
                             <div class="slider-handle handle-max" data-type="max"></div>
                         </div>
                         <lc:cleanUrlForm class="filter-slider-input" controller="Search" action="index" method="get" pluginName="SearchListing" >
-
                             <f:comment> Known issue in TYPO3 v12 - Bug #100583, 'addQueryString' and 'additionalParams' in form Tag do not work as expected. therefore for the time being the solution with hidden input</f:comment>
                             <lc:renderHiddenFields data="{searchParamsFromFirstPage}" namePrefix="tx_liszt_common_searchlisting[searchParams]" />
 
@@ -41,15 +40,11 @@
                             </div>
                             <f:form.button class="btn btn-black filter-slider-button filter-slider-submit" >{f:translate(key: 'filter_submit', extensionName: 'liszt_common')}</f:form.button>
                             <f:if condition="{searchParams.filter.{key}}">
-                                <f:link.action
-                                    action="index"
-                                    controller="Search"
-                                    additionalAttributes="{'type': 'button'}"
-                                    pluginName="SearchListing"
-                                    arguments="{lc:searchParams(action: 'removeRangeFilter', searchParamsArray: searchParamsFromFirstPage, key: key)}"
-                                    class="btn btn-black filter-slider-button filter-slider-reset">
+                                <f:variable name="linkArguments">{lc:searchParams(action: 'removeRangeFilter', searchParamsArray: searchParamsFromFirstPage, key: key)}</f:variable>
+                                <a href="{lc:searchUri(searchParams: linkArguments.searchParams)}"
+                                   type="button" class="btn btn-black filter-slider-button filter-slider-reset">
                                     {f:translate(key: 'filter_reset', extensionName: 'liszt_common')}
-                                </f:link.action>
+                                </a>
                             </f:if>
                         </lc:cleanUrlForm>
                     </div>
