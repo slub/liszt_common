@@ -56,9 +56,9 @@ tt_content {
   }
 }
 
-// same namespace for both plugins on searchresults page
-plugin.tx_lisztcommon_searchbar.view.pluginNamespace = tx_liszt_common_searchlisting
-plugin.tx_lisztcommon_searchlisting.view.pluginNamespace = tx_liszt_common_searchlisting
+// Shortened namespace for both plugins - maintaining shared namespace concept
+plugin.tx_lisztcommon_searchbar.view.pluginNamespace = search
+plugin.tx_lisztcommon_searchlisting.view.pluginNamespace = search
 
 
 // plugin.tx_lisztcommon_searchdetails.view.pluginNamespace = tx_liszt_common_searchlisting

@@ -7,22 +7,26 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 
+// we use this view helper for URL's because f:link creates URL's with controller and action in URL.
 class SearchUriViewHelper extends AbstractViewHelper
 {
     public function initializeArguments(): void
     {
         $this->registerArgument('searchParams', 'array', 'Search parameters', true);
         $this->registerArgument('pageUid', 'int', 'Target page UID', false);
-     //   $this->registerArgument('removeCHash', 'bool', 'Remove cHash', false, false);
-        $this->registerArgument('wrapInSearchParams', 'bool', 'Wrap parameters in searchParams key for backward compatibility', false, true);
+        $this->registerArgument('namespace', 'string', 'Custom namespace for URL parameters instead of tx_liszt_common_searchlisting', false, 'search');
+        // Note: The namespace change only applies to links generated with this ViewHelper.
+        // For forms like the SearchBar, the namespace is configured in setup TypoScript.
+
+        //   $this->registerArgument('removeCHash', 'bool', 'Remove cHash', false, false);
     }
 
     public function render(): string
     {
         $searchParams = $this->arguments['searchParams'];
         $pageUid = $this->arguments['pageUid'];
-     //   $removeCHash = $this->arguments['removeCHash'];
-        $wrapInSearchParams = $this->arguments['wrapInSearchParams'];
+        $namespace = $this->arguments['namespace'];
+        //   $removeCHash = $this->arguments['removeCHash'];
 
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $uriBuilder->reset();
@@ -31,12 +35,11 @@ class SearchUriViewHelper extends AbstractViewHelper
             $uriBuilder->setTargetPageUid($pageUid);
         }
 
-        // Wrap parameters in 'searchParams' for backward compatibility with existing controller
-        $pluginParams = $wrapInSearchParams ? ['searchParams' => $searchParams] : $searchParams;
 
         $additionalParams = [
-            'tx_liszt_common_searchlisting' => $pluginParams
+            $namespace => $searchParams
         ];
+
 
         $uri = $uriBuilder
             ->setArguments($additionalParams)

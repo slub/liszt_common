@@ -30,15 +30,15 @@
                             <div class="slider-handle handle-min" data-type="min"></div>
                             <div class="slider-handle handle-max" data-type="max"></div>
                         </div>
-                        <lc:cleanUrlForm class="filter-slider-input" controller="Search" action="index" method="get" pluginName="SearchListing" >
+                        <lc:cleanUrlForm class="filter-slider-input" controller="Search" action="index" method="get">
                             <f:comment> Known issue in TYPO3 v12 - Bug #100583, 'addQueryString' and 'additionalParams' in form Tag do not work as expected. therefore for the time being the solution with hidden input</f:comment>
-                            <lc:renderHiddenFields data="{searchParamsFromFirstPage}" namePrefix="tx_liszt_common_searchlisting[searchParams]" />
+                            <lc:renderHiddenFields data="{searchParamsFromFirstPage}" namePrefix="search" />
 
                             <div class="input-group">
-                                <f:form.textfield type="number" id="min-range-{key}" aria-label="Minimum {f:translate(key: '{languageFilePath}:{key}', default: '{key}')}" name="searchParams[filter][{key}][gte]" class="min-range-input" />
-                                <f:form.textfield type="number" id="max-range-{key}"  aria-label="Maximum {f:translate(key: '{languageFilePath}:{key}', default: '{key}')}" name="searchParams[filter][{key}][lte]" class="max-range-input" />
+                                <f:form.textfield type="number" id="min-range-{key}" aria-label="Minimum {f:translate(key: '{languageFilePath}:{key}', default: '{key}')}" name="filter[{key}][gte]" class="min-range-input" />
+                                <f:form.textfield type="number" id="max-range-{key}"  aria-label="Maximum {f:translate(key: '{languageFilePath}:{key}', default: '{key}')}" name="filter[{key}][lte]" class="max-range-input" />
                             </div>
-                            <f:form.button class="btn btn-black filter-slider-button filter-slider-submit" >{f:translate(key: 'filter_submit', extensionName: 'liszt_common')}</f:form.button>
+                            <f:form.button class="btn btn-black filter-slider-button filter-slider-submit">{f:translate(key: 'filter_submit', extensionName: 'liszt_common')}</f:form.button>
                             <f:if condition="{searchParams.filter.{key}}">
                                 <f:variable name="linkArguments">{lc:searchParams(action: 'removeRangeFilter', searchParamsArray: searchParamsFromFirstPage, key: key)}</f:variable>
                                 <a href="{lc:searchUri(searchParams: linkArguments.searchParams)}"
@@ -61,7 +61,7 @@
                             <f:variable name="sumOtherDocCount">{lc:getSumOtherDocCount(filterGroup: filterGroup, key: key)}</f:variable>
                             <f:if condition="{sumOtherDocCount} > 0">
                             <f:variable name="filterShowAllParams">{lc:searchParams(action: 'add', searchParamsArray: searchParamsFromFirstPage, key: 'filterShowAll', value: key)}</f:variable>
-                            <button hx-get="{f:uri.action(pageType: '88888', action:'loadAllFilterItems', arguments:filterShowAllParams )}"
+                                <button hx-get="{f:uri.action(pageType: '88888', action:'loadAllFilterItems', arguments:filterShowAllParams )}"
                                     class="btn filter-block-toggler"
                                     aria-expanded="false"
                                     hx-target="#filterblock-{key}"

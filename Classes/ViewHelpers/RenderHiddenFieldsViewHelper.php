@@ -2,7 +2,6 @@
 namespace Slub\LisztCommon\ViewHelpers;
 
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\ViewHelpers\Form\HiddenViewHelper;
 
 /**
  * ViewHelper to render nested arrays as hidden fields
@@ -20,7 +19,7 @@ class RenderHiddenFieldsViewHelper extends AbstractViewHelper
     public function initializeArguments(): void
     {
         $this->registerArgument('data', 'array', 'The nested array to be converted to hidden fields', true);
-        $this->registerArgument('namePrefix', 'string', 'Prefix for the field names', true);
+        $this->registerArgument('namePrefix', 'string', 'Prefix for the field names', false, 'search');
     }
 
     /**
