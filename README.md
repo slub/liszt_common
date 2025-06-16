@@ -8,8 +8,7 @@ This package bundles common functionality for the Liszt Portal.
 This comprises the elasticsearch connection and translation of file formats.
 
 # Configuration
- to remove cHash insert this in Dashboard->Settings->Configure Installation-Wide Options->Frontend->[FE][cacheHash][excludedParameters]:
- ^tx_liszt_common_searchlisting[,^search[
+To remove the cHash, insert `^tx_liszt_common_searchlisting[,^search[` in `Dashboard`->`Settings`->`Configure Installation-Wide Options`->`Frontend`->`[FE][cacheHash][excludedParameters]`.
 
 # Features
 
