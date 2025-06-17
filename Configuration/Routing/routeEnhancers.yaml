@@ -1,4 +1,4 @@
-#Attention: the value for will be overwritten with detailPageId from extension config in SiteConfigurationLoadedEventListener
+#Attention: the value for limitToPages will be overwritten with detailPageId from extension config in SiteConfigurationLoadedEventListener
 routeEnhancers:
   SearchDetailsRoute:
     type: Extbase

@@ -38,8 +38,10 @@ final class SearchController extends ClientEnabledController
         $this->runtimeCache = $cacheManager->getCache('runtime');
     }
 
-    public function indexAction(array $searchParams = []): ResponseInterface
+    public function indexAction(): ResponseInterface
     {
+        $searchParams = $this->getSearchParamsFromRequest();
+
         $locale = $this->request->getAttribute('language')->getLocale();
         $currentPage = $this->getCurrentPage($searchParams);
         $this->addViewTransitionStyle();
@@ -74,14 +76,15 @@ final class SearchController extends ClientEnabledController
     }
 
 
-    public function searchBarAction(array $searchParams = []): ResponseInterface
+    public function searchBarAction(): ResponseInterface
     {
+        $searchParams = $this->getSearchParamsFromRequest();
         $this->view->assign('searchParams', $searchParams);
         return $this->htmlResponse();
     }
 
 
-    public function detailsHeaderAction(array $searchParams = []): ResponseInterface
+    public function detailsHeaderAction(): ResponseInterface
     {
         $documentId = $this->getDocumentIdFromRouting();
         if (!$documentId) {
@@ -102,7 +105,7 @@ final class SearchController extends ClientEnabledController
     }
 
 
-    public function detailsAction(array $searchParams = []): ResponseInterface
+    public function detailsAction(): ResponseInterface
     {
         $documentId = $this->getDocumentIdFromRouting();
         if (!$documentId) {
@@ -141,7 +144,6 @@ final class SearchController extends ClientEnabledController
         $this->addViewTransitionStyle();
 
         $this->view->assignMultiple([
-            'searchParams' => $searchParams,
             'routingArgs'  => $this->request->getAttribute('routing')->getArguments(),
             'detailId'     => $documentId,
             'searchResult' => $elasticResponse,
@@ -208,6 +210,9 @@ final class SearchController extends ClientEnabledController
 
     public function loadAllFilterItemsAction(array $searchParams = []): ResponseInterface
     {
+        // The loadAllFilterItemsAction method receives its searchParams directly from the controller mapping
+        // since it is called via f:uri.action in FilterBlock.html
+
         // check if this is an  HTMX Request
         if (!$this->request->getHeader('HX-Request')) {
         return $this->responseFactory->createResponse(403)
@@ -244,8 +249,30 @@ final class SearchController extends ClientEnabledController
         $this->view->setLayoutRootPaths([]); // deactivate Layout
 
         return $this->htmlResponse();
-
     }
+
+    /**
+     * Get search parameters from both old and new namespace for compatibility
+     */
+    private function getSearchParamsFromRequest(): array
+    {
+        // Optional: Filter/validate known parameters only?
+        $queryParams = $this->request->getQueryParams();
+
+        // Try new short namespace first
+        if (isset($queryParams['search']) && is_array($queryParams['search'])) {
+            return $queryParams['search'];
+        }
+
+        // Fallback to original Extbase namespace
+        if (isset($queryParams['tx_liszt_common_searchlisting']) && is_array($queryParams['tx_liszt_common_searchlisting'])) {
+            return $queryParams['tx_liszt_common_searchlisting'];
+        }
+
+        // Fallback to Extbase request arguments (for backward compatibility)
+        return $this->request->getArguments();
+    }
+
 
 
 }

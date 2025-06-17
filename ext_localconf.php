@@ -44,12 +44,6 @@ ExtensionUtility::configurePlugin(
     [ ],
 );
 
-ExtensionUtility::configurePlugin(
-    'LisztCommon',
-    'SearchDetailsHeader',
-    [ SearchController::class => 'detailsHeader' ],
-    [ ],
-);
 
 
 ExtensionUtility::configurePlugin(
