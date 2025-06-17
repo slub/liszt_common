@@ -22,4 +22,6 @@ abstract class IndexProcessor
     const BODY_FIELD = 'tx_lisztcommon_body';
     const SEARCHABLE_FIELD = 'tx_lisztcommon_searchable';
     const BOOSTED_FIELD = 'tx_lisztcommon_boosted';
+
+    const ORIGINAL_ITEM_TYPE = 'originalItemType'; // original itemType from Zotero for separate printedMusic in Template
 }
