@@ -174,9 +174,8 @@ class QueryParamsBuilder
         $entityTypeKey = $entityType['key'] ?? null;
         $entityTypeMultiselect = isset($entityType['select']) && ($entityType['select'] == 'multi') ?? null; // Todo: remove this and use $filterTypes?
         $entityTypeSize = match(true) {
-            isset($entityType['maxSize']) && $entityType['maxSize'] === 'all' && !empty($searchParams['filterShowAll']) => 10000,
-            isset($entityType['maxSize']) && $entityType['maxSize'] === 'all' => $entityType['size'],
-            default => $entityType['maxSize'] ?? 10
+            isset($entityType['maxSize']) && !empty($searchParams['filterShowAll']) => 10000,
+            default => $entityType['maxSize'] ?? 30
         };
 
 

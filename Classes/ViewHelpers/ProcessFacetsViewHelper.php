@@ -16,6 +16,7 @@ final class ProcessFacetsViewHelper extends AbstractViewHelper
         $this->registerArgument('filterEntities', 'array', 'Array with settings for filters from setup.typoscript', false, []);
     }
 
+
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
@@ -81,8 +82,20 @@ final class ProcessFacetsViewHelper extends AbstractViewHelper
             return $sortedBucket;
         }
 
-        // set size from entity settings in setup.typoscript or use 10 as default
+        // Get size and maxSize from settings
         $size = $filterEntities['size'] ?? $filterEntities['defaultFilterSize'] ?? 10;
+        $maxSize = $filterEntities['maxSize'] ?? 30;
+
+        // Remove items that are not selected and have a doc_count of 0
+        $returnBucket = array_filter($returnBucket, function ($item) {
+            $docCount = $item['doc_count'] ?? 0;
+            $isSelected = $item['selected'] ?? false;
+
+            return $docCount > 0 || $isSelected;
+        });
+
+        // Sort the array so that selected items come first
+        $returnBucket = self::bringSelectedItemsToTop($returnBucket);
 
         foreach ($returnBucket as $index => &$item) {
             // if item is over $size set 'hidden' => true, but never hide selected items
@@ -91,14 +104,6 @@ final class ProcessFacetsViewHelper extends AbstractViewHelper
             }
         }
         unset($item);
-
-        // Remove items that are not selected and have a doc_count of 0
-        $returnBucket = array_filter($returnBucket, function ($item) {
-            return $item['doc_count'] > 0 || ($item['selected'] ?? false);
-        });
-
-        // Sort the array so that selected items come first
-        $returnBucket = self::bringSelectedItemsToTop($returnBucket);
 
         // special sort in "slub-style" if sortByKey = 'slub': sort all hidden items alphabetical
         if (isset($filterEntities['sortByKey']) && $filterEntities['sortByKey'] === 'slub') {
@@ -193,4 +198,23 @@ final class ProcessFacetsViewHelper extends AbstractViewHelper
 
         return $bucket;
     }
+
+    /**
+     * Get sum_other_doc_count from elasticsearch aggregation
+     */
+    private static function getSumOtherDocCount(array $filterGroup, string $key): int
+    {
+        // Check for nested filters (with filtered_params structure)
+        if (isset($filterGroup['filtered_params'][$key]['sum_other_doc_count'])) {
+            return (int)$filterGroup['filtered_params'][$key]['sum_other_doc_count'];
+        }
+
+        // Check for non-nested filters (direct structure)
+        if (isset($filterGroup[$key]['sum_other_doc_count'])) {
+            return (int)$filterGroup[$key]['sum_other_doc_count'];
+        }
+
+        return 0;
+    }
+
 }
