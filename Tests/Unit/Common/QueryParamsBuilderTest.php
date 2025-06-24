@@ -182,7 +182,7 @@ final class QueryParamsBuilderTest extends UnitTestCase
                                 'terms' => [
                                     'field' => self::EX_FIELD1 . '.keyword',
                                     'min_doc_count' => 1,
-                                    'size' => 10
+                                    'size' => 30
                                 ]
                             ]
                         ],
@@ -200,7 +200,7 @@ final class QueryParamsBuilderTest extends UnitTestCase
                                 'terms' => [
                                     'field' => self::EX_FIELD2 . '.keyword',
                                     'min_doc_count' => 1,
-                                    'size' => 10
+                                    'size' => 30
                                 ]
                             ]
                         ],
@@ -219,7 +219,7 @@ final class QueryParamsBuilderTest extends UnitTestCase
                                     self::EX_FIELD3 => [
                                         'terms' => [
                                             'field' => self::EX_FIELD3 . '..keyword',
-                                            'size' => 10
+                                            'size' => 30
                                         ]
                                     ]
                                 ],
@@ -332,7 +332,7 @@ final class QueryParamsBuilderTest extends UnitTestCase
                                 'terms' => [
                                     'field' => self::EX_FIELD1 . '.keyword',
                                     'min_doc_count' => 1,
-                                    'size' => 10
+                                    'size' => 30
                                 ]
                             ]
                         ],
@@ -352,13 +352,13 @@ final class QueryParamsBuilderTest extends UnitTestCase
                                 'terms' => [
                                     'field' => self::EX_FIELD2 . '.keyword',
                                     'min_doc_count' => 1,
-                                    'size' => 10
+                                    'size' => 30
                                 ]
                             ],
                             self::EX_FIELD2 . '_selected' => [
                                 'terms' => [
                                     'field' => self::EX_FIELD2 . '.keyword',
-                                    'size' => 10,
+                                    'size' => 30,
                                     'include' => [
                                         self::EX_VAL
                                     ],
@@ -381,7 +381,7 @@ final class QueryParamsBuilderTest extends UnitTestCase
                                     self::EX_FIELD3 => [
                                         'terms' => [
                                             'field' => self::EX_FIELD3 . '..keyword',
-                                            'size' => 10
+                                            'size' => 30
                                         ]
                                     ]
                                 ],
@@ -466,7 +466,7 @@ final class QueryParamsBuilderTest extends UnitTestCase
                                 'terms' => [
                                     'field' => self::EX_FIELD1 . '.keyword',
                                     'min_doc_count' => 1,
-                                    'size' => 10
+                                    'size' => 30
                                 ]
                             ]
                         ],
@@ -495,7 +495,7 @@ final class QueryParamsBuilderTest extends UnitTestCase
                                 'terms' => [
                                     'field' => self::EX_FIELD2 . '.keyword',
                                     'min_doc_count' => 1,
-                                    'size' => 10
+                                    'size' => 30
                                 ]
                             ]
                         ],
@@ -525,13 +525,13 @@ final class QueryParamsBuilderTest extends UnitTestCase
                                     self::EX_FIELD3 => [
                                         'terms' => [
                                             'field' => self::EX_FIELD3 . '..keyword',
-                                            'size' => 10
+                                            'size' => 30
                                         ]
                                     ],
                                     self::EX_FIELD3 . '_selected' => [
                                         'terms' => [
                                             'field' => self::EX_FIELD3 . '..keyword',
-                                            'size' => 10,
+                                            'size' => 30,
                                             'include' => [
                                                 self::EX_VAL
                                             ],
