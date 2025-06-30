@@ -106,7 +106,10 @@
 </aside>
 <div class="content grid-colspan-lg-3 grid-colspan-md-2">
     <div class="frame">
-    <f:for each="{searchResults.hits.hits}" as="hit">
+    <f:for each="{searchResults.hits.hits}" as="hit" iteration="iteration">
+
+        <small class="text-muted">Position: {navigationBase.startPosition + iteration.index + 1}/{navigationBase.totalResults}</small>
+
 
         <article class="searchresults-item ">
             <f:link.action
@@ -115,6 +118,7 @@
                 pluginName="SearchDetails"
                 pageUid="{detailPageId}"
                 arguments="{documentId: hit._id}"
+                additionalAttributes="{onclick: 'return detailViewWithPaging(this, event);', data-navigation-context: '{hit._navigationContext}'}"
                 class="searchresults-item-detail-link prefetch-link" >
             <header>
                 <div class="searchresults-item-label"  style="view-transition-name: detail-sub-{hit._id};">
@@ -141,3 +145,5 @@
     </f:if>
     </div>
 </div>
+<f:debug>{_all}</f:debug>
+<f:debug title="Navigation Base Data">{navigationBase}</f:debug>

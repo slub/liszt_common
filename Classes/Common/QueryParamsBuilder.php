@@ -37,6 +37,7 @@ class QueryParamsBuilder
         return $this;
     }
 
+
     public function setSearchParams($searchParams): QueryParamsBuilder
     {
         if ($this->settings == []) {
@@ -50,15 +51,20 @@ class QueryParamsBuilder
             $this->indexName = $this->params['index'];
         } else {
             $this->searchAll = true;
+
+            if (!isset($this->settings['entityTypes']) || !is_array($this->settings['entityTypes'])) {
+                throw new \Exception('Settings must contain entityTypes array');
+            }
+
             $indexNames = Collection::wrap($this->settings)->
-                recursive()->
-                get('entityTypes')->
-                pluck('indexName');
+            recursive()->
+            get('entityTypes')->
+            pluck('indexName');
             if ($indexNames->count() == 1) {
                 $this->searchAll = false;
             }
             $this->indexName = $indexNames->
-                join(',');
+            join(',');
         }
 
         return $this;
@@ -403,7 +409,7 @@ class QueryParamsBuilder
                 $this->query['body']['sort'] = $sortFields->map(function ($direction, $field) {
                     return [
                         $field => [
-                            'order' => $direction
+                            'order' => $direction,
                         ]
                     ];
                 })->values()->toArray();
@@ -586,5 +592,40 @@ class QueryParamsBuilder
             })
             ->all();
     }
+
+
+    /**
+     * Get query parameters optimized for navigation (for msearch)
+     * - No aggregations
+     * - Only _id in _source
+     * - Reuses existing getQueryParams() logic
+     */
+    public function getNavigationQueryParams(): array
+    {
+        // Start with normal query params
+        $query = $this->getQueryParams();
+
+        // Modify for navigation:
+        // 1. Remove aggregations (much faster)
+        if (isset($query['body']['aggs'])) {
+            unset($query['body']['aggs']);
+        }
+
+        // 2. Only return _id for efficiency
+        $query['body']['_source'] = ['_id'];
+
+        // 3. Set size to 1 (only need one result)
+        $query['size'] = 1;
+
+        // 4. Remove 'from' pagination (we'll use search_after)
+        if (isset($query['from'])) {
+            unset($query['from']);
+        }
+
+        return $query;
+    }
+
+
+
 
 }

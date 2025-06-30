@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 
+
 final class SearchController extends ClientEnabledController
 {
     // set resultLimit as intern variable from $this->settings['resultLimit'];
@@ -41,7 +42,6 @@ final class SearchController extends ClientEnabledController
     public function indexAction(): ResponseInterface
     {
         $searchParams = $this->getSearchParamsFromRequest();
-
         $locale = $this->request->getAttribute('language')->getLocale();
         $currentPage = $this->getCurrentPage($searchParams);
         $this->addViewTransitionStyle();
@@ -60,6 +60,35 @@ final class SearchController extends ClientEnabledController
         $pagination = $paginator->getPagination();
         $showPagination = $paginator->getTotalPages() > 1;
 
+        $itemsPerPage = $this->getItemsPerPage();
+        $navigationBase = $this->createNavigationBase($searchParams, $totalItems, $currentPage, $itemsPerPage);
+
+        if ($elasticResponse instanceof \Slub\LisztCommon\Common\Collection) {
+            $hitsContainer = $elasticResponse->get('hits');
+            if ($hitsContainer && isset($hitsContainer['hits']) && is_array($hitsContainer['hits'])) {
+                $hits = $hitsContainer['hits'];
+
+                // add navigation context to each hit
+                foreach ($hits as $index => &$hit) {
+                    $currentPosition = $navigationBase['startPosition'] + $index;
+                    $hit['_navigationContext'] = json_encode([
+                        'searchParams' => $navigationBase['searchParams'],
+                        'currentPosition' => $currentPosition,
+                        'totalResults' => $navigationBase['totalResults'],
+                        'currentPage' => $navigationBase['currentPage'],
+                        'itemsPerPage' => $navigationBase['itemsPerPage'],
+                        'currentScore' => $hit['_score'] ?? null,
+                        'currentSortValues' => $hit['sort'] ?? []
+                    ]);
+                }
+
+                $hitsContainer['hits'] = $hits;
+                $elasticResponse = $elasticResponse->put('hits', $hitsContainer);
+            }
+        }
+
+        $this->addSearchParamsToBody($searchParams);
+
         $this->view->assignMultiple([
             'locale'        => $locale,
             'totalItems'    => $totalItems,
@@ -69,7 +98,10 @@ final class SearchController extends ClientEnabledController
             'showPagination'=> $showPagination,
             'currentString' => Paginator::CURRENT_PAGE,
             'dots'          => Paginator::DOTS,
-            'detailPageId'  => $this->extConf->get('liszt_common', 'detailPageId'),
+            'detailPageId'  => $this->getDetailPageId(),
+            'searchPageId'  => $this->getSearchPageId(),
+            'navigationBase'   => $navigationBase,
+            'itemsPerPage'     => $itemsPerPage,
         ]);
 
         return $this->htmlResponse();
@@ -79,7 +111,10 @@ final class SearchController extends ClientEnabledController
     public function searchBarAction(): ResponseInterface
     {
         $searchParams = $this->getSearchParamsFromRequest();
-        $this->view->assign('searchParams', $searchParams);
+        $this->view->assignMultiple([
+            'searchParams'  => $searchParams,
+            'searchPageId'  => $this->getSearchPageId(),
+        ]);
         return $this->htmlResponse();
     }
 
@@ -112,6 +147,32 @@ final class SearchController extends ClientEnabledController
             return $this->redirectToNotFoundPage();
         }
 
+        // Get search context from POST request if available
+        $searchContext = null;
+
+        // Check for POST data with search context
+        if ($this->request->getMethod() === 'POST') {
+            $postData = $this->request->getParsedBody();
+            if (isset($postData['searchContext']) && is_array($postData['searchContext'])) {
+                $searchContext = $postData['searchContext'];
+
+                // Add navigation helpers directly to searchContext
+                if (isset($searchContext['navigation'])) {
+                    $currentPosition = (int)($searchContext['navigation']['currentPosition'] ?? 0);
+                    $totalResults = (int)($searchContext['navigation']['totalResults'] ?? 0);
+
+                    $searchContext['navigation']['hasNext'] = ($currentPosition + 1) < $totalResults;
+                    $searchContext['navigation']['hasPrevious'] = $currentPosition > 0;
+
+                    $navigationDocs = $this->getNavigationDocumentIds($documentId, $searchContext);
+                    $searchContext['navigation']['nextDocumentId'] = $navigationDocs['nextDocumentId'];
+                    $searchContext['navigation']['previousDocumentId'] = $navigationDocs['previousDocumentId'];
+
+                }
+            }
+        }
+
+
         try {
             $elasticResponse = $this->loadDetailPageFromElastic($documentId);
         } catch (ClientResponseException $e) {
@@ -143,11 +204,17 @@ final class SearchController extends ClientEnabledController
 
         $this->addViewTransitionStyle();
 
+        if ($searchContext) {
+            $this->addSearchParamsToBody($searchContext);
+        }
+
         $this->view->assignMultiple([
             'routingArgs'  => $this->request->getAttribute('routing')->getArguments(),
             'detailId'     => $documentId,
             'searchResult' => $elasticResponse,
-            'detailPageId' => $this->extConf->get('liszt_common', 'detailPageId'),
+            'detailPageId'  => $this->getDetailPageId(),
+            'searchPageId'  => $this->getSearchPageId(),
+            'searchContext'    => $searchContext,
         ]);
 
         return $this->htmlResponse();
@@ -273,6 +340,108 @@ final class SearchController extends ClientEnabledController
         return $this->request->getArguments();
     }
 
+    public function addSearchParamsToBody($searchParams): void
+    {
+        $jsonData = json_encode($searchParams);
+
+        // NUR JSON-Daten, KEINE <script>-Tags
+        // AssetCollector fügt automatisch <script>-Tags hinzu
+        $this->assetCollector->addInlineJavaScript(
+            'search-params-data',
+            'window.searchParamsData = ' . $jsonData . ';',
+            [],
+            ['priority' => false]
+        );
+    }
 
 
+    /**
+     * Get items per page from extension configuration
+     */
+    private function getItemsPerPage(): int
+    {
+        return (int)($this->extConf->get('liszt_common', 'itemsPerPage') ?? 10);
+    }
+
+    /**
+     * Get detail page ID from extension configuration as integer
+     */
+    private function getDetailPageId(): int
+    {
+        return (int)($this->extConf->get('liszt_common', 'detailPageId') ?? 0);
+    }
+
+    /**
+     * Get search page ID from extension configuration as integer
+     */
+    private function getSearchPageId(): int
+    {
+        return (int)($this->extConf->get('liszt_common', 'searchPageId') ?? 0);
+    }
+
+    private function getNavigationDocumentIds(string $currentDocumentId, array $searchContext): array
+    {
+        if (!isset($searchContext['navigation']['currentSortValues']) ||
+            empty($searchContext['navigation']['currentSortValues'])) {
+            return [
+                'nextDocumentId' => null,
+                'previousDocumentId' => null
+            ];
+        }
+
+        // Handle both array and JSON string formats
+        $currentSortValues = $searchContext['navigation']['currentSortValues'];
+        if (is_string($currentSortValues)) {
+            $currentSortValues = json_decode($currentSortValues, true);
+        }
+
+        if (!is_array($currentSortValues)) {
+            echo 'Error: currentSortValues is not array: ';
+            print_r($searchContext['navigation']['currentSortValues']);
+            return [
+                'nextDocumentId' => null,
+                'previousDocumentId' => null
+            ];
+        }
+
+        echo 'Current document sort values: ';
+        print_r($currentSortValues);
+
+        // Create search parameters without navigation data
+        $searchParams = $searchContext;
+        unset($searchParams['navigation']);
+
+        try {
+            return $this->elasticSearchService->findNavigationDocuments(
+                $searchParams,
+                $this->settings,
+                $currentSortValues
+            );
+        } catch (\Exception $e) {
+            // Log error but don't break the detail page
+            error_log('Navigation search failed: ' . $e->getMessage());
+            return [
+                'nextDocumentId' => null,
+                'previousDocumentId' => null
+            ];
+        }
+    }
+
+
+
+    /**
+     * Create navigation base data for search results
+     */
+    private function createNavigationBase(array $searchParams, int $totalItems, int $currentPage, int $itemsPerPage): array
+    {
+        $startPosition = ($currentPage - 1) * $itemsPerPage;
+
+        return [
+            'searchParams' => $searchParams,
+            'totalResults' => $totalItems,
+            'currentPage' => $currentPage,
+            'itemsPerPage' => $itemsPerPage,
+            'startPosition' => $startPosition
+        ];
+    }
 }

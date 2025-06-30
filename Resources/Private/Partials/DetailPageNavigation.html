@@ -1,0 +1,60 @@
+{namespace lc=Slub\LisztCommon\ViewHelpers}
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:lc="http://typo3.org/ns/Slub/LisztCommon/ViewHelpers"
+    xmlns:i="http://typo3.org/ns/Quellenform/Iconpack/ViewHelpers"
+    data-namespace-typo3-fluid="true">
+<div class="frame">
+    <nav class="detail-navigation" aria-label="Navigate between search results">
+        <div class="detail-navigation-info">
+            <small class="text-muted">
+                <f:variable name="currentPageNumber">{searchContext.navigation.currentPosition + 1}</f:variable>
+                {f:translate(key: 'searchdetails_navigation_countInfo', arguments: {0: currentPageNumber, 1: searchContext.navigation.totalResults}, extensionName: 'liszt_common')}
+            </small>
+        </div>
+
+        <div class="detail-navigation-buttons">
+            <f:if condition="{searchContext.navigation.hasPrevious}">
+                <f:if condition="{searchContext.navigation.previousDocumentId}">
+                    <f:link.action
+                        action="details"
+                        controller="Search"
+                        pluginName="SearchDetails"
+                        pageUid="{detailPageId}"
+                        arguments="{documentId: searchContext.navigation.previousDocumentId}"
+                        additionalAttributes="{onclick: 'return detailViewWithPaging(this, event);', data-navigation-context: '{f:format.json(value: searchContext.navigation)}'}"
+                        class="btn btn-outline-primary detail-nav-prev">
+                        <i:icon iconfig="lzicon,chevron-left" preferredRenderTypes="svgSprite" additionalAttributes="{aria-hidden:'true'}" />
+                        Vorheriges
+                    </f:link.action>
+                </f:if>
+            </f:if>
+
+            <f:if condition="{searchContext.navigation.hasNext}">
+                <f:if condition="{searchContext.navigation.nextDocumentId}">
+                    <f:link.action
+                        action="details"
+                        controller="Search"
+                        pluginName="SearchDetails"
+                        pageUid="{detailPageId}"
+                        arguments="{documentId: searchContext.navigation.nextDocumentId}"
+                        additionalAttributes="{onclick: 'return detailViewWithPaging(this, event);', data-navigation-context: '{f:format.json(value: searchContext.navigation)}'}"
+                        class="btn btn-outline-primary detail-nav-next">
+                        Nächstes
+                        <i:icon iconfig="lzicon,chevron-right" preferredRenderTypes="svgSprite" additionalAttributes="{aria-hidden:'true'}" />
+                    </f:link.action>
+                </f:if>
+            </f:if>
+        </div>
+
+        <div class="detail-navigation-back">
+            <f:variable name="backToSearchParams">{searchContext}</f:variable>
+            <f:variable name="searchParamsClean">{lc:searchParams(action: 'remove', searchParamsArray: backToSearchParams, key: 'navigation')}</f:variable>
+            <a href="{lc:searchUri(searchParams: searchParamsClean.searchParams, pageUid: searchPageId)}" class="btn btn-link">
+                {f:translate(key: 'searchdetails_navigation_back', extensionName: 'liszt_common')}
+            </a>
+        </div>
+    </nav>
+</div>
+</html>
+

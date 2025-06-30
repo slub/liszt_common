@@ -24,6 +24,12 @@
 			<trans-unit id="searchdetails_description" >
 				<source>Anzeige einer Detailseite</source>
 			</trans-unit>
+			<trans-unit id="searchdetails_navigation_countInfo">
+				<source>Treffer %s von %s</source>
+			</trans-unit>
+			<trans-unit id="searchdetails_navigation_back">
+				<source>Zurück zur Ergebnisliste</source>
+			</trans-unit>
 			<trans-unit id="searchbar_placeholder" >
 				<source>Suche in der Bibliografie</source>
 			</trans-unit>
