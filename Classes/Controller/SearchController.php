@@ -100,6 +100,11 @@ final class SearchController extends ClientEnabledController
             throw $e;
         }
 
+        // manage template file for detail view from extension (set in setup.typoscript of the extension)
+        if (isset($this->settings['detailHeaderTemplatePath'])) {
+            $this->view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($this->settings['detailHeaderTemplatePath']));
+        }
+
         $this->view->assign('searchResult', $elasticResponse);
         return $this->htmlResponse();
     }

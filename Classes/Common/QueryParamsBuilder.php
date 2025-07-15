@@ -71,13 +71,13 @@ class QueryParamsBuilder
         $this->query = [
             'size' => $commonConf['itemsPerPage'],
             'body' => [
-                '_source' => [
+/*                '_source' => [
                     IndexProcessor::TYPE_FIELD,
                     IndexProcessor::HEADER_FIELD,
                     IndexProcessor::BODY_FIELD,
                     IndexProcessor::FOOTER_FIELD,
                     IndexProcessor::SEARCHABLE_FIELD
-                ],
+                ],*/
             ]
         ];
 
