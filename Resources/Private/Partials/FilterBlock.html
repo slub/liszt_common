@@ -8,6 +8,8 @@
 <f:variable name="filterEntities">{lc:getFilterEntities(filterKey: key, entityTypes: settings.entityTypes)}</f:variable>
 <f:variable name="filterEntitySize">{f:if(condition: filterEntities.size, then: filterEntities.size, else: filterEntities.defaultFilterSize)}</f:variable>
 <f:variable name="buckets">{lc:processFacets(filterGroup: filterGroup, key: key, searchParams: searchParams, filterEntities: filterEntities)}</f:variable>
+<f:variable name="meta">{lc:getFilterMetaData(filterGroup: filterGroup, key: key, buckets: buckets, filterEntities: filterEntities)}</f:variable>
+
 <f:if condition="{buckets -> f:count()} > 0">
         <div class="filter-block frame">
         <h4 class="">{f:translate(key: '{languageFilePath}:{key}', default: '{key}')}</h4>
@@ -53,29 +55,35 @@
                 <f:else>
                     <ul style="view-transition-name:filterblock-{key};" id="filterblock-{key}" class="{f:if(condition: '{filterEntities.sortByKey} == slub', then: 'sortByKeySlub', else: '')}">
                     <f:for each="{buckets}" as="filter">
-                        <f:render partial="FilterBlockItem" arguments="{key: key, filter: filter, searchParams: searchParams, searchParamsFromFirstPage: searchParamsFromFirstPage, languageFilePath: languageFilePath}" />
+                        <f:if condition="{filter.key}">
+                            <f:render partial="FilterBlockItem" arguments="{key: key, filter: filter, searchParams: searchParams, searchParamsFromFirstPage: searchParamsFromFirstPage, languageFilePath: languageFilePath}" />
+                        </f:if>
                     </f:for>
                     </ul>
-                    <f:if condition="{filterEntities.maxSize} == 'all'">
-                        <f:then>
-                            <f:variable name="sumOtherDocCount">{lc:getSumOtherDocCount(filterGroup: filterGroup, key: key)}</f:variable>
-                            <f:if condition="{sumOtherDocCount} > 0">
-                            <f:variable name="filterShowAllParams">{lc:searchParams(action: 'add', searchParamsArray: searchParamsFromFirstPage, key: 'filterShowAll', value: key)}</f:variable>
-                                <button hx-get="{f:uri.action(pageType: '88888', action:'loadAllFilterItems', arguments:filterShowAllParams )}"
-                                    class="btn filter-block-toggler"
-                                    aria-expanded="false"
-                                    hx-target="#filterblock-{key}"
-                                    hx-swap="outerHTML">
-                                {f:translate(key: 'filter_show_all_button', extensionName: 'liszt_common')}
-                            </button>
-                            </f:if>
-                        </f:then>
-                    <f:else if="{buckets -> f:count()} > {filterEntitySize}">
-                        <button class="btn filter-block-toggler" aria-expanded="false">
+                    <f:variable name="hasMoreThanSize">{meta.hasMoreThanSize}</f:variable>
+                    <f:variable name="hasMoreThanMaxSize">{meta.hasMoreThanMaxSize}</f:variable>
+                    <f:variable name="sumOtherDocCount">{meta.sumOtherDocCount}</f:variable>
+                    <f:if condition="{hasMoreThanSize}">
+                        <button class="btn filter-block-toggler show-more-btn"
+                                aria-expanded="false"
+                                onclick="toggleFilterBlock(this)">
                             {f:translate(key: 'filter_show_more_button', extensionName: 'liszt_common')}
                         </button>
-                    </f:else>
-                  </f:if>
+
+                        <f:if condition="{hasMoreThanMaxSize}">
+                            <f:variable name="filterShowAllParams">{lc:searchParams(action: 'add', searchParamsArray: searchParamsFromFirstPage, key: 'filterShowAll', value: key)}</f:variable>
+                            <button hx-get="{f:uri.action(pageType: '88888', action:'loadAllFilterItems', arguments:filterShowAllParams )}"
+                                    class="btn filter-block-toggler show-all-btn"
+                                    aria-expanded="false"
+                                    hx-target="#filterblock-{key}"
+                                    hx-swap="outerHTML"
+                                    style="display: none;">
+                                {f:translate(key: 'filter_show_all_button', extensionName: 'liszt_common')}
+                                <f:if condition="{sumOtherDocCount} > 0"> ({sumOtherDocCount} weitere)</f:if>
+                            </button>
+                        </f:if>
+                    </f:if>
+
                 </f:else>
             </f:if>
         </div>

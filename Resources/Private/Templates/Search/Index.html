@@ -106,39 +106,11 @@
 </aside>
 <div class="content grid-colspan-lg-3 grid-colspan-md-2">
     <div class="frame">
-    <f:for each="{searchResults.hits.hits}" as="hit" iteration="iteration">
-
-        <small class="text-muted">Position: {navigationBase.startPosition + iteration.index + 1}/{navigationBase.totalResults}</small>
-
-
-        <article class="searchresults-item ">
-            <f:link.action
-                action="details"
-                controller="Search"
-                pluginName="SearchDetails"
-                pageUid="{detailPageId}"
-                arguments="{documentId: hit._id}"
-                additionalAttributes="{onclick: 'return detailViewWithPaging(this, event);', data-navigation-context: '{hit._navigationContext}'}"
-                class="searchresults-item-detail-link prefetch-link" >
-            <header>
-                <div class="searchresults-item-label"  style="view-transition-name: detail-sub-{hit._id};">
-                    {hit._source.tx_lisztcommon_header}
-                </div>
-                <div class="searchresults-item-title" style="view-transition-name: detail-headline-{hit._id};">
-                <div class="searchresults-item-icon"><i:icon iconfig="{lc:ItemTypeIconName(iconPackKey: 'lziconsr', itemType: hit._source.itemType)}" preferredRenderTypes="svgSprite" additionalAttributes="{aria-hidden:'true'}" /></div>
-
-                    <h3 >
-                    {hit._source.tx_lisztcommon_body}
-                    </h3>
-
-                </div>
-            </header>
-            <div class="searchresults-item-details">
-                {hit._source.tx_lisztcommon_footer}
-            </div>
-            </f:link.action>
-        </article>
-
+        <f:comment>ToDo: later distinguish here in which index is searched and thus select the partial of the extension </f:comment>
+        <f:variable name="extensionName" value="bibliography" />
+        <f:variable name="SearchResultItemPartialName" value="SearchResultItem-{extensionName}" />
+        <f:for each="{searchResults.hits.hits}" as="hit">
+        <f:render partial="{SearchResultItemPartialName}" arguments="{hit: hit, detailPageId: detailPageId}" />
     </f:for>
     <f:if condition="{showPagination}">
         <f:render partial="Pagination" arguments="{pagination: pagination, searchParams: searchParams, currentString: currentString, dots: dots}" />
