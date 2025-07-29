@@ -85,6 +85,7 @@ class ElasticSearchService implements ElasticSearchServiceInterface
     /**
      * Find next and previous documents using msearch (single elastic request for both queries)
      * Uses minimal query without aggregations for better performance
+     * Returns document IDs along with their sort values for further navigation
      */
     public function findNavigationDocuments(array $searchParams, array $settings, array $searchAfter): array
     {
@@ -94,10 +95,10 @@ class ElasticSearchService implements ElasticSearchServiceInterface
             $queryBuilder = QueryParamsBuilder::createQueryParamsBuilder($searchParams, $settings);
             $baseQuery = $queryBuilder->getQueryParams();
 
-            echo 'Base query: ';
-            print_r($baseQuery);
+         //   echo 'Base query: ';
+         //   print_r($baseQuery);
 
-            // Create minimal query for navigation - remove unnecessary parts
+            // Create minimal query for navigation - but include ALL filter conditions
             $minimalQuery = [
                 'index' => $baseQuery['index'] ?? 'zotero',
                 'body' => [
@@ -106,6 +107,13 @@ class ElasticSearchService implements ElasticSearchServiceInterface
                     'size' => 1
                 ]
             ];
+
+            // CRITICAL: Add post_filter to ensure we only navigate within filtered results
+            if (isset($baseQuery['body']['post_filter'])) {
+                $minimalQuery['body']['post_filter'] = $baseQuery['body']['post_filter'];
+            //    echo 'Added post_filter to navigation query: ';
+         //       print_r($minimalQuery['body']['post_filter']);
+            }
 
             // Build sort configurations
             $normalSort = $this->buildSortArray($searchParams, $settings, false);
@@ -135,48 +143,59 @@ class ElasticSearchService implements ElasticSearchServiceInterface
 
             $msearchParams = ['body' => $msearchBody];
 
-            echo 'Current document search_after values: ';
-            print_r($searchAfter);
+       //     echo 'Current document search_after values: ';
+     //       print_r($searchAfter);
 
-            echo 'Next query sort: ';
-            print_r($nextQuery['body']['sort']);
-            echo 'Previous query sort: ';
-            print_r($prevQuery['body']['sort']);
-
-            echo 'Minimal msearch params: ';
-            print_r($msearchParams);
+       //     echo 'Next query with filters: ';
+       //     print_r($nextQuery['body']);
+       //     echo 'Previous query with filters: ';
+       //     print_r($prevQuery['body']);
 
             $response = $this->client->msearch($msearchParams)->asArray();
 
-            echo 'Response: ';
-            print_r($response);
+      //      echo 'Response: ';
+      //      print_r($response);
 
             $nextDocumentId = null;
+            $nextSortValues = null;
             $previousDocumentId = null;
+            $previousSortValues = null;
 
-            // Extract results
+            // Extract results with sort values
             if (isset($response['responses'][0]['hits']['hits'][0])) {
-                $nextDocumentId = $response['responses'][0]['hits']['hits'][0]['_id'];
-                echo 'Next document found: ' . $nextDocumentId . ' with sort: ';
-                print_r($response['responses'][0]['hits']['hits'][0]['sort']);
+                $nextHit = $response['responses'][0]['hits']['hits'][0];
+                $nextDocumentId = $nextHit['_id'];
+                $nextSortValues = $nextHit['sort'] ?? [];
+           //     echo 'Next document found: ' . $nextDocumentId . ' with sort: ';
+           //     print_r($nextSortValues);
+            } else {
+                echo 'No next document found in filtered results';
             }
 
             if (isset($response['responses'][1]['hits']['hits'][0])) {
-                $previousDocumentId = $response['responses'][1]['hits']['hits'][0]['_id'];
-                echo 'Previous document found: ' . $previousDocumentId . ' with sort: ';
-                print_r($response['responses'][1]['hits']['hits'][0]['sort']);
+                $prevHit = $response['responses'][1]['hits']['hits'][0];
+                $previousDocumentId = $prevHit['_id'];
+                $previousSortValues = $prevHit['sort'] ?? [];
+            //    echo 'Previous document found: ' . $previousDocumentId . ' with sort: ';
+            //    print_r($previousSortValues);
+            } else {
+                echo 'No previous document found in filtered results';
             }
 
             return [
                 'nextDocumentId' => $nextDocumentId,
-                'previousDocumentId' => $previousDocumentId
+                'nextSortValues' => $nextSortValues,
+                'previousDocumentId' => $previousDocumentId,
+                'previousSortValues' => $previousSortValues
             ];
 
         } catch (\Exception $e) {
             error_log('Navigation documents search failed: ' . $e->getMessage());
             return [
                 'nextDocumentId' => null,
-                'previousDocumentId' => null
+                'nextSortValues' => null,
+                'previousDocumentId' => null,
+                'previousSortValues' => null
             ];
         }
     }

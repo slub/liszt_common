@@ -16,29 +16,30 @@
         <div class="detail-navigation-buttons">
             <f:if condition="{searchContext.navigation.hasPrevious}">
                 <f:if condition="{searchContext.navigation.previousDocumentId}">
+                    <f:variable name="previousOnclick">return detailViewNavigation(this, event, 'previous');</f:variable>
                     <f:link.action
                         action="details"
                         controller="Search"
                         pluginName="SearchDetails"
                         pageUid="{detailPageId}"
                         arguments="{documentId: searchContext.navigation.previousDocumentId}"
-                        additionalAttributes="{onclick: 'return detailViewWithPaging(this, event);', data-navigation-context: '{f:format.json(value: searchContext.navigation)}'}"
+                        additionalAttributes="{onclick: previousOnclick, data-search-context: '{f:format.json(value: searchContext)}'}"
                         class="btn btn-outline-primary detail-nav-prev">
                         <i:icon iconfig="lzicon,chevron-left" preferredRenderTypes="svgSprite" additionalAttributes="{aria-hidden:'true'}" />
                         Vorheriges
                     </f:link.action>
                 </f:if>
             </f:if>
-
             <f:if condition="{searchContext.navigation.hasNext}">
                 <f:if condition="{searchContext.navigation.nextDocumentId}">
+                    <f:variable name="nextOnclick">return detailViewNavigation(this, event, 'next');</f:variable>
                     <f:link.action
                         action="details"
                         controller="Search"
                         pluginName="SearchDetails"
                         pageUid="{detailPageId}"
                         arguments="{documentId: searchContext.navigation.nextDocumentId}"
-                        additionalAttributes="{onclick: 'return detailViewWithPaging(this, event);', data-navigation-context: '{f:format.json(value: searchContext.navigation)}'}"
+                        additionalAttributes="{onclick: nextOnclick, data-search-context: '{f:format.json(value: searchContext)}'}"
                         class="btn btn-outline-primary detail-nav-next">
                         Nächstes
                         <i:icon iconfig="lzicon,chevron-right" preferredRenderTypes="svgSprite" additionalAttributes="{aria-hidden:'true'}" />
@@ -46,15 +47,14 @@
                 </f:if>
             </f:if>
         </div>
-
         <div class="detail-navigation-back">
             <f:variable name="backToSearchParams">{searchContext}</f:variable>
             <f:variable name="searchParamsClean">{lc:searchParams(action: 'remove', searchParamsArray: backToSearchParams, key: 'navigation')}</f:variable>
-            <a href="{lc:searchUri(searchParams: searchParamsClean.searchParams, pageUid: searchPageId)}" class="btn btn-link">
+            <f:variable name="searchParamsWithPage">{lc:searchParams(action: 'add', searchParamsArray: searchParamsClean.searchParams, key: 'page', value: searchContext.navigation.currentPage)}</f:variable>
+            <a href="{lc:searchUri(searchParams: searchParamsWithPage.searchParams, pageUid: searchPageId)}" class="btn btn-link">
                 {f:translate(key: 'searchdetails_navigation_back', extensionName: 'liszt_common')}
             </a>
         </div>
     </nav>
 </div>
-</html>
 
