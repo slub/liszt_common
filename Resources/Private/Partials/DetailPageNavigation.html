@@ -4,16 +4,13 @@
     xmlns:lc="http://typo3.org/ns/Slub/LisztCommon/ViewHelpers"
     xmlns:i="http://typo3.org/ns/Quellenform/Iconpack/ViewHelpers"
     data-namespace-typo3-fluid="true">
-<div class="frame">
-    <nav class="detail-navigation" aria-label="Navigate between search results">
-        <div class="detail-navigation-info">
-            <small class="text-muted">
+    <nav class="searchdetail-navigation" aria-label="{f:translate(key: 'searchdetails_navigation_aria-desc', extensionName: 'liszt_common')}">
+        <div class="searchdetail-navigation-info">
                 <f:variable name="currentPageNumber">{searchContext.navigation.currentPosition + 1}</f:variable>
                 {f:translate(key: 'searchdetails_navigation_countInfo', arguments: {0: currentPageNumber, 1: searchContext.navigation.totalResults}, extensionName: 'liszt_common')}
-            </small>
         </div>
 
-        <div class="detail-navigation-buttons">
+        <div class="searchdetail-navigation-buttons">
             <f:if condition="{searchContext.navigation.hasPrevious}">
                 <f:if condition="{searchContext.navigation.previousDocumentId}">
                     <f:variable name="previousOnclick">return detailViewNavigation(this, event, 'previous');</f:variable>
@@ -24,12 +21,18 @@
                         pageUid="{detailPageId}"
                         arguments="{documentId: searchContext.navigation.previousDocumentId}"
                         additionalAttributes="{onclick: previousOnclick, data-search-context: '{f:format.json(value: searchContext)}'}"
-                        class="btn btn-outline-primary detail-nav-prev">
+                        class="prev">
                         <i:icon iconfig="lzicon,chevron-left" preferredRenderTypes="svgSprite" additionalAttributes="{aria-hidden:'true'}" />
-                        Vorheriges
+                        {f:translate(key: 'searchdetails_navigation_prev', extensionName: 'liszt_common')}
                     </f:link.action>
                 </f:if>
             </f:if>
+                <f:variable name="backToSearchParams">{searchContext}</f:variable>
+                <f:variable name="searchParamsClean">{lc:searchParams(action: 'remove', searchParamsArray: backToSearchParams, key: 'navigation')}</f:variable>
+                <f:variable name="searchParamsWithPage">{lc:searchParams(action: 'add', searchParamsArray: searchParamsClean.searchParams, key: 'page', value: searchContext.navigation.currentPage)}</f:variable>
+                <a href="{lc:searchUri(searchParams: searchParamsWithPage.searchParams, pageUid: searchPageId)}" class="back" >
+                    {f:translate(key: 'searchdetails_navigation_back', extensionName: 'liszt_common')}
+                </a>
             <f:if condition="{searchContext.navigation.hasNext}">
                 <f:if condition="{searchContext.navigation.nextDocumentId}">
                     <f:variable name="nextOnclick">return detailViewNavigation(this, event, 'next');</f:variable>
@@ -40,21 +43,12 @@
                         pageUid="{detailPageId}"
                         arguments="{documentId: searchContext.navigation.nextDocumentId}"
                         additionalAttributes="{onclick: nextOnclick, data-search-context: '{f:format.json(value: searchContext)}'}"
-                        class="btn btn-outline-primary detail-nav-next">
-                        Nächstes
+                        class="next">
+                        {f:translate(key: 'searchdetails_navigation_next', extensionName: 'liszt_common')}
                         <i:icon iconfig="lzicon,chevron-right" preferredRenderTypes="svgSprite" additionalAttributes="{aria-hidden:'true'}" />
                     </f:link.action>
                 </f:if>
             </f:if>
         </div>
-        <div class="detail-navigation-back">
-            <f:variable name="backToSearchParams">{searchContext}</f:variable>
-            <f:variable name="searchParamsClean">{lc:searchParams(action: 'remove', searchParamsArray: backToSearchParams, key: 'navigation')}</f:variable>
-            <f:variable name="searchParamsWithPage">{lc:searchParams(action: 'add', searchParamsArray: searchParamsClean.searchParams, key: 'page', value: searchContext.navigation.currentPage)}</f:variable>
-            <a href="{lc:searchUri(searchParams: searchParamsWithPage.searchParams, pageUid: searchPageId)}" class="btn btn-link">
-                {f:translate(key: 'searchdetails_navigation_back', extensionName: 'liszt_common')}
-            </a>
-        </div>
     </nav>
-</div>
 

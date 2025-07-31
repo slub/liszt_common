@@ -95,66 +95,59 @@ class ElasticSearchService implements ElasticSearchServiceInterface
             $queryBuilder = QueryParamsBuilder::createQueryParamsBuilder($searchParams, $settings);
             $baseQuery = $queryBuilder->getQueryParams();
 
-         //   echo 'Base query: ';
-         //   print_r($baseQuery);
-
             // Create minimal query for navigation - but include ALL filter conditions
             $minimalQuery = [
-                'index' => $baseQuery['index'] ?? 'zotero',
+                'index' => $baseQuery['index'] ?? 'zotero',  // Todo: later add here the name of the "search All" index
                 'body' => [
                     'query' => $baseQuery['body']['query'] ?? ['match_all' => (object)[]],
-                    '_source' => false, // We only need document IDs
+                    '_source' => false, // no _source data, we only need document IDs
                     'size' => 1
                 ]
             ];
-
-            // CRITICAL: Add post_filter to ensure we only navigate within filtered results
             if (isset($baseQuery['body']['post_filter'])) {
                 $minimalQuery['body']['post_filter'] = $baseQuery['body']['post_filter'];
-            //    echo 'Added post_filter to navigation query: ';
-         //       print_r($minimalQuery['body']['post_filter']);
             }
 
-            // Build sort configurations
-            $normalSort = $this->buildSortArray($searchParams, $settings, false);
-            $reverseSort = $this->buildSortArray($searchParams, $settings, true);
+            // Extract sort configuration from base query
+            $sortConfig = $baseQuery['body']['sort'] ?? null;
 
-            // Build next document query (documents that come after current in normal sort order)
+            // Build sort configurations using only the sort configuration
+            $normalSort = $this->buildSortArray($sortConfig, false);
+            $reverseSort = $this->buildSortArray($sortConfig, true);
+
+
+            // Build next document query
             $nextQuery = $minimalQuery;
             $nextQuery['body']['sort'] = $normalSort;
             $nextQuery['body']['search_after'] = $searchAfter;
 
-            // Build previous document query (documents that come before current)
-            // We need to reverse the sort order AND use the same search_after value
+            // Build previous document query
             $prevQuery = $minimalQuery;
             $prevQuery['body']['sort'] = $reverseSort;
-            $prevQuery['body']['search_after'] = $searchAfter; // Same value, but with reversed sort!
+            $prevQuery['body']['search_after'] = $searchAfter;
 
-            // Execute msearch for both queries
+            // msearch for both queries in one request
             $msearchBody = [];
 
-            // Next document query
             $msearchBody[] = ['index' => $nextQuery['index']];
             $msearchBody[] = $nextQuery['body'];
 
-            // Previous document query
             $msearchBody[] = ['index' => $prevQuery['index']];
             $msearchBody[] = $prevQuery['body'];
 
             $msearchParams = ['body' => $msearchBody];
 
-       //     echo 'Current document search_after values: ';
-     //       print_r($searchAfter);
-
-       //     echo 'Next query with filters: ';
-       //     print_r($nextQuery['body']);
-       //     echo 'Previous query with filters: ';
-       //     print_r($prevQuery['body']);
+            //     echo 'Current document search_after values: ';
+            //     print_r($searchAfter);
+            //     echo 'Next query with filters: ';
+            //     print_r($nextQuery['body']);
+            //     echo 'Previous query with filters: ';
+            //     print_r($prevQuery['body']);
 
             $response = $this->client->msearch($msearchParams)->asArray();
 
-      //      echo 'Response: ';
-      //      print_r($response);
+            //      echo 'Response: ';
+            //      print_r($response);
 
             $nextDocumentId = null;
             $nextSortValues = null;
@@ -166,20 +159,11 @@ class ElasticSearchService implements ElasticSearchServiceInterface
                 $nextHit = $response['responses'][0]['hits']['hits'][0];
                 $nextDocumentId = $nextHit['_id'];
                 $nextSortValues = $nextHit['sort'] ?? [];
-           //     echo 'Next document found: ' . $nextDocumentId . ' with sort: ';
-           //     print_r($nextSortValues);
-            } else {
-                echo 'No next document found in filtered results';
             }
-
             if (isset($response['responses'][1]['hits']['hits'][0])) {
                 $prevHit = $response['responses'][1]['hits']['hits'][0];
                 $previousDocumentId = $prevHit['_id'];
                 $previousSortValues = $prevHit['sort'] ?? [];
-            //    echo 'Previous document found: ' . $previousDocumentId . ' with sort: ';
-            //    print_r($previousSortValues);
-            } else {
-                echo 'No previous document found in filtered results';
             }
 
             return [
@@ -203,22 +187,16 @@ class ElasticSearchService implements ElasticSearchServiceInterface
 
 
     /**
-     * Build sort array for navigation with optional reverse
+     * Build sort array for prev/next navigation
      */
-    private function buildSortArray(array $searchParams, array $settings, bool $reverse = false): array
+    private function buildSortArray(?array $sortConfig, bool $reverse = false): array
     {
-        // Create a temporary QueryParamsBuilder to get sort configuration
-        $tempBuilder = QueryParamsBuilder::createQueryParamsBuilder($searchParams, $settings);
-        $tempQuery = $tempBuilder->getQueryParams();
-
-        if (!isset($tempQuery['body']['sort'])) {
-            // Default sort if none specified
-            return $reverse
-                ? [['_score' => ['order' => 'asc']], ['_id' => ['order' => 'desc']]]
-                : [['_score' => ['order' => 'desc']], ['_id' => ['order' => 'asc']]];
+        // If no sort config provided, return null to let Elasticsearch use its default
+        if (empty($sortConfig)) {
+            return [];
         }
 
-        $sort = $tempQuery['body']['sort'];
+        $sort = $sortConfig;
 
         if ($reverse) {
             $sort = array_map(function($sortField) {
