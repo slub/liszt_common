@@ -27,8 +27,8 @@
 			<trans-unit id="searchdetails_navigation_countInfo">
 				<source>Treffer %s von %s</source>
 			</trans-unit>
-			<trans-unit id="searchdetails_navigation_countInfo">
-				<source>Treffer %s von %s</source>
+			<trans-unit id="searchdetails_navigation_back">
+				<source>Zurück zur Ergebnisliste</source>
 			</trans-unit>
 			<trans-unit id="searchdetails_navigation_aria-desc">
 				<source>Navigation zwischen den Suchergebnissen</source>
