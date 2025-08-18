@@ -2,18 +2,13 @@
 
 namespace Slub\LisztCommon\Common;
 
-use Slub\LisztCommon\Processing\IndexProcessor;
-use Illuminate\Support\Str;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class QueryParamsBuilder
 {
-    const TYPE_FIELD = 'itemType';
-    const HEADER_FIELD = 'tx_lisztcommon_header';
-    const FOOTER_FIELD = 'tx_lisztcommon_footer';
-    const BODY_FIELD = 'tx_lisztcommon_body';
-    const SEARCHABLE_FIELD = 'tx_lisztcommon_searchable';
+//    const TYPE_FIELD = 'itemType';
+//    const SEARCHABLE_FIELD = 'tx_lisztcommon_searchable';
 
     protected array $params = [];
     protected array $settings = [];
@@ -76,15 +71,7 @@ class QueryParamsBuilder
 
         $this->query = [
             'size' => $commonConf['itemsPerPage'],
-            'body' => [
-/*                '_source' => [
-                    IndexProcessor::TYPE_FIELD,
-                    IndexProcessor::HEADER_FIELD,
-                    IndexProcessor::BODY_FIELD,
-                    IndexProcessor::FOOTER_FIELD,
-                    IndexProcessor::SEARCHABLE_FIELD
-                ],*/
-            ]
+            'body' => []
         ];
 
         if ($this->searchAll == false) {
@@ -137,16 +124,6 @@ class QueryParamsBuilder
         return $this->query;
     }
 
-    private function getIndexName(): string
-    {
-        if (isset($this->params['index'])) {
-            return $this->params['index'];
-        }
-        return Collection::wrap($this->settings)->
-            get('entityTypes')->
-            pluck('indexName')->
-            join(',');
-    }
 
     private function getAggregations($settings): array
     {
