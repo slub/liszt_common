@@ -32,7 +32,9 @@ class SearchUriViewHelper extends AbstractViewHelper
         $uriBuilder->reset();
 
         if ($pageUid) {
-            $uriBuilder->setTargetPageUid($pageUid);
+            // Ensure pageUid is an integer
+            $pageUidInt = is_numeric($pageUid) ? (int)$pageUid : $pageUid;
+            $uriBuilder->setTargetPageUid($pageUidInt);
         }
 
 

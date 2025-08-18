@@ -3,11 +3,9 @@
       xmlns:i="http://typo3.org/ns/Quellenform/Iconpack/ViewHelpers"
       xmlns:lc="http://typo3.org/ns/Slub/LisztCommon/ViewHelpers"
       data-namespace-typo3-fluid="true">
-
 <section id="searchBar" class="searchbar">
     <div class="container-xl">
-
-        <lc:cleanUrlForm name="searchBar" controller="Search" action="index" method="get" class="form-inline" pageUid="18">
+        <lc:cleanUrlForm name="searchBar" controller="Search" action="index" method="get" class="form-inline" pageUid="{searchPageId}">
             <div class="input-group">
                 <f:form.textfield type="text" id="searchbar-input" name="searchText" value="{searchParams.searchText}" class="" aria="{label:'Text input with dropdown button'}" placeholder="{f:translate(key: 'searchbar_placeholder', extensionName: 'liszt_common')}" />
                 <button type="button" id="searchbar-clearButton" class="searchbar-clearButton no-ml" aria-label="{f:translate(key: 'searchbar_clearButton_label', extensionName: 'liszt_common')}">

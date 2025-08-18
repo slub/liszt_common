@@ -28,12 +28,12 @@ ExtensionUtility::configurePlugin(
     [ SearchController::class => 'searchBar' ],
 );
 
-// cache Detail Pages?
+// cache Detail Pages? not possible because of detail pages navigation (need context from search)
 ExtensionUtility::configurePlugin(
     'LisztCommon',
     'SearchDetails',
     [ SearchController::class => 'details' ],
-    [ ],
+    [ SearchController::class => 'details' ],
 );
 
 // cache Detail Pages?
