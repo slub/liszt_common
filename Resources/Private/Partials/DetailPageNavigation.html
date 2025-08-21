@@ -30,7 +30,7 @@
                 <f:variable name="backToSearchParams">{searchContext}</f:variable>
                 <f:variable name="searchParamsClean">{lc:searchParams(action: 'remove', searchParamsArray: backToSearchParams, key: 'navigation')}</f:variable>
                 <f:variable name="searchParamsWithPage">{lc:searchParams(action: 'add', searchParamsArray: searchParamsClean.searchParams, key: 'page', value: searchContext.navigation.currentPage)}</f:variable>
-                <a href="{lc:searchUri(searchParams: searchParamsWithPage.searchParams, pageUid: searchPageId)}" class="back" >
+                <a href="{lc:searchUri(searchParams: searchParamsWithPage.searchParams, pageUid: searchPageId)}#searchresult-{detailId}" class="back">
                     {f:translate(key: 'searchdetails_navigation_back', extensionName: 'liszt_common')}
                 </a>
             <f:if condition="{searchContext.navigation.hasNext}">
