@@ -6,6 +6,10 @@ use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use Slub\LisztCommon\Controller\SearchController;
 use Slub\LisztCommon\Routing\Aspect\DetailpageDocumentIdMapper;
+use TYPO3\CMS\Core\Log\LogLevel;
+use TYPO3\CMS\Core\Log\Writer\FileWriter;
+use TYPO3\CMS\Core\Core\Environment;
+
 
 defined('TYPO3') or die();
 
@@ -64,3 +68,18 @@ if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('iconpack')) {
         'EXT:liszt_common/Configuration/Iconpack/LisztSearchResultsIconpack.yaml',
     );
 }
+
+// Write SearchController errors and warnings to dedicated logfile
+$GLOBALS['TYPO3_CONF_VARS']['LOG']['Slub']['LisztCommon']['Controller']['SearchController']['writerConfiguration'][LogLevel::ERROR] = [
+    FileWriter::class => [
+        'logFile' => Environment::getVarPath() . '/log/liszt_common_searcherrors.log',
+    ],
+];
+
+$GLOBALS['TYPO3_CONF_VARS']['LOG']['Slub']['LisztCommon']['Controller']['SearchController']['writerConfiguration'][LogLevel::WARNING
+] = [
+    FileWriter::class => [
+        'logFile' => Environment::getVarPath() . '/log/liszt_common_searcherrors.log',
+    ],
+];
+

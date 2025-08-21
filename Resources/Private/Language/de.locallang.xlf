@@ -146,10 +146,22 @@
 			<trans-unit id="inline-labels.liszt_common.filter_search_no_results">
 				<source>Kein Filtereintrag gefunden für "{0}"</source>
 			</trans-unit>
-
 			<trans-unit id="inline-labels.liszt_common.htmx_loading">
 				<source>Lade...</source>
 			</trans-unit>
+			<trans-unit id="error.search.server">
+				<source>Fehler im Suchservice oder Server offline. (Server error 5xx).</source>
+			</trans-unit>
+			<trans-unit id="error.search.client">
+				<source>Fehlerhafte Suchanfrage (4xx).</source>
+			</trans-unit>
+			<trans-unit id="error.search.network">
+				<source>Suchservice nicht verfügbar. (Network error).</source>
+			</trans-unit>
+			<trans-unit id="error.search.generic">
+				<source>Suchservice nicht verfügbar.</source>
+			</trans-unit>
+
 		</body>
 	</file>
 </xliff>
