@@ -15,7 +15,6 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use Elastic\Elasticsearch\Exception\ClientResponseException;
 use Elastic\Elasticsearch\Exception\ServerResponseException;
 use Elastic\Transport\Exception\NoNodeAvailableException;
-use Elastic\Transport\Exception\CouldNotResolveHostException;
 use Elastic\Transport\Exception\TransportException;
 
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
@@ -69,7 +68,7 @@ final class SearchController extends ClientEnabledController
             $key = 'error.search.server';
         } elseif ($e instanceof ClientResponseException) {
             $key = 'error.search.client';
-        } elseif ($e instanceof NoNodeAvailableException || $e instanceof CouldNotResolveHostException || $e instanceof TransportException) {
+        } elseif ($e instanceof NoNodeAvailableException || $e instanceof TransportException) {
             $key = 'error.search.network';
         }
 
