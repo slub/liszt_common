@@ -451,29 +451,56 @@ class QueryParamsBuilder
                 ]
             ];
         } else {
-            // search in field "fulltext" exakt phrase match boost over all words must contain
+            // Enhanced fulltext search with 75% minimum should match
             $this->query['body']['query'] = [
                 'bool' => [
                     'should' => [
+                        // Exact phrase match with highest boost using raw field (no ICU processing)
                         [
                             'match_phrase' => [
-                                'tx_lisztcommon_searchable' => [
+                                'fulltext.raw' => [
                                     'query' => $this->params['searchText'],
-                                    'boost' => 2.0 // boosting for exakt phrases
+                                    'boost' => 3.0 // highest boost for exact phrases
                                 ]
                             ]
                         ],
+                        // ICU-processed phrase match for transliteration and normalization
                         [
-                            'query_string' => [
-                                'query' => $this->params['searchText'],
-                                'fields' => ['fulltext'],
-                                'default_operator' => 'AND'
+                            'match_phrase' => [
+                                'fulltext' => [
+                                    'query' => $this->params['searchText'],
+                                    'boost' => 2.5 // high boost for ICU-processed phrases
+                                ]
+                            ]
+                        ],
+                        // ICU-processed match with 75% minimum should match
+                        [
+                            'match' => [
+                                'fulltext' => [
+                                    'query' => $this->params['searchText'],
+                                    'operator' => 'OR',
+                                    'minimum_should_match' => '75%',
+                                    'boost' => 1.5 // medium boost for 75% matches
+                                ]
+                            ]
+                        ],
+                        // Fallback: 50% minimum should match for edge cases
+                        [
+                            'match' => [
+                                'fulltext' => [
+                                    'query' => $this->params['searchText'],
+                                    'operator' => 'OR',
+                                    'minimum_should_match' => '50%',
+                                    'boost' => 1.0 // base boost for partial matches
+                                ]
                             ]
                         ]
                     ]
                 ]
             ];
         }
+
+
 
         $filterTypes = $this->getFilterTypes();
         $query = $this->query;
