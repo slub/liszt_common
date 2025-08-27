@@ -5,19 +5,23 @@ declare(strict_types=1);
 namespace Slub\LisztCommon\Controller;
 use Illuminate\Support\Collection;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Log\LoggerInterface;
 use Slub\LisztCommon\Interfaces\ElasticSearchServiceInterface;
 use Slub\LisztCommon\Common\Paginator;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use Elastic\Elasticsearch\Exception\ClientResponseException;
-use Elastic\Transport\Exception\RuntimeException;
+use Elastic\Elasticsearch\Exception\ServerResponseException;
+use Elastic\Transport\Exception\NoNodeAvailableException;
+use Elastic\Transport\Exception\TransportException;
+
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
 use Slub\LisztCommon\Common\PageTitleProvider;
 use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-
 
 final class SearchController extends ClientEnabledController
 {
@@ -39,6 +43,55 @@ final class SearchController extends ClientEnabledController
         $this->runtimeCache = $cacheManager->getCache('runtime');
     }
 
+    // Helper: Logging and error handling
+
+    private function getLogger(): LoggerInterface
+    {
+        return GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+    }
+
+    /**
+     * Map any thrown exception to a user-facing message (translated) and log the details.
+     */
+    private function mapExceptionToUserMessage(\Throwable $e, string $context): string
+    {
+        // Log full details to file
+        $this->getLogger()->error(sprintf('[%s] %s', $context, $e->getMessage()), [
+            'exception' => $e,
+            'code' => $e->getCode(),
+            'context' => $context,
+        ]);
+
+        // Resolve a translation key based on error type
+        $key = 'error.search.generic';
+        if ($e instanceof ServerResponseException) {
+            $key = 'error.search.server';
+        } elseif ($e instanceof ClientResponseException) {
+            $key = 'error.search.client';
+        } elseif ($e instanceof NoNodeAvailableException || $e instanceof TransportException) {
+            $key = 'error.search.network';
+        }
+
+        // Try to translate; fallback to a safe English message
+        return LocalizationUtility::translate($key, 'liszt_common')
+            ?? 'Search service is currently unavailable.';
+    }
+
+    /**
+     * Create a consistent empty search collection used as fallback on failures.
+     */
+    private function buildEmptySearchCollection(): \Slub\LisztCommon\Common\Collection
+    {
+        return new \Slub\LisztCommon\Common\Collection([
+            'hits' => [
+                'total' => ['value' => 0, 'relation' => 'eq'],
+                'hits'  => [],
+            ],
+            'aggregations' => [],
+        ]);
+    }
+
+
     public function indexAction(): ResponseInterface
     {
         $searchParams = $this->getSearchParamsFromRequest();
@@ -46,12 +99,19 @@ final class SearchController extends ClientEnabledController
         $currentPage = $this->getCurrentPage($searchParams);
         $this->addViewTransitionStyle();
 
-        $elasticResponse = $this->elasticSearchService->search($searchParams, $this->settings);
-        $totalItems = 0;
-        if (isset($elasticResponse['hits'], $elasticResponse['hits']['total'], $elasticResponse['hits']['total']['value'])) {
-            $totalItems = (int)$elasticResponse['hits']['total']['value'];
+        $searchServiceError = '';
+        try {
+            $elasticResponse = $this->elasticSearchService->search($searchParams, $this->settings);
+        } catch (\Throwable $e) {
+            // Generate short, translated message and use empty fallback data
+            $searchServiceError = $this->mapExceptionToUserMessage($e, 'search.indexAction');
+            $elasticResponse = $this->buildEmptySearchCollection();
         }
 
+        $totalItems = 0;
+        if (isset($elasticResponse['hits']['total']['value'])) {
+            $totalItems = (int)$elasticResponse['hits']['total']['value'];
+        }
 
         $paginator = (new Paginator())
             ->setPage($currentPage)
@@ -102,6 +162,7 @@ final class SearchController extends ClientEnabledController
             'searchPageId'  => $this->getSearchPageId(),
             'navigationBase'   => $navigationBase,
             'itemsPerPage'     => $itemsPerPage,
+            'ElasticSearchServiceError' => $searchServiceError,
         ]);
 
         return $this->htmlResponse();
@@ -128,12 +189,15 @@ final class SearchController extends ClientEnabledController
 
         try {
             $elasticResponse = $this->loadDetailPageFromElastic($documentId);
-        } catch (ClientResponseException $e) {
+        } catch (\Throwable $e) {
             if ($e->getCode() === 404) {
                 return $this->redirectToNotFoundPage();
             }
-            throw $e;
+            // Handle all other errors (4xx, 5xx, network, etc.) and continue with empty data
+            $this->view->assign('ElasticSearchServiceError', $this->mapExceptionToUserMessage($e, 'search.detailsHeaderAction'));
+            $elasticResponse = $this->buildEmptySearchCollection();
         }
+
 
         // manage template file for detail view from extension (set in setup.typoscript of the extension)
         if (isset($this->settings['detailHeaderTemplatePath'])) {
@@ -162,9 +226,7 @@ final class SearchController extends ClientEnabledController
 
                 // Process detail page navigation with action if available (from JS), next/prev calculation
                 if (isset($searchContext['navigation'])) {
-                    $searchContext['navigation'] = $this->calculateNavigationContext(
-                        $searchContext['navigation'],
-                    );
+                    $searchContext['navigation'] = $this->calculateNavigationContext($searchContext['navigation']);
                 }
             }
         }
@@ -172,38 +234,38 @@ final class SearchController extends ClientEnabledController
         // If we have search context but no complete navigation data, calculate it (if nextDocumentId/previousDocumentId missed)
         if ($searchContext && isset($searchContext['navigation']) &&
             (!isset($searchContext['navigation']['nextDocumentId']) ||
-                !isset($searchContext['navigation']['previousDocumentId']))) {
-            $searchContext['navigation'] = $this->ensureNavigationDocumentIds(
-                $searchContext['navigation'],
-            );
+             !isset($searchContext['navigation']['previousDocumentId']))) {
+            $searchContext['navigation'] = $this->ensureNavigationDocumentIds($searchContext['navigation']);
         }
+
+        $searchServiceError = '';
 
         try {
             $elasticResponse = $this->loadDetailPageFromElastic($documentId);
-        } catch (ClientResponseException $e) {
-            // Handle 404 errors
+        } catch (\Throwable $e) {
             if ($e->getCode() === 404) {
                 return $this->redirectToNotFoundPage();
             }
-            throw $e; // Re-throw for other client errors
+            // Handle all other errors
+            $searchServiceError = $this->mapExceptionToUserMessage($e, 'search.detailsAction');
+            $elasticResponse = $this->buildEmptySearchCollection();
         }
+
 
         // manage template file for detail view from extension (set in setup.typoscript of the extension)
         if (isset($this->settings['detailTemplatePath'])) {
             $this->view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($this->settings['detailTemplatePath']));
         }
 
-        // set page title
+        // Page title and meta description (safe defaults)
         $pageTitle = $this->formatPageTitle($elasticResponse['_source']['title'] ?? 'Details');
         $this->titleProvider->setTitle($pageTitle);
 
-        // set meta description
         $metaDescription = '';
-        if (isset($elasticResponse['_source'], $elasticResponse['_source']['tx_lisztcommon_searchable'])) {
+        if (isset($elasticResponse['_source']['tx_lisztcommon_searchable'])) {
             $metaDescription = (string)$elasticResponse['_source']['tx_lisztcommon_searchable'];
         }
-        $metaTagManager = GeneralUtility::makeInstance(MetaTagManagerRegistry::class)
-            ->getManagerForProperty('description');
+        $metaTagManager = GeneralUtility::makeInstance(MetaTagManagerRegistry::class)->getManagerForProperty('description');
         $metaTagManager->addProperty('description', $metaDescription);
 
         $this->addViewTransitionStyle();
@@ -213,12 +275,13 @@ final class SearchController extends ClientEnabledController
         }
 
         $this->view->assignMultiple([
-            'routingArgs'  => $this->request->getAttribute('routing')->getArguments(),
-            'detailId'     => $documentId,
-            'searchResult' => $elasticResponse,
-            'detailPageId'  => $this->getDetailPageId(),
-            'searchPageId'  => $this->getSearchPageId(),
-            'searchContext'    => $searchContext,
+            'routingArgs'             => $this->request->getAttribute('routing')->getArguments(),
+            'detailId'                => $documentId,
+            'searchResult'            => $elasticResponse,
+            'detailPageId'            => $this->getDetailPageId(),
+            'searchPageId'            => $this->getSearchPageId(),
+            'searchContext'           => $searchContext,
+            'ElasticSearchServiceError' => $searchServiceError,
         ]);
 
         return $this->htmlResponse();
@@ -300,7 +363,6 @@ final class SearchController extends ClientEnabledController
             $response = $this->responseFactory->createResponse(400)
                 ->withHeader('Content-Type', 'text/html')
                 ->withBody($this->streamFactory->createStream('Missing required parameter: filterShowAll'));
-
             // Add HTMX-specific header for better client-side error handling
             if ($this->request->getHeader('HX-Request')) {
                 $response = $response->withHeader('HX-Trigger', '{"showError": "Missing required parameter"}');
@@ -308,7 +370,14 @@ final class SearchController extends ClientEnabledController
             return $response;
         }
 
+        try {
         $elasticResponse = $this->elasticSearchService->search($searchParams, $this->settings);
+        } catch (\Throwable $e) {
+            $searchServiceError = $this->mapExceptionToUserMessage($e, 'search.loadAllFilterItemsAction');
+            return $this->responseFactory->createResponse(200)
+                ->withHeader('Content-Type', 'text/html')
+                ->withBody($this->streamFactory->createStream($searchServiceError));
+        }
 
         $this->view->assignMultiple([
             'locale'        => $locale,
