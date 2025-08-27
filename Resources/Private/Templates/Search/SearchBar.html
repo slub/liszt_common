@@ -7,7 +7,18 @@
     <div class="container-xl">
         <lc:cleanUrlForm name="searchBar" controller="Search" action="index" method="get" class="form-inline" pageUid="{searchPageId}">
             <div class="input-group">
-                <f:form.textfield type="text" id="searchbar-input" name="searchText" value="{searchParams.searchText}" class="" aria="{label:'Text input with dropdown button'}" placeholder="{f:translate(key: 'searchbar_placeholder', extensionName: 'liszt_common')}" />
+                <label for="searchbar-input" class="visually-hidden">
+                    {f:translate(key: 'searchbar_description', extensionName: 'liszt_common', default: 'Sucheingabe zur Suche in den Kategorien: Bibliografie')}
+                </label>
+                <f:form.textfield
+                    type="text"
+                    id="searchbar-input"
+                    name="searchText"
+                    autocomplete="on"
+                    enterkeyhint="search"
+                    value="{searchParams.searchText}"
+                    class=""
+                    placeholder="{f:translate(key: 'searchbar_placeholder', extensionName: 'liszt_common')}" />
                 <button type="button" id="searchbar-clearButton" class="searchbar-clearButton no-ml" aria-label="{f:translate(key: 'searchbar_clearButton_label', extensionName: 'liszt_common')}">
                     <i:icon iconfig="lzicon,close" preferredRenderTypes="svgSprite" additionalAttributes="{aria-hidden:'true'}" />
                 </button>
