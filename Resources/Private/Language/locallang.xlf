@@ -16,7 +16,7 @@
 				<source>Liszt Suchschlitz</source>
 			</trans-unit>
 			<trans-unit id="searchbar_description" >
-				<source>Sucheingabe zur Suche in den Kategorien: Bibliografie</source>
+				<source>Sucheingabe / Suchschlitz</source>
 			</trans-unit>
 			<trans-unit id="searchdetails_title" >
 				<source>Liszt Detailseite</source>
@@ -40,7 +40,7 @@
 				<source>vorheriger Treffer</source>
 			</trans-unit>
 			<trans-unit id="searchbar_placeholder" >
-				<source>Suche in der Bibliografie</source>
+				<source>Volltextsuche in der xxx</source>
 			</trans-unit>
 			<trans-unit id="searchbar_clearButton_label" >
 				<source>Eingabe löschen</source>

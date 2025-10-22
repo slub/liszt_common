@@ -40,10 +40,13 @@
 				<source>vorheriger Treffer</source>
 			</trans-unit>
 			<trans-unit id="searchbar_placeholder" >
-				<source>Suche in der Bibliografie</source>
+				<source>Volltextsuche in der xxx</source>
 			</trans-unit>
 			<trans-unit id="searchbar_clearButton_label" >
 				<source>Eingabe löschen</source>
+			</trans-unit>
+			<trans-unit id="searchbar_select_label">
+				<source>Wählen sie eine Kategorie</source>
 			</trans-unit>
 			<trans-unit id="searchbar_searchButton_label">
 				<source>Suchen</source>

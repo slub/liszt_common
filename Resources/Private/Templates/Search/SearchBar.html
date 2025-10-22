@@ -3,15 +3,23 @@
       xmlns:i="http://typo3.org/ns/Quellenform/Iconpack/ViewHelpers"
       xmlns:lc="http://typo3.org/ns/Slub/LisztCommon/ViewHelpers"
       data-namespace-typo3-fluid="true">
-<section id="searchBar" class="searchbar">
+<section id="searchBar" class="searchbar" role="search">
     <div class="container-xl">
         <lc:cleanUrlForm name="searchBar" controller="Search" action="index" method="get" class="form-inline" pageUid="{searchPageId}">
-            <div class="input-group">
+            <div class="searchbar-input-group">
+
+                <label class="visually-hidden" for="searchbar-select"><f:translate key="searchbar_select_label" extensionName="liszt_common" /></label>
+                <select id="searchbar-select" name="category" class="searchbar-select">
+                    <option value="all">Alles durchsuchen</option>
+                    <option value="catalog">Werke</option>
+                    <option value="bibliography">Bibliografie</option>
+                </select>
+
                 <label for="searchbar-input" class="visually-hidden">
                     {f:translate(key: 'searchbar_description', extensionName: 'liszt_common', default: 'Sucheingabe zur Suche in den Kategorien: Bibliografie')}
                 </label>
                 <f:form.textfield
-                    type="text"
+                    type="search"
                     id="searchbar-input"
                     name="searchText"
                     autocomplete="on"
@@ -22,7 +30,7 @@
                 <button type="button" id="searchbar-clearButton" class="searchbar-clearButton no-ml" aria-label="{f:translate(key: 'searchbar_clearButton_label', extensionName: 'liszt_common')}">
                     <i:icon iconfig="lzicon,close" preferredRenderTypes="svgSprite" additionalAttributes="{aria-hidden:'true'}" />
                 </button>
-                <f:form.button class="btn btn-black" id="searchbar-searchButton">{f:translate(key: 'searchbar_searchButton_label', extensionName: 'liszt_common')}</f:form.button>
+                <f:form.button type="submit" class="btn searchbar-submit" id="searchbar-searchButton">{f:translate(key: 'searchbar_searchButton_label', extensionName: 'liszt_common')}</f:form.button>
             </div>
         </lc:cleanUrlForm>
 
