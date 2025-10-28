@@ -7,8 +7,16 @@
 
 <f:layout name="Default"/>
 
-
 <f:section name="Main">
+
+    <f:if condition="{layout} == 'searchResults'">
+        <div class="container-xl testversion-disclaimer-container">
+            <div class="testversion-disclaimer">
+                <h3>Testversion</h3>
+                <p>Die Bibliografie befindet sich derzeit im Aufbau und wird fortlaufend ergänzt und überprüft.<br />Wir freuen uns über Hinweise zu Addenda und Corrigenda per <f:link.email class="arrow-right-after" email="sophia.zeil-bonk@slub-dresden.de">Mail</f:link.email></p>
+            </div>
+        </div>
+    </f:if>
 
     <f:cObject typoscriptObjectPath="tt_content.list.20.lisztcommon_searchbar" />
 
