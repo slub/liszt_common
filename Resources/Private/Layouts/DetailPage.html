@@ -1,0 +1,27 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<f:spaceless>
+<a class="visually-hidden-focusable" href="#page-content"><span>{f:translate(key: 'skipNavTitle', extensionName: 'liszt_web')}</span></a>
+
+<f:render partial="DetailPageHeader" arguments="{_all}"/>
+
+    <div class="container-xl testversion-disclaimer-container">
+        <aside class="testversion-disclaimer background-light-blue" role="note" aria-label="Information zur Testversion" >
+            <p><strong>Testversion</strong></p>
+            <p>Die Bibliografie befindet sich derzeit im Aufbau und wird fortlaufend ergänzt und überprüft.<br />Wir freuen uns über Hinweise zu Addenda und Corrigenda per <f:link.email class="arrow-right-after" email="constanze.koehn@zegk.uni-heidelberg.de,margret.scharrer@zegk.uni-heidelberg.de">Mail.</f:link.email></p>
+            <button type="button" id="disclaimerDismissBtn" class="btn testversion-disclaimer-dismiss-btn" aria-label="Hinweis ausblenden">
+                Ausblenden
+            </button>
+        </aside>
+    </div>
+
+<f:cObject typoscriptObjectPath="tt_content.list.20.lisztcommon_searchbar" />
+
+
+<f:render section="Main"/>
+
+
+<f:render partial="Footer" arguments="{_all}" />
+
+</f:spaceless>
+</html>

@@ -7,8 +7,18 @@
 
 <f:layout name="Default"/>
 
-
 <f:section name="Main">
+
+        <div class="container-xl testversion-disclaimer-container">
+            <aside class="testversion-disclaimer background-light-blue" role="note" aria-label="Information zur Testversion" >
+                <p><strong>Testversion</strong></p>
+                <p>Die Bibliografie befindet sich derzeit im Aufbau und wird fortlaufend ergänzt und überprüft.<br />Wir freuen uns über Hinweise zu Addenda und Corrigenda per <f:link.email class="arrow-right-after" email="constanze.koehn@zegk.uni-heidelberg.de,margret.scharrer@zegk.uni-heidelberg.de">Mail.</f:link.email></p>
+                <button type="button" id="disclaimerDismissBtn" class="btn testversion-disclaimer-dismiss-btn" aria-label="Hinweis ausblenden">
+                    Ausblenden
+                </button>
+            </aside>
+        </div>
+
 
     <f:cObject typoscriptObjectPath="tt_content.list.20.lisztcommon_searchbar" />
 
@@ -20,11 +30,34 @@
             </main>
         </f:if>
 
-    </f:section>
+</f:section>
 
 
 <f:section name="FooterAssets">
-    <vac:asset.vite entry="EXT:liszt_web/Resources/Private/app.js"/>
+<vac:asset.vite entry="EXT:liszt_web/Resources/Private/app.js"/>
+
+<f:comment>
+    Script for reading disclaimer status.
+    Todo: remove this after remove Disclaimer
+    Attention: this script loads in html header, not footer!
+</f:comment>
+<f:asset.script identifier="get-discclaimer-status" priority="true" >
+    (function() {
+    try {
+    if (sessionStorage.getItem('lisztDisclaimerAcknowledged') === 'true') {
+    document.addEventListener('DOMContentLoaded', function() {
+    var container = document.querySelector('.testversion-disclaimer-container');
+    if (container) {
+    container.style.display = 'none';
+    }
+    });
+    }
+    } catch (e) {
+    // sessionStorage not available (private browsing, etc.) - show disclaimer
+    }
+    })();
+</f:asset.script>
+
 </f:section>
 
 

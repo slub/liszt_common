@@ -1,0 +1,45 @@
+<html
+    data-namespace-typo3-fluid="true"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:vac="http://typo3.org/ns/Praetorius/ViteAssetCollector/ViewHelpers"
+>
+
+<f:layout name="DetailPage"/>
+<f:section name="Main">
+
+    <f:if condition="{f:cObject(typoscriptObjectPath: 'lib.hasContent', data: '{colPos: 0}')}">
+        {f:cObject(typoscriptObjectPath: 'lib.dynamicContent', data: '{colPos: 0, slide: -1, max: 1}')}
+    </f:if>
+
+</f:section>
+
+<f:section name="FooterAssets">
+    <vac:asset.vite entry="EXT:liszt_web/Resources/Private/app.js"/>
+
+    <f:comment>
+        Script for reading disclaimer status.
+        Todo: remove this after remove Disclaimer
+        Attention: this script loads in html header, not footer!
+    </f:comment>
+    <f:asset.script identifier="get-discclaimer-status" priority="true" >
+        (function() {
+        try {
+        if (sessionStorage.getItem('lisztDisclaimerAcknowledged') === 'true') {
+        document.addEventListener('DOMContentLoaded', function() {
+        var container = document.querySelector('.testversion-disclaimer-container');
+        if (container) {
+        container.style.display = 'none';
+        }
+        });
+        }
+        } catch (e) {
+        // sessionStorage not available (private browsing, etc.) - show disclaimer
+        }
+        })();
+    </f:asset.script>
+
+</f:section>
+
+
+
+</html>

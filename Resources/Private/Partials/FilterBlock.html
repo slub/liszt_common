@@ -1,23 +1,90 @@
 {namespace lc=Slub\LisztCommon\ViewHelpers}
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
-    <f:variable name="paramsRemovePage">{lc:searchParams(action: 'remove', searchParamsArray: searchParams, key: 'page')}</f:variable>
-    <f:variable name="searchParamsFromFirstPage">{paramsRemovePage.searchParams}</f:variable>
-    <f:variable name="filterEntities">{lc:getFilterEntities(filterKey: key, entityTypes: settings.entityTypes)}</f:variable>
-    <f:variable name="filterEntitySize">{f:if(condition: filterEntities.size, then: filterEntities.size, else: filterEntities.defaultFilterSize)}</f:variable>
-    <f:variable name="buckets">{lc:processFacets(filterGroup: filterGroup, key: key, searchParams: searchParams, filterEntities: filterEntities)}</f:variable>
-    <f:if condition="{buckets -> f:count()} > 0">
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:lc="http://typo3.org/ns/Slub/LisztCommon/ViewHelpers"
+    data-namespace-typo3-fluid="true">
+<f:variable name="paramsRemovePage">{lc:searchParams(action: 'remove', searchParamsArray: searchParams, key: 'page')}</f:variable>
+<f:variable name="searchParamsFromFirstPage">{paramsRemovePage.searchParams}</f:variable>
+<f:variable name="filterEntities">{lc:getFilterEntities(filterKey: key, entityTypes: settings.entityTypes)}</f:variable>
+<f:variable name="filterEntitySize">{f:if(condition: filterEntities.size, then: filterEntities.size, else: filterEntities.defaultFilterSize)}</f:variable>
+<f:variable name="buckets">{lc:processFacets(filterGroup: filterGroup, key: key, searchParams: searchParams, filterEntities: filterEntities)}</f:variable>
+<f:variable name="meta">{lc:getFilterMetaData(filterGroup: filterGroup, key: key, buckets: buckets, filterEntities: filterEntities)}</f:variable>
+
+<f:if condition="{buckets -> f:count()} > 0">
         <div class="filter-block frame">
         <h4 class="">{f:translate(key: '{languageFilePath}:{key}', default: '{key}')}</h4>
-            <ul style="view-transition-name:filterblock-{key};">
-            <f:for each="{buckets}" as="filter">
-                <f:render partial="FilterBlockItem" arguments="{key: key, filter: filter, searchParams: searchParams, searchParamsFromFirstPage: searchParamsFromFirstPage, languageFilePath: languageFilePath}" />
-            </f:for>
-            </ul>
-            <f:if condition="{buckets -> f:count()} > {filterEntitySize}">
-                <button class="btn filter-block-toggler" aria-expanded="false">
-                    {f:translate(key: 'filter_show_more_button', extensionName: 'liszt_common')}
-                </button>
+            <f:if condition="{filterEntities.select} == 'range'">
+                <f:then>
+                    <!-- Optional: Chart that references slider data -->
+                    <div class="filter-chart" aria-hidden="true" data-filter-key="{key}"></div>
+
+                    <div class="filter-slider" data-filter-key="{key}"
+                         data-range-start="{searchParams.filter.{key}.gte}"
+                         data-range-end="{searchParams.filter.{key}.lte}">
+                        <!-- Data container -->
+                        <script type="application/json" class="slider-data">
+                            {buckets -> f:format.json() -> f:format.raw()}
+                        </script>
+
+                        <div class="filter-slider-container">
+                            <div class="slider-track"></div>
+                            <div class="slider-range"></div>
+                            <div class="slider-handle handle-min" data-type="min"></div>
+                            <div class="slider-handle handle-max" data-type="max"></div>
+                        </div>
+                        <lc:cleanUrlForm class="filter-slider-input" controller="Search" action="index" method="get">
+                            <f:comment> Known issue in TYPO3 v12 - Bug #100583, 'addQueryString' and 'additionalParams' in form Tag do not work as expected. therefore for the time being the solution with hidden input</f:comment>
+                            <lc:renderHiddenFields data="{searchParamsFromFirstPage}" namePrefix="search" />
+
+                            <div class="input-group">
+                                <f:form.textfield type="number" id="min-range-{key}" aria-label="Minimum {f:translate(key: '{languageFilePath}:{key}', default: '{key}')}" name="filter[{key}][gte]" class="min-range-input" />
+                                <f:form.textfield type="number" id="max-range-{key}"  aria-label="Maximum {f:translate(key: '{languageFilePath}:{key}', default: '{key}')}" name="filter[{key}][lte]" class="max-range-input" />
+                            </div>
+                            <f:form.button class="btn btn-black filter-slider-button filter-slider-submit">{f:translate(key: 'filter_submit', extensionName: 'liszt_common')}</f:form.button>
+                            <f:if condition="{searchParams.filter.{key}}">
+                                <f:variable name="linkArguments">{lc:searchParams(action: 'removeRangeFilter', searchParamsArray: searchParamsFromFirstPage, key: key)}</f:variable>
+                                <a href="{lc:searchUri(searchParams: linkArguments.searchParams)}"
+                                   type="button" class="btn btn-black filter-slider-button filter-slider-reset">
+                                    {f:translate(key: 'filter_reset', extensionName: 'liszt_common')}
+                                </a>
+                            </f:if>
+                        </lc:cleanUrlForm>
+                    </div>
+
+                </f:then>
+                <f:else>
+                    <ul style="view-transition-name:filterblock-{key};" id="filterblock-{key}" class="{f:if(condition: '{filterEntities.sortByKey} == slub', then: 'sortByKeySlub', else: '')}">
+                    <f:for each="{buckets}" as="filter">
+                        <f:if condition="{filter.key}">
+                            <f:render partial="FilterBlockItem" arguments="{key: key, filter: filter, searchParams: searchParams, searchParamsFromFirstPage: searchParamsFromFirstPage, languageFilePath: languageFilePath}" />
+                        </f:if>
+                    </f:for>
+                    </ul>
+                    <f:variable name="hasMoreThanSize">{meta.hasMoreThanSize}</f:variable>
+                    <f:variable name="hasMoreThanMaxSize">{meta.hasMoreThanMaxSize}</f:variable>
+                    <f:variable name="sumOtherDocCount">{meta.sumOtherDocCount}</f:variable>
+                    <f:if condition="{hasMoreThanSize}">
+                        <button class="btn filter-block-toggler show-more-btn"
+                                aria-expanded="false">
+                            {f:translate(key: 'filter_show_more_button', extensionName: 'liszt_common')}
+                        </button>
+
+                        <f:if condition="{hasMoreThanMaxSize}">
+                            <f:variable name="filterShowAllParams">{lc:searchParams(action: 'add', searchParamsArray: searchParamsFromFirstPage, key: 'filterShowAll', value: key)}</f:variable>
+                            <button hx-get="{f:uri.action(pageType: '88888', action:'loadAllFilterItems', arguments:filterShowAllParams )}"
+                                    class="btn filter-block-toggler show-all-btn"
+                                    aria-expanded="false"
+                                    hx-target="#filterblock-{key}"
+                                    hx-swap="outerHTML"
+                                    style="display: none;">
+                                {f:translate(key: 'filter_show_all_button', extensionName: 'liszt_common')}
+                                <f:if condition="{sumOtherDocCount} > 0"> ({sumOtherDocCount} weitere)</f:if>
+                            </button>
+                        </f:if>
+                    </f:if>
+
+                </f:else>
             </f:if>
         </div>
-        </f:if>
+    </f:if>
 </html>

@@ -1,0 +1,24 @@
+{namespace lc=Slub\LisztCommon\ViewHelpers}
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:variable name="breadcrumbArray">{lc:getDetailBreadCrumbArray()}</f:variable>
+
+    <nav aria-label="Sie sind hier" class="breadcrumb container-xl">
+    <ol class="breadcrumb">
+        <f:for each="{breadcrumbArray}" as="item">
+                <f:if condition="{item.uid} == {detailPageId}">
+                    <f:then>
+                        <li class="active" aria-current="page" >
+                        <span>{detailId}</span>
+                        </li>
+                    </f:then>
+                    <f:else>
+                        <li class="breadcrumb-item" >
+                        <f:link.page pageUid="{item.uid}" class="breadcrumb-link" href="{item.link}" title="{item.title}">
+                            {f:if(condition:'{item.uid}==1', then: 'Home', else: item.title)}
+                        </f:link.page>
+                        </li>
+                    </f:else>
+                </f:if>
+        </f:for>
+    </ol>
+    </nav>

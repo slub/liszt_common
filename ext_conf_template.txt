@@ -10,3 +10,7 @@ elasticCaFileFilePath = http_ca.crt
 paginationRange = 2,3,4,5
 # cat=Search; type=int; label=LLL:EXT:liszt_common/Resources/Private/Language/locallang.xml:config.itemsPerPage
 itemsPerPage = 10
+# cat=Search; type=int; label=LLL:EXT:liszt_common/Resources/Private/Language/locallang.xml:config.detailPageId
+detailPageId = 38
+# cat=Search; type=int; label=LLL:EXT:liszt_common/Resources/Private/Language/locallang.xml:config.searchPageId
+searchPageId = 18

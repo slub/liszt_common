@@ -26,6 +26,8 @@ final class QueryParamsBuilderTest extends UnitTestCase
     const EX_PAGE = 3;
     const EX_SCRIPT = 'ex-script';
     const EX_PATH = 'ex-path';
+    const EX_LANG_FILE = 'ex-lang-file';
+    const EX_DIRECTION = 'asc';
 
     private QueryParamsBuilder $subject;
     private array $settings = [];
@@ -56,6 +58,19 @@ final class QueryParamsBuilderTest extends UnitTestCase
                     'labelKey' => self::EX_LABEL_KEY,
                     'extensionName' => self::EX_EXTENSION,
                     'indexName' => self::EX_INDEX,
+                    'languageFile' => self::EX_LANG_FILE,
+                    'defaultFilterSize' => 10,
+                    'defaultSortBy' => self::EX_FIELD1,
+                    'defaultSortDirection' => self::EX_DIRECTION,
+                    'sortings' => [
+                        0 => [
+                            'label' => self::EX_FIELD1,
+                            'fields' => [
+                                self::EX_FIELD1 => self::EX_DIRECTION
+                            ],
+                            'default' => true
+                        ]
+                    ],
                     'filters' => [
                         0 => [
                             'field' => self::EX_FIELD1,
@@ -77,6 +92,15 @@ final class QueryParamsBuilderTest extends UnitTestCase
                     'labelKey' => self::EX_LABEL_KEY2,
                     'extensionName' => self::EX_EXTENSION2,
                     'indexName' => self::EX_INDEX2,
+                    'sortings' => [
+                        0 => [
+                            'label' => self::EX_FIELD1,
+                            'fields' => [
+                                self::EX_FIELD1 => 'desc'
+                            ],
+                            'default' => true
+                        ]
+                    ],
                     'filters' => [
                         0 => [
                             'field' => self::EX_FIELD1,
@@ -106,14 +130,6 @@ final class QueryParamsBuilderTest extends UnitTestCase
             'index' => self::EX_INDEX . ',' . self::EX_INDEX2,
             'size' => PaginatorTest::ITEMS_PER_PAGE,
             'body' => [
-                '_source' => [
-                    QueryParamsBuilder::TYPE_FIELD,
-                    QueryParamsBuilder::HEADER_FIELD,
-                    QueryParamsBuilder::BODY_FIELD,
-                    QueryParamsBuilder::FOOTER_FIELD,
-                    QueryParamsBuilder::SEARCHABLE_FIELD
-
-                ],
                 'query' => [
                     'bool' => [
                         'must' => [
@@ -143,14 +159,6 @@ final class QueryParamsBuilderTest extends UnitTestCase
             'index' => self::EX_INDEX,
             'size' => PaginatorTest::ITEMS_PER_PAGE,
             'body' => [
-                '_source' => [
-                    QueryParamsBuilder::TYPE_FIELD,
-                    QueryParamsBuilder::HEADER_FIELD,
-                    QueryParamsBuilder::BODY_FIELD,
-                    QueryParamsBuilder::FOOTER_FIELD,
-                    QueryParamsBuilder::SEARCHABLE_FIELD
-
-                ],
                 'aggs' => [
                     self::EX_FIELD1 => [
                         'aggs' => [
@@ -158,7 +166,7 @@ final class QueryParamsBuilderTest extends UnitTestCase
                                 'terms' => [
                                     'field' => self::EX_FIELD1 . '.keyword',
                                     'min_doc_count' => 1,
-                                    'size' => 10
+                                    'size' => 30
                                 ]
                             ]
                         ],
@@ -176,7 +184,7 @@ final class QueryParamsBuilderTest extends UnitTestCase
                                 'terms' => [
                                     'field' => self::EX_FIELD2 . '.keyword',
                                     'min_doc_count' => 1,
-                                    'size' => 10
+                                    'size' => 30
                                 ]
                             ]
                         ],
@@ -195,7 +203,7 @@ final class QueryParamsBuilderTest extends UnitTestCase
                                     self::EX_FIELD3 => [
                                         'terms' => [
                                             'field' => self::EX_FIELD3 . '..keyword',
-                                            'size' => 10
+                                            'size' => 30
                                         ]
                                     ]
                                 ],
@@ -217,6 +225,13 @@ final class QueryParamsBuilderTest extends UnitTestCase
                     'bool' => [
                         'must' => [
                             [ 'match_all' => new \StdClass() ]
+                        ]
+                    ]
+                ],
+                'sort' => [
+                    0 => [
+                        self::EX_FIELD1 => [
+                            'order' => self::EX_DIRECTION
                         ]
                     ]
                 ]
@@ -244,14 +259,6 @@ final class QueryParamsBuilderTest extends UnitTestCase
             'size' => PaginatorTest::ITEMS_PER_PAGE,
             'from' => PaginatorTest::ITEMS_PER_PAGE * (self::EX_PAGE - 1),
             'body' => [
-                '_source' => [
-                    QueryParamsBuilder::TYPE_FIELD,
-                    QueryParamsBuilder::HEADER_FIELD,
-                    QueryParamsBuilder::BODY_FIELD,
-                    QueryParamsBuilder::FOOTER_FIELD,
-                    QueryParamsBuilder::SEARCHABLE_FIELD
-
-                ],
                 'query' => [
                     'bool' => [
                         'must' => [
@@ -286,14 +293,6 @@ final class QueryParamsBuilderTest extends UnitTestCase
             'index' => self::EX_INDEX,
             'size' => PaginatorTest::ITEMS_PER_PAGE,
             'body' => [
-                '_source' => [
-                    QueryParamsBuilder::TYPE_FIELD,
-                    QueryParamsBuilder::HEADER_FIELD,
-                    QueryParamsBuilder::BODY_FIELD,
-                    QueryParamsBuilder::FOOTER_FIELD,
-                    QueryParamsBuilder::SEARCHABLE_FIELD
-
-                ],
                 'aggs' => [
                     self::EX_FIELD1 => [
                         'aggs' => [
@@ -301,7 +300,7 @@ final class QueryParamsBuilderTest extends UnitTestCase
                                 'terms' => [
                                     'field' => self::EX_FIELD1 . '.keyword',
                                     'min_doc_count' => 1,
-                                    'size' => 10
+                                    'size' => 30
                                 ]
                             ]
                         ],
@@ -321,16 +320,24 @@ final class QueryParamsBuilderTest extends UnitTestCase
                                 'terms' => [
                                     'field' => self::EX_FIELD2 . '.keyword',
                                     'min_doc_count' => 1,
-                                    'size' => 10
+                                    'size' => 30
+                                ]
+                            ],
+                            self::EX_FIELD2 . '_selected' => [
+                                'terms' => [
+                                    'field' => self::EX_FIELD2 . '.keyword',
+                                    'size' => 30,
+                                    'include' => [
+                                        self::EX_VAL
+                                    ],
+                                    'min_doc_count' => 0
                                 ]
                             ]
                         ],
                         'filter' => [
                             'bool' => [
                                 'filter' => [
-                                    [ 'terms' => [
-                                        self::EX_FIELD2 . '.keyword' => [ self::EX_VAL ]
-                                    ] ]
+                                    [ 'match_all' => new \StdClass() ]
                                 ]
                             ]
                         ]
@@ -342,7 +349,7 @@ final class QueryParamsBuilderTest extends UnitTestCase
                                     self::EX_FIELD3 => [
                                         'terms' => [
                                             'field' => self::EX_FIELD3 . '..keyword',
-                                            'size' => 10
+                                            'size' => 30
                                         ]
                                     ]
                                 ],
@@ -377,6 +384,13 @@ final class QueryParamsBuilderTest extends UnitTestCase
                             ]
                         ] ]
                     ]
+                ],
+                'sort' => [
+                    0 => [
+                        self::EX_FIELD1 => [
+                            'order' => self::EX_DIRECTION
+                        ]
+                    ]
                 ]
             ]
         ];
@@ -405,14 +419,6 @@ final class QueryParamsBuilderTest extends UnitTestCase
             'index' => self::EX_INDEX,
             'size' => PaginatorTest::ITEMS_PER_PAGE,
             'body' => [
-                '_source' => [
-                    QueryParamsBuilder::TYPE_FIELD,
-                    QueryParamsBuilder::HEADER_FIELD,
-                    QueryParamsBuilder::BODY_FIELD,
-                    QueryParamsBuilder::FOOTER_FIELD,
-                    QueryParamsBuilder::SEARCHABLE_FIELD
-
-                ],
                 'aggs' => [
                     self::EX_FIELD1 => [
                         'aggs' => [
@@ -420,7 +426,7 @@ final class QueryParamsBuilderTest extends UnitTestCase
                                 'terms' => [
                                     'field' => self::EX_FIELD1 . '.keyword',
                                     'min_doc_count' => 1,
-                                    'size' => 10
+                                    'size' => 30
                                 ]
                             ]
                         ],
@@ -449,7 +455,7 @@ final class QueryParamsBuilderTest extends UnitTestCase
                                 'terms' => [
                                     'field' => self::EX_FIELD2 . '.keyword',
                                     'min_doc_count' => 1,
-                                    'size' => 10
+                                    'size' => 30
                                 ]
                             ]
                         ],
@@ -479,7 +485,17 @@ final class QueryParamsBuilderTest extends UnitTestCase
                                     self::EX_FIELD3 => [
                                         'terms' => [
                                             'field' => self::EX_FIELD3 . '..keyword',
-                                            'size' => 10
+                                            'size' => 30
+                                        ]
+                                    ],
+                                    self::EX_FIELD3 . '_selected' => [
+                                        'terms' => [
+                                            'field' => self::EX_FIELD3 . '..keyword',
+                                            'size' => 30,
+                                            'include' => [
+                                                self::EX_VAL
+                                            ],
+                                            'min_doc_count' => 0
                                         ]
                                     ]
                                 ],
@@ -491,18 +507,7 @@ final class QueryParamsBuilderTest extends UnitTestCase
                         'filter' => [
                             'bool' => [
                                 'filter' => [
-                                    [ 'nested' => [
-                                        'path' => self::EX_FIELD3,
-                                        'query' => [
-                                            'bool' => [
-                                                'filter' => [
-                                                    'terms' => [
-                                                        self::EX_FIELD3 . '..keyword' => [ self::EX_VAL ]
-                                                    ]
-                                                ]
-                                            ]
-                                        ]
-                                    ] ]
+                                    [ 'match_all' => new \StdClass() ]
                                 ]
                             ]
                         ]
@@ -527,6 +532,13 @@ final class QueryParamsBuilderTest extends UnitTestCase
                                 ]
                             ]
                         ] ]
+                    ]
+                ],
+                'sort' => [
+                    0 => [
+                        self::EX_FIELD1 => [
+                            'order' => self::EX_DIRECTION
+                        ]
                     ]
                 ]
             ]

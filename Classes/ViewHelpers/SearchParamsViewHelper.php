@@ -42,6 +42,10 @@ final class SearchParamsViewHelper extends AbstractViewHelper
                 unset($searchParamsArray['filter'][$key][$value]);
                 break;
 
+            case 'removeRangeFilter':
+                unset($searchParamsArray['filter'][$key]);
+                break;
+
             default:
                 break;
         }

@@ -11,9 +11,26 @@
                         </span>
                     </f:then>
                     <f:else>
-                        <f:link.action action="index" controller="Search" pluginName="SearchListing" arguments="{lc:searchParams(action: 'add', searchParamsArray: searchParams, key: 'page', value: page.page)}" additionalAttributes="{f:if(condition: '{page.class} == {currentString}', then: '{aria-current: \'page\', aria-label: \'{f:translate(key: \\\'searchResults_pagination_currentPage\\\',  arguments: {0: page.page}, extensionName: \\\'liszt_common\\\')}\' }', else:'{aria-label: \'{f:translate(key: \\\'searchResults_pagination_gotoPage\\\',  arguments: {0: page.page}, extensionName: \\\'liszt_common\\\')}\' }' )}">
-                            {page.page}
-                        </f:link.action>
+                        <f:variable name="linkArguments">{lc:searchParams(action: 'add', searchParamsArray: searchParams, key: 'page', value: page.page)}</f:variable>
+                        <f:variable name="isCurrentPage" value="{f:if(condition: '{page.class} == {currentString}', then: 1, else: 0)}"/>
+                        <f:if condition="{isCurrentPage}">
+                            <f:then>
+                                <a href="{lc:searchUri(searchParams: linkArguments.searchParams)}"
+                                   aria-current="page"
+                                   aria-label="{f:translate(key: 'searchResults_pagination_currentPage', arguments: {0: page.page}, extensionName: 'liszt_common')}"
+                                >
+                                    {page.page}
+                                </a>
+                            </f:then>
+                            <f:else>
+                                <a href="{lc:searchUri(searchParams: linkArguments.searchParams)}"
+                                   aria-label="{f:translate(key: 'searchResults_pagination_gotoPage', arguments: {0: page.page}, extensionName: 'liszt_common')}"
+                                >
+                                    {page.page}
+                                </a>
+                            </f:else>
+                        </f:if>
+
                     </f:else>
                 </f:if>
             </li>

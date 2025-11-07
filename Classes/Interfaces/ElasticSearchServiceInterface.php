@@ -11,6 +11,8 @@ interface ElasticSearchServiceInterface
 
     public function search(array $searchParams, array $settings): Collection;
 
-   // public function count(array $searchParams, array $settings): int;
+    public function getDocumentById(string $documentId, array $settings): Collection;
+
+    public function findNavigationDocuments(array $searchParams, array $settings, array $searchAfter): array;
 
 }

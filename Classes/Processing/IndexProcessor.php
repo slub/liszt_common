@@ -17,9 +17,8 @@ abstract class IndexProcessor
 {
 
     const TYPE_FIELD = 'itemType';
-    const HEADER_FIELD = 'tx_lisztcommon_header';
-    const FOOTER_FIELD = 'tx_lisztcommon_footer';
-    const BODY_FIELD = 'tx_lisztcommon_body';
     const SEARCHABLE_FIELD = 'tx_lisztcommon_searchable';
     const BOOSTED_FIELD = 'tx_lisztcommon_boosted';
+
+    const ORIGINAL_ITEM_TYPE = 'originalItemType'; // original itemType from Zotero for separate printedMusic in Template
 }
