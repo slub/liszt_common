@@ -8,6 +8,7 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 use Quellenform\Iconpack\IconpackFactory;
+use Quellenform\Iconpack\IconpackRegistry;
 
 
 final class ItemTypeIconNameViewHelper extends AbstractViewHelper
@@ -24,19 +25,23 @@ final class ItemTypeIconNameViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext)
     : ?string
     {
-        // get installed icon names from the t3x Iconpack Extension with Key 'lziconsr' as Array
-        $iconpackFactory = GeneralUtility::makeInstance(IconpackFactory::class);
+        $iconpackRegistry = GeneralUtility::makeInstance(IconpackRegistry::class);
         $iconPackKey = $arguments['iconPackKey'];
-        $availableIconsArray =  $iconpackFactory->queryConfig($iconPackKey, 'icons');
 
-        // Check if itemType exists as a key in the array
-        $itemType = $arguments['itemType'];
-        if (array_key_exists($itemType, $availableIconsArray)) {
-            return $iconPackKey.','.$itemType;
+        try {
+            $iconpackProvider = $iconpackRegistry->getIconpackProviderByIdentifier($iconPackKey);
+            if ($iconpackProvider) {
+                $availableIconsArray = $iconpackProvider->getIcons();
+                $itemType = $arguments['itemType'];
+
+                if (is_array($availableIconsArray) && array_key_exists($itemType, $availableIconsArray)) {
+                    return $iconPackKey . ',' . $itemType;
+                }
+            }
+        } catch (\Exception $e) {
+            // Iconpack not found, return default
         }
 
-        // else Return default icon
         return 'lziconsr,lisztDocument';
-
     }
 }
