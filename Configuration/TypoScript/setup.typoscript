@@ -23,6 +23,8 @@ page {
 
   }
 
+
+
 // 20 < tt_content.list.20.lisztcommon_searchdetails
 
   #  Include inline labels to be used in JavaScript files:
@@ -33,7 +35,10 @@ page {
   }
 }
 
-
+# Disable canonical tag on search result pages
+[request && traverse(request.getQueryParams(), 'search')]
+  config.disableCanonical = 1
+[END]
 
 lib.contentElement {
   templateRootPaths {
