@@ -15,7 +15,31 @@
 
 <f:section name="FooterAssets">
     <vac:asset.vite entry="EXT:liszt_web/Resources/Private/app.js"/>
+
+    <f:comment>
+        Script for reading disclaimer status.
+        Todo: remove this after remove Disclaimer
+        Attention: this script loads in html header, not footer!
+    </f:comment>
+    <f:asset.script identifier="get-discclaimer-status" priority="true" >
+        (function() {
+        try {
+        if (sessionStorage.getItem('lisztDisclaimerAcknowledged') === 'true') {
+        document.addEventListener('DOMContentLoaded', function() {
+        var container = document.querySelector('.testversion-disclaimer-container');
+        if (container) {
+        container.style.display = 'none';
+        }
+        });
+        }
+        } catch (e) {
+        // sessionStorage not available (private browsing, etc.) - show disclaimer
+        }
+        })();
+    </f:asset.script>
+
 </f:section>
+
 
 
 </html>
